@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project qtimgren -->
-<!-- Saved: 2020-08-20, 15:33:08 -->
+<!-- Saved: 2020-08-20, 16:28:29 -->
 <!-- Copyright (C) 2020 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -14,6 +14,11 @@
   <Eol index="0"/>
   <Sources>
     <Source>__init__.py</Source>
+    <Source>qtimgren/Ui_main_window.py</Source>
+    <Source>qtimgren/__init__.py</Source>
+    <Source>qtimgren/main_window.py</Source>
+    <Source>qtimgren/qtimgren.py</Source>
+    <Source>test/__init__.py</Source>
   </Sources>
   <Others>
     <Other>.gitignore</Other>
