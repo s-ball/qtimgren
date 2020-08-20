@@ -4,7 +4,6 @@
 Module implementing About.
 """
 
-from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog,  QLabel
 
 from .Ui_about import Ui_About
