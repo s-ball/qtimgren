@@ -27,6 +27,9 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionChange_Folder"/>
+    <addaction name="action_Merge"/>
+    <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -36,7 +39,17 @@
     <addaction name="action_About"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
+   <widget class="QMenu" name="menu_Profiles">
+    <property name="title">
+     <string>&amp;Profiles</string>
+    </property>
+    <addaction name="action_New_profile"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="action_Manage_profiles"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Profiles"/>
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_Quit">
@@ -52,6 +65,29 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="action_New_profile">
+   <property name="text">
+    <string>&amp;New profile</string>
+   </property>
+  </action>
+  <action name="action_Manage_profiles">
+   <property name="text">
+    <string>&amp;Manage profiles</string>
+   </property>
+  </action>
+  <action name="actionChange_Folder">
+   <property name="text">
+    <string>Change &amp;Folder</string>
+   </property>
+  </action>
+  <action name="action_Merge">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Merge</string>
    </property>
   </action>
  </widget>

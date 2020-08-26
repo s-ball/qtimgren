@@ -1,1 +1,2 @@
 pyimgren>=0.8
+PyQt5>=5.12
