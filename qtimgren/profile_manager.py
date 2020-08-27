@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMessageBox,  qApp
+from PyQt5.QtWidgets import QMessageBox,  qApp,  QActionGroup
 from PyQt5.QtCore import QSettings
 
 
@@ -23,6 +23,8 @@ class ProfileManager:
         self.head = actions[:2]
         self.parent = parent
         self.profiles = []
+        self.actGroup = None
+        self.active_profile = None
         self.load()
         qApp. aboutToQuit.connect(self.save)
         
@@ -36,11 +38,19 @@ class ProfileManager:
                         for p in groups]
         settings.endGroup()
         if len(self.profiles) > 0:
+            self.actGroup = QActionGroup(self.parent)
+            self.actGroup.triggered.connect(self.parent.setProfileGroup)
+            self.actGroup.triggered.connect(self.set_active_profile)
             self.menu.removeAction(self.tail[0])
             self.menu.removeAction(self.tail[1])
+            active = settings.value('active_profile')
+            self.active_profile = self.get_profile(active)
             for name in self.names():
                 action = self.menu.addAction(name)
-                action.triggered.connect(self.parent.setProfile)
+                action.setCheckable(True)
+                self.actGroup.addAction(action)
+                if name == active:
+                    action.setChecked(True)
             self.menu.addActions(self.tail)
 
     def save(self):
@@ -51,6 +61,9 @@ class ProfileManager:
             settings.setValue(f'{p.name}/path',  p.path)
             settings.setValue(f'{p.name}/mask',  p.mask)
             settings.setValue(f'{p.name}/recurse',  p.recurse)
+        settings.endGroup()
+        if self.active_profile is not None:
+            settings.setValue('active_profile',  self.active_profile.name)
         
     def names(self):
         for p in self.profiles:
@@ -64,7 +77,8 @@ class ProfileManager:
             self.menu.removeAction(self.tail[0])
             self.menu.removeAction(self.tail[1])
             action = self.menu.addAction(name)
-            action.triggered.connect(self.parent.setProfile)
+            action.setCheckable(True)
+            self.actGroup.addAction(action)
             self.menu.addActions(self.tail)
             
     def add_from_dialog(self,  dialog):
@@ -72,7 +86,11 @@ class ProfileManager:
                 dialog.getMask(),  dialog.isRecurse())
 
     def get_profile(self,  name):
-        for p in self.profiles():
+        for p in self.profiles:
             if name == p.name:
                 return p
         return None
+
+    def set_active_profile(self):
+        action = self.actGroup.checkedAction()
+        self.active_profile = self.get_profile(action.text())

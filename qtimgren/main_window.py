@@ -60,7 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.profile_manager.add_from_dialog(profile)
 
     @pyqtSlot()
-    def setProfile(self):
-        action = self.sender()
-        profile = self.profile_manager.get_profile(action.text())
-        self.wd = profile.path
+    def setProfileGroup(self):
+        actionGroup = self.sender()
+        action = actionGroup.checkedAction()
+        print(action)
