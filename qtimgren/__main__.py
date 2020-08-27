@@ -5,6 +5,8 @@ import sys
 
 def run():
     app = QApplication(sys.argv)
+    app.setOrganizationName('SBA')
+    app.setApplicationName('QtImgren')
     mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec_())
