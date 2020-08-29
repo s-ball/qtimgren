@@ -4,7 +4,7 @@
 Module implementing ProfileDialog.
 """
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtWidgets import QDialog,  QLineEdit,  QFileDialog,  QCheckBox
 
 from .Ui_profile import Ui_Dialog
@@ -14,7 +14,7 @@ class ProfileDialog(QDialog, Ui_Dialog):
     """
     Class documentation goes here.
     """
-    def __init__(self, wd,  parent=None):
+    def __init__(self, parent=None,  profile=None):
         """
         Constructor
         
@@ -22,11 +22,16 @@ class ProfileDialog(QDialog, Ui_Dialog):
         @type QWidget
         """
         super(ProfileDialog, self).__init__(parent)
-        self.wd = wd
         self.setupUi(self)
         self.path = self.findChild(QLineEdit,  "path")
-        self.path.setText(wd)
-        
+        if profile is not None:
+            child = self.findChild(QLineEdit,  'name')
+            child.setText(profile.name)
+            child = self.findChild(QLineEdit,  'mask')
+            child.setText(profile.mask)
+            self.path.setText(profile.path)
+            child = self.findChild(QCheckBox,  'recurse')
+            child.setChecked(profile.recurse)
     
     @pyqtSlot()
     def on_change_clicked(self):
@@ -34,16 +39,16 @@ class ProfileDialog(QDialog, Ui_Dialog):
         Slot documentation goes here.
         """
         # TODO: not implemented yet
-        self.wd = QFileDialog.getExistingDirectory(self,  directory=self.wd,
+        wd = QFileDialog.getExistingDirectory(self,  directory=self.path.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
-        self.path.setText(self.wd)
+        self.path.setText(wd)
     
     def getName(self):
         name = self.findChild(QLineEdit,  "name")
         return name.text()
         
     def getPath(self):
-        return self.wd
+        return self.path.text()
         
     def getMask(self):
         mask = self.findChild(QLineEdit,  "mask")
@@ -51,4 +56,4 @@ class ProfileDialog(QDialog, Ui_Dialog):
         
     def isRecurse(self):
         recurse = self.findChild(QCheckBox,  "recurse")
-        return recurse.checkState()
+        return recurse.checkState() == Qt.Checked

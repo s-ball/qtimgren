@@ -4,7 +4,6 @@
 Module implementing MainWindow.
 """
 
-import os
 
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow,  qApp,  QMenu
@@ -12,6 +11,7 @@ from PyQt5.QtWidgets import QMainWindow,  qApp,  QMenu
 from .Ui_main_window import Ui_MainWindow
 from .about import About
 from .profile import ProfileDialog
+from .profiles import ProfilesDialog
 from .profile_manager import ProfileManager
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -29,12 +29,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         profile_menu = self.findChild(QMenu,  "menu_Profiles")
         self.profile_manager = ProfileManager(profile_menu,  self)
-        if len(self.profile_manager.profiles) > 0:
-            self.profile = self.profile_manager.profiles[0]
-            self.wd = self.profile.path
-        else:
-            self.profile = None
-            self.wd = os.getcwd()
     
     @pyqtSlot()
     def on_action_About_triggered(self):
@@ -54,13 +48,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def on_action_New_profile_triggered(self):
-        profile = ProfileDialog(self.wd,  self)
+        profile = ProfileDialog(self)
         cr = profile.exec_()
         if cr:
             self.profile_manager.add_from_dialog(profile)
-
+    
     @pyqtSlot()
-    def setProfileGroup(self):
-        actionGroup = self.sender()
-        action = actionGroup.checkedAction()
-        print(action)
+    def on_action_Manage_profiles_triggered(self):
+        dialog = ProfilesDialog(self.profile_manager.profiles,  self)
+        cr = dialog.exec_()
+        if cr:
+            self.profile_manager.reset_profiles(dialog.model.profiles)
