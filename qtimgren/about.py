@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QDialog,  QLabel
 
 from .Ui_about import Ui_About
 from . import __version__
+from pyimgren import __version__ as libversion
 
 class About(QDialog, Ui_About):
     """
@@ -24,4 +25,5 @@ class About(QDialog, Ui_About):
         self.setupUi(self)
         version = self.findChild(QLabel, 'version')
         version.setText(version.text() + __version__)
-        
+        liblabel = self.findChild(QLabel,  'libversion')
+        liblabel.setText(liblabel.text().replace('0.0.0',  libversion))

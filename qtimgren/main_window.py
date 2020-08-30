@@ -5,7 +5,7 @@ Module implementing MainWindow.
 """
 
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtWidgets import QMainWindow,  qApp,  QMenu
 
 from .Ui_main_window import Ui_MainWindow
@@ -36,6 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Slot documentation goes here.
         """
         about = About()
+        about.setWindowFlag(Qt.WindowContextHelpButtonHint,  False)
         about.exec_()
     
     @pyqtSlot()

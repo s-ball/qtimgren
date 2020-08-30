@@ -38,7 +38,6 @@ class ProfileDialog(QDialog, Ui_Dialog):
         """
         Slot documentation goes here.
         """
-        # TODO: not implemented yet
         wd = QFileDialog.getExistingDirectory(self,  directory=self.path.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
         self.path.setText(wd)

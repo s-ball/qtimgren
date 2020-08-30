@@ -1,6 +1,7 @@
 .eric6project/
 .ropeproject/
 .directory/
+*.e4p
 *.pyc
 *.pyo
 *.orig
@@ -15,3 +16,4 @@ Ui_*
 *.swp
 *.egg-info
 version.py
+

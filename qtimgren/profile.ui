@@ -42,7 +42,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="name"/>
+       <widget class="QLineEdit" name="name">
+        <property name="whatsThis">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the profile&lt;/p&gt;&lt;p&gt;Will be used in the &lt;span style=&quot; font-style:italic;&quot;&gt;Profiles&lt;/span&gt; menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
@@ -83,6 +87,9 @@
            <height>24</height>
           </rect>
          </property>
+         <property name="whatsThis">
+          <string>Path of the image (jpeg) files</string>
+         </property>
         </widget>
         <widget class="QPushButton" name="change">
          <property name="geometry">
@@ -110,7 +117,11 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="mask"/>
+       <widget class="QLineEdit" name="mask">
+        <property name="whatsThis">
+         <string>Pattern of camera images (e.g. IMG*.JPG or DSCF*.JPG)</string>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="recurseIntoSubFolderLabel">

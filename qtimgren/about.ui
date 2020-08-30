@@ -17,6 +17,9 @@
    <string>About</string>
   </property>
   <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
    <bool>true</bool>
   </property>
   <widget class="QPushButton" name="Ok">
@@ -62,6 +65,19 @@
    </property>
    <property name="text">
     <string>Version: </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="libversion">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>150</y>
+     <width>271</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(pyimgren version: 0.0.0)</string>
    </property>
   </widget>
  </widget>
