@@ -5,7 +5,7 @@ Module implementing ProfilesDialog.
 """
 
 from PyQt5.QtCore import pyqtSlot,  QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtWidgets import QDialog,  QTableView
+from PyQt5.QtWidgets import QDialog,  QTableView,  QMessageBox
 
 from .Ui_profiles import Ui_profiles
 from .profile import ProfileDialog
@@ -95,3 +95,21 @@ class ProfilesDialog(QDialog, Ui_profiles):
         rows = sorted(set(index.row() for index in sel), reverse=True)
         for row in rows:
             self.model.removeRows(row,  1)
+
+    @pyqtSlot()
+    def on_buttonBox_accepted(self):
+        if self.valid():
+            self.accept()
+
+    def valid(self):
+        names = []
+        for row,  p in enumerate(self.model.profiles):
+            if p.name in names:
+                ix = names.index(p.name) + 1
+                msg = '"{1}" is a duplicate<br/>already present at' \
+                           ' row {0}'.format(ix,  p.name)
+                QMessageBox.warning(self, 'Duplicate name',  msg)
+                self.view.selectRow(row)
+                return False
+            names.append(p.name)
+        return True

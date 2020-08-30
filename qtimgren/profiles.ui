@@ -39,6 +39,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="edit">
+          <property name="whatsThis">
+           <string>Edit the (first) selected profile</string>
+          </property>
           <property name="text">
            <string>&amp;Edit</string>
           </property>
@@ -46,6 +49,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="remove">
+          <property name="whatsThis">
+           <string>Remove every selected profile</string>
+          </property>
           <property name="text">
            <string>&amp;Remove</string>
           </property>
@@ -67,22 +73,6 @@
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>profiles</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>651</x>
-     <y>529</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>652</x>
-     <y>565</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>

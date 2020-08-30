@@ -35,7 +35,7 @@ class ProfileManager(QObject):
         groups = settings.childGroups()
         self.profiles = [Profile(p,  settings.value(f'{p}/path'), 
                                    settings.value(f'{p}/mask'), 
-                                   settings.value(f'{p}/recurse'))
+                                   settings.value(f'{p}/recurse',  type=bool))
                         for p in groups]
         settings.endGroup()
         self.actGroup = QActionGroup(self.parent)

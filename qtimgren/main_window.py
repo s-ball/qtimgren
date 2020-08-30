@@ -49,7 +49,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def on_action_New_profile_triggered(self):
-        profile = ProfileDialog(self)
+        profile = ProfileDialog(self,  names=self.profile_manager.names())
         cr = profile.exec_()
         if cr:
             self.profile_manager.add_from_dialog(profile)
