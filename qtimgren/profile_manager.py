@@ -38,11 +38,11 @@ class ProfileManager(QObject):
                                    settings.value(f'{p}/recurse'))
                         for p in groups]
         settings.endGroup()
+        self.actGroup = QActionGroup(self.parent)
+        self.actGroup.triggered.connect(self.set_active_profile)
+        active = settings.value('active_profile')
+        self.active_profile = self.get_profile(active)
         if len(self.profiles) > 0:
-            self.actGroup = QActionGroup(self.parent)
-            self.actGroup.triggered.connect(self.set_active_profile)
-            active = settings.value('active_profile')
-            self.active_profile = self.get_profile(active)
             for name in self.names():
                 action = self.do_add_action(name)
                 if name == active:
