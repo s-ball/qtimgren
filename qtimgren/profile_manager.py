@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QMessageBox,  qApp,  QActionGroup,  QAction
-from PyQt5.QtCore import QSettings,  QObject,  pyqtSignal
+from PySide2.QtWidgets import QMessageBox,  QApplication,  QActionGroup,  QAction
+from PySide2.QtCore import QSettings,  QObject,  Signal
 
 
 class Profile:
@@ -11,32 +11,33 @@ class Profile:
         
     @staticmethod
     def from_dialog(dialog):
-        return Profile(dialog.getName(),  dialog.getPath(), 
-            dialog.getMask(),  dialog.isRecurse())
+        return Profile(dialog.getName(), dialog.getPath(),
+                       dialog.getMask(), dialog.isRecurse())
 
 
 class ProfileManager(QObject):
-    profileChanged = pyqtSignal()
+    profileChanged = Signal()
+
     def __init__(self, menu, parent=None):
         super().__init__(parent)
         self.menu = menu
         actions = self.menu.actions()
-        self.sep= actions[-2]
+        self.sep = actions[-2]
         self.parent = parent
         self.profiles = []
         self.actGroup = None
         self.active_profile = None
         self.load()
-        qApp. aboutToQuit.connect(self.save)
+        QApplication.instance().aboutToQuit.connect(self.save)
         
     def load(self):
         settings = QSettings()
         settings.beginGroup('profiles')
         groups = settings.childGroups()
-        self.profiles = [Profile(p,  settings.value(f'{p}/path'), 
-                                   settings.value(f'{p}/mask'), 
-                                   settings.value(f'{p}/recurse',  type=bool))
-                        for p in groups]
+        self.profiles = [Profile(p,  settings.value(f'{p}/path'),
+                                 settings.value(f'{p}/mask'),
+                                 settings.value(f'{p}/recurse',  type=bool))
+                         for p in groups]
         settings.endGroup()
         self.actGroup = QActionGroup(self.parent)
         self.actGroup.triggered.connect(self.set_active_profile)
@@ -72,15 +73,15 @@ class ProfileManager(QObject):
             self.do_add_action(name)
     
     def do_add_action(self,  name):
-            action = QAction(name,  self.menu)
-            self.menu.insertAction(self.sep,  action)
-            action.setCheckable(True)
-            self.actGroup.addAction(action)
-            return action
+        action = QAction(name,  self.menu)
+        self.menu.insertAction(self.sep,  action)
+        action.setCheckable(True)
+        self.actGroup.addAction(action)
+        return action
             
     def add_from_dialog(self,  dialog):
         self.add_action(dialog.getName(),  dialog.getPath(),
-                dialog.getMask(),  dialog.isRecurse())
+                        dialog.getMask(),  dialog.isRecurse())
 
     def get_profile(self,  name):
         for p in self.profiles:
@@ -111,4 +112,3 @@ class ProfileManager(QObject):
     def clear_menu(self):
         while len(self.actGroup.actions()) > 0:
             self.actGroup.removeAction(self.actGroup.actions()[0])
-

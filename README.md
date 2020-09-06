@@ -41,7 +41,7 @@ Alternatively you can manually install `setuptools-scm`:
 
 #### Special handling of `version.py`:
 
-`mockselector` relies on `setuptools-scm` to automatically extract a
+`QtImgren` relies on `setuptools-scm` to automatically extract a
 version number from git metadata and store it in a `version.py` file
 for later use. The requires the availability of both `git` (which should
 not be a problem when the project is downloaded from Github), and
@@ -70,4 +70,4 @@ Once installed, you can run the application:
 As already said, this is currently just a work in progess.
 ## License
 
-That work is licenced under a MIT Licence. See [LICENSE.txt](https://raw.githubusercontent.com/s-ball/MockSelector/master/LICENCE.txt)
+This work is licenced under a MIT Licence. See [LICENSE.txt](https://raw.githubusercontent.com/s-ball/MockSelector/master/LICENCE.txt)

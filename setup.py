@@ -95,12 +95,11 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.8',
         ],
         python_requires='>=3.5',
-        install_requires = ['pyimgren>=0.8',  'PyQt5>=5.10'], 
+        install_requires=['pyimgren>=0.8',  'PySide2>=5.12'],
         license='MIT',
         author='SBA',
         author_email='s-ball@laposte.net',
         description='GUI over the pyimgren package',
         long_description=long_description,
         long_description_content_type='text/markdown'
-
     )

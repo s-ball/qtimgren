@@ -4,13 +4,13 @@
 Module implementing ProfileDialog.
 """
 
-from PyQt5.QtCore import pyqtSlot,  Qt
-from PyQt5.QtWidgets import QDialog,  QLineEdit,  QFileDialog,  QCheckBox,  \
+from PySide2.QtCore import Slot,  Qt
+from PySide2.QtWidgets import QDialog,  QLineEdit,  QFileDialog,  QCheckBox,  \
     QMessageBox
 
 import os.path
 
-from .Ui_profile import Ui_Dialog
+from .ui_profile import Ui_Dialog
 
 
 class ProfileDialog(QDialog, Ui_Dialog):
@@ -37,12 +37,13 @@ class ProfileDialog(QDialog, Ui_Dialog):
             child = self.findChild(QCheckBox,  'recurse')
             child.setChecked(profile.recurse)
     
-    @pyqtSlot()
+    @Slot()
     def on_change_clicked(self):
         """
         Slot documentation goes here.
         """
-        wd = QFileDialog.getExistingDirectory(self,  directory=self.path.text(),
+        wd = QFileDialog.getExistingDirectory(
+            self,  directory=self.path.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
         self.path.setText(wd)
     
@@ -61,7 +62,7 @@ class ProfileDialog(QDialog, Ui_Dialog):
         recurse = self.findChild(QCheckBox,  "recurse")
         return recurse.checkState() == Qt.Checked
 
-    @pyqtSlot()
+    @Slot()
     def on_buttonBox_accepted(self):
         if self.valid():
             self.accept()
@@ -74,8 +75,8 @@ class ProfileDialog(QDialog, Ui_Dialog):
             self.error('Name cannot be empty',  'name')
             return False
         if not os.path.isdir(self.getPath()):
-            self.error('"{}" is not a valid folder'.format(self.getPath()), 
-                           'path')
+            self.error('"{}" is not a valid folder'.format(
+                self.getPath()), 'path')
             return False
         if '*' not in self.getMask() and '?' not in self.getMask():
             self.error('"{}" is not a valid image pattern'.format(

@@ -4,11 +4,12 @@
 Module implementing About.
 """
 
-from PyQt5.QtWidgets import QDialog,  QLabel
+from PySide2.QtWidgets import QDialog,  QLabel
 
-from .Ui_about import Ui_About
+from .ui_about import Ui_About
 from . import __version__
 from pyimgren import __version__ as libversion
+
 
 class About(QDialog, Ui_About):
     """

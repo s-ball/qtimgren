@@ -4,12 +4,13 @@
 Module implementing ProfilesDialog.
 """
 
-from PyQt5.QtCore import pyqtSlot,  QAbstractTableModel, QModelIndex, Qt
-from PyQt5.QtWidgets import QDialog,  QTableView,  QMessageBox
+from PySide2.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtWidgets import QDialog,  QTableView,  QMessageBox
 
-from .Ui_profiles import Ui_profiles
+from .ui_profiles import Ui_profiles
 from .profile import ProfileDialog
 from .profile_manager import Profile
+
 
 class ProfilesModel(QAbstractTableModel):
     def __init__(self,  profiles,  parent=None):
@@ -69,7 +70,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
         self.view = self.findChild(QTableView,  'tableView')
         self.view.setModel(self.model)
     
-    @pyqtSlot()
+    @Slot()
     def on_edit_clicked(self):
         """
         Slot documentation goes here.
@@ -85,7 +86,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
             if cr:
                 self.model.set_profile(sel,  Profile.from_dialog(dialog))
     
-    @pyqtSlot()
+    @Slot()
     def on_remove_clicked(self):
         """
         Slot documentation goes here.
@@ -96,7 +97,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
         for row in rows:
             self.model.removeRows(row,  1)
 
-    @pyqtSlot()
+    @Slot()
     def on_buttonBox_accepted(self):
         if self.valid():
             self.accept()
@@ -107,7 +108,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
             if p.name in names:
                 ix = names.index(p.name) + 1
                 msg = '"{1}" is a duplicate<br/>already present at' \
-                           ' row {0}'.format(ix,  p.name)
+                      ' row {0}'.format(ix,  p.name)
                 QMessageBox.warning(self, 'Duplicate name',  msg)
                 self.view.selectRow(row)
                 return False
