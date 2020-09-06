@@ -6,23 +6,26 @@ Module implementing ProfileDialog.
 
 from PySide2.QtCore import Slot,  Qt
 from PySide2.QtWidgets import QDialog,  QLineEdit,  QFileDialog,  QCheckBox,  \
-    QMessageBox
+    QMessageBox, QWidget
 
 import os.path
+from typing import Optional
 
 from .ui_profile import Ui_Dialog
 
 
 class ProfileDialog(QDialog, Ui_Dialog):
     """
-    Class documentation goes here.
+    A dialog for creation or edition of a profile.
     """
-    def __init__(self, parent=None,  profile=None,  names=None):
+    def __init__(self, parent: Optional[QWidget] = None,
+                 profile=None,  names=None):
         """
-        Constructor
-        
+        Constructor.
+
         @param parent reference to the parent widget
-        @type QWidget
+        @param profile an optional profile to edit
+        @param names
         """
         super(ProfileDialog, self).__init__(parent)
         self.setupUi(self)
@@ -40,7 +43,7 @@ class ProfileDialog(QDialog, Ui_Dialog):
     @Slot()
     def on_change_clicked(self):
         """
-        Slot documentation goes here.
+        Select the profile folder.
         """
         wd = QFileDialog.getExistingDirectory(
             self,  directory=self.path.text(),
@@ -68,6 +71,9 @@ class ProfileDialog(QDialog, Ui_Dialog):
             self.accept()
 
     def valid(self):
+        """
+        Validate the content of the dialog.
+        """
         if self.getName() in self.names:
             self.error('"{}" is already used'.format(self.getName()), 'name')
             return False

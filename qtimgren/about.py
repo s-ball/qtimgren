@@ -4,18 +4,19 @@
 Module implementing About.
 """
 
-from PySide2.QtWidgets import QDialog,  QLabel
+from PySide2.QtWidgets import QDialog,  QLabel, QWidget
 
 from .ui_about import Ui_About
 from . import __version__
-from pyimgren import __version__ as libversion
+from pyimgren import __version__ as lib_version
+from typing import Optional
 
 
 class About(QDialog, Ui_About):
     """
     Class documentation goes here.
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[QWidget] = None):
         """
         Constructor
         
@@ -26,5 +27,5 @@ class About(QDialog, Ui_About):
         self.setupUi(self)
         version = self.findChild(QLabel, 'version')
         version.setText(version.text() + __version__)
-        liblabel = self.findChild(QLabel,  'libversion')
-        liblabel.setText(liblabel.text().replace('0.0.0',  libversion))
+        lib_label = self.findChild(QLabel,  'libversion')
+        lib_label.setText(lib_label.text().replace('0.0.0', lib_version))

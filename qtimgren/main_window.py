@@ -6,20 +6,21 @@ Module implementing MainWindow.
 
 
 from PySide2.QtCore import Slot,  Qt
-from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu
+from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu, QWidget
 
 from .ui_main_window import Ui_MainWindow
 from .about import About
 from .profile import ProfileDialog
 from .profiles import ProfilesDialog
 from .profile_manager import ProfileManager
+from typing import Optional
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
-    Class documentation goes here.
+    Main window for QtImgren.
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[QWidget] = None):
         """
         Constructor
         
@@ -34,7 +35,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @Slot()
     def on_action_About_triggered(self):
         """
-        Slot documentation goes here.
+        Displays About dialog.
         """
         about = About()
         about.setWindowFlag(Qt.WindowContextHelpButtonHint,  False)
@@ -43,13 +44,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @Slot()
     def on_actionAbout_Qt_triggered(self):
         """
-        Slot documentation goes here.
+        Displays About Qt dialog.
         """
-        # TODO: not implemented yet
         QApplication.instance().aboutQt()
 
     @Slot()
     def on_action_New_profile_triggered(self):
+        """
+        Create a new profile.
+        """
         profile = ProfileDialog(self,  names=self.profile_manager.names())
         cr = profile.exec_()
         if cr:
@@ -57,6 +60,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     @Slot()
     def on_action_Manage_profiles_triggered(self):
+        """
+        Manage (edit or remove) existing profiles.
+        """
         dialog = ProfilesDialog(self.profile_manager.profiles,  self)
         cr = dialog.exec_()
         if cr:
