@@ -46,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Displays About Qt dialog.
         """
-        QApplication.instance().aboutQt()
+        QApplication.aboutQt()
 
     @Slot()
     def on_action_New_profile_triggered(self):
