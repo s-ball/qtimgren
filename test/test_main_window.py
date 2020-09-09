@@ -1,6 +1,5 @@
 import unittest
 from PySide2.QtWidgets import *
-from PySide2.QtCore import Qt
 from qtimgren.main_window import MainWindow
 from unittest.mock import Mock, patch
 import qtimgren.main_window
@@ -23,6 +22,8 @@ class TestMainWindow(unittest.TestCase):
 
     def test_about(self):
         about = Mock(qtimgren.about.About)
+        about.exec_ = Mock()
+        about.exec = about.exec_
         with patch.object(qtimgren.main_window, 'About') as About:
             About.return_value = about
             action = self.window.findChild(QAction, 'action_About')
@@ -30,7 +31,6 @@ class TestMainWindow(unittest.TestCase):
             about.exec_.assert_called_once_with()
 
     def test_about_qt(self):
-        about = Mock(qtimgren.about.About)
         with patch.object(qtimgren.main_window, 'QApplication') as qApp:
             action = self.window.findChild(QAction, 'actionAbout_Qt')
             action.triggered.emit()
@@ -48,6 +48,8 @@ class TestMainWindow(unittest.TestCase):
                 patch.object(qtimgren.main_window, 'ProfileDialog') as Dialog:
             pm.names.return_value = ['a', 'b']
             Dialog.return_value = dialog
+            dialog.exec_ = Mock()
+            dialog.exec = dialog.exec_
             dialog.exec_.return_value = 1
             action = self.window.findChild(QAction, 'action_New_profile')
             action.triggered.emit()
@@ -62,10 +64,12 @@ class TestMainWindow(unittest.TestCase):
             Dialog.return_value = dialog
             dialog.exec_.return_value = 1
             dialog.model = Mock()
+            dialog.exec = Mock()
+            dialog.exec_ = dialog.exec
             action = self.window.findChild(QAction, 'action_Manage_profiles')
             action.triggered.emit()
             Dialog.assert_called_once_with(pm.profiles, self.window)
-            dialog.exec_.assert_called_once_with()
+            dialog.exec.assert_called_once_with()
             pm.reset_profiles.assert_called_once_with(dialog.model.profiles)
 
 
