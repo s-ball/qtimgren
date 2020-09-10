@@ -5,7 +5,7 @@ Module implementing MainWindow.
 """
 
 
-from PySide2.QtCore import Slot,  Qt
+from PySide2.QtCore import Slot,  Qt, QSettings, QByteArray
 from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu, QWidget
 
 from .ui_main_window import Ui_MainWindow
@@ -29,6 +29,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+        settings = QSettings()
+        geom = settings.value('MainWindow/geom')
+        if geom is not None:
+            self.restoreGeometry(geom)
         profile_menu = self.findChild(QMenu,  "menu_Profiles")
         self.profile_manager = ProfileManager(profile_menu,  self)
     
@@ -67,3 +71,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         cr = dialog.exec_()
         if cr:
             self.profile_manager.reset_profiles(dialog.model.profiles)
+
+    @Slot()
+    def close(self) -> bool:
+        settings = QSettings()
+        settings.setValue('MainWindow/geom', self.saveGeometry())
+        super().close()
