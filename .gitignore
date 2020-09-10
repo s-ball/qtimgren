@@ -17,3 +17,9 @@ Ui_*
 *.egg-info
 version.py
 
+/.coverage
+/htmlcov/
+*.pro
+*.ts
+*.qm
+/qtimgren/resource.py

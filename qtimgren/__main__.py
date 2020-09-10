@@ -1,10 +1,16 @@
 from PySide2.QtWidgets import QApplication
+from PySide2.QtCore import QLocale, QTranslator
 from .main_window import MainWindow
+from . import resource
 import sys
 
 
 def run():
     app = QApplication(sys.argv)
+    loc = QLocale()
+    translator = QTranslator()
+    translator.load(loc, 'qtimgren', '_', ':')
+    app.installTranslator(translator)
     app.setOrganizationName('SBA')
     app.setApplicationName('QtImgren')
     main_window = MainWindow()
