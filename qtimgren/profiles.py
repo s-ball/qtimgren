@@ -5,7 +5,7 @@ Module implementing ProfilesDialog.
 """
 
 from PySide2.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtWidgets import QDialog,  QTableView,  QMessageBox
+from PySide2.QtWidgets import QDialog,  QTableView,  QMessageBox, QApplication
 
 from .ui_profiles import Ui_profiles
 from .profile import ProfileDialog
@@ -17,13 +17,13 @@ class ProfilesModel(QAbstractTableModel):
         super().__init__(parent)
         self.profiles = profiles[:]
         
-    def rowCount(self,  _parent):
+    def rowCount(self,  _parent=QModelIndex()):
         return len(self.profiles)
     
-    def columnCount(self,  _parent):
+    def columnCount(self,  _parent=QModelIndex):
         return 4
         
-    def data(self, index,  role):
+    def data(self, index,  role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
             return None
         p = self.profiles[index.row()]
@@ -37,8 +37,11 @@ class ProfilesModel(QAbstractTableModel):
         else:
             return p.recurse
     
-    def headerData(self,  section,  orientation,  role):
-        headers = ['Name',  'Path',  'Mask',  'recurse']
+    def headerData(self,  section,  orientation,  role=Qt.DisplayRole):
+        headers = [translate('profiles', 'Name'),
+                   translate('profiles', 'Path'),
+                   translate('profiles', 'Mask'),
+                   translate('profiles', 'recurse')]
         if role != Qt.DisplayRole or orientation != Qt.Horizontal:
             return None
         return headers[section]
@@ -75,7 +78,6 @@ class ProfilesDialog(QDialog, Ui_profiles):
         """
         Slot documentation goes here.
         """
-        # TODO: not implemented yet
         try:
             sel = self.view.selectedIndexes()[0].row()
         except LookupError:
@@ -91,7 +93,6 @@ class ProfilesDialog(QDialog, Ui_profiles):
         """
         Slot documentation goes here.
         """
-        # TODO: not implemented yet
         sel = self.view.selectedIndexes()
         rows = sorted(set(index.row() for index in sel), reverse=True)
         for row in rows:
@@ -107,10 +108,15 @@ class ProfilesDialog(QDialog, Ui_profiles):
         for row,  p in enumerate(self.model.profiles):
             if p.name in names:
                 ix = names.index(p.name) + 1
-                msg = '"{1}" is a duplicate<br/>already present at' \
-                      ' row {0}'.format(ix,  p.name)
+                msg = translate('profiles', '"{1}" is a duplicate<br/>'
+                                            'already present at row {0}'
+                                ).format(ix,  p.name)
                 QMessageBox.warning(self, 'Duplicate name',  msg)
                 self.view.selectRow(row)
                 return False
             names.append(p.name)
         return True
+
+
+def translate(ctx, txt):
+    return QApplication.translate(ctx, txt)
