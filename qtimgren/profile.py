@@ -76,27 +76,40 @@ class ProfileDialog(QDialog, Ui_Dialog):
         """
         if self.getName() in self.names:
             self.error(translate('profile', '"{}" is already used')
-                       .format(self.getName()), 'name')
+                       .format(self.getName()),
+                       Id.translate('profile', 'Name'))
             return False
         if self.getName() == '':
             self.error(translate('profile', 'Name cannot be empty'),
-                       'name')
+                       Id.translate('profile', 'Name'))
             return False
         if not os.path.isdir(self.getPath()):
             self.error(translate('profiles', '"{}" is not a valid folder')
-                       .format(self.getPath()), 'path')
+                       .format(self.getPath()),
+                       Id.translate('profile', 'Path'))
             return False
         if '*' not in self.getMask() and '?' not in self.getMask():
             self.error(translate('profile',
                                  '"{}" is not a valid image pattern')
-                       .format(self.getMask()), 'mask')
+                       .format(self.getMask()),
+                       Id.translate('profile', 'Mask'))
             return False
         return True
 
     def error(self, msg, field):
-        QMessageBox.warning(self, field.capitalize(), msg)
-        self.findChild(QLineEdit, field).setFocus(Qt.OtherFocusReason)
+        QMessageBox.warning(self, translate('profile', field), msg)
+        self.findChild(QLineEdit, field.lower()).setFocus(Qt.OtherFocusReason)
 
 
 def translate(ctx, txt):
     return QApplication.instance().translate(ctx, txt)
+
+
+class Id:
+    """
+    A quick and dirty hack to force lupdate to collect strings without
+    actually translating them (at that point)
+    """
+    @staticmethod
+    def translate(_ctx, txt):
+        return txt
