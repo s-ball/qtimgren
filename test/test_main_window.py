@@ -11,7 +11,9 @@ import qtimgren.profiles
 class TestMainWindow(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.app = QApplication()
+        cls.app = QApplication.instance()
+        if cls.app is None:
+            cls.app = QApplication()
 
     def setUp(self) -> None:
         self.window = MainWindow()
