@@ -5,6 +5,7 @@ Module implementing ProfilesDialog.
 """
 
 from PySide2.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
+from PySide2.QtCore import QSettings
 from PySide2.QtWidgets import QDialog,  QTableView,  QMessageBox, QApplication
 
 from .ui_profiles import Ui_profiles
@@ -72,7 +73,20 @@ class ProfilesDialog(QDialog, Ui_profiles):
         self.model = ProfilesModel(profiles)
         self.view = self.findChild(QTableView,  'tableView')
         self.view.setModel(self.model)
-    
+        settings = QSettings()
+        settings.beginGroup('ProfilesDialog')
+        geom = settings.value('geom')
+        if geom is not None:
+            self.restoreGeometry(geom)
+        sz = settings.beginReadArray('col_size')
+        for i in range(sz):
+            settings.setArrayIndex(i)
+            w = settings.value('col')
+            self.view.setColumnWidth(i, w)
+        settings.endArray()
+        settings.endGroup()
+        self.view.horizontalHeader().setStretchLastSection(True)
+
     @Slot()
     def on_edit_clicked(self):
         """
@@ -116,6 +130,19 @@ class ProfilesDialog(QDialog, Ui_profiles):
                 return False
             names.append(p.name)
         return True
+
+    @Slot()
+    def done(self, r):
+        settings = QSettings()
+        settings.beginGroup('ProfilesDialog')
+        settings.setValue('geom', self.saveGeometry())
+        settings.beginWriteArray('col_size')
+        for i in range(3):
+            settings.setArrayIndex(i)
+            settings.setValue('col', self.view.columnWidth(i))
+        settings.endArray()
+        settings.endGroup()
+        super().done(r)
 
 
 def translate(ctx, txt):
