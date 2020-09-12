@@ -7,6 +7,7 @@ Module implementing ProfileDialog.
 from PySide2.QtCore import Slot, Qt
 from PySide2.QtWidgets import QDialog, QLineEdit, QFileDialog, QCheckBox, \
     QMessageBox, QWidget, QApplication
+import datetime
 
 import os.path
 from typing import Optional
@@ -37,8 +38,8 @@ class ProfileDialog(QDialog, Ui_Dialog):
             child = self.findChild(QLineEdit, 'mask')
             child.setText(profile.mask)
             self.path.setText(profile.path)
-            child = self.findChild(QCheckBox, 'recurse')
-            child.setChecked(profile.recurse)
+            child = self.findChild(QLineEdit, 'pattern')
+            child.setText(profile.pattern)
 
     @Slot()
     def on_change_clicked(self):
@@ -61,9 +62,9 @@ class ProfileDialog(QDialog, Ui_Dialog):
         mask = self.findChild(QLineEdit, "mask")
         return mask.text().strip()
 
-    def isRecurse(self):
-        recurse = self.findChild(QCheckBox, "recurse")
-        return recurse.checkState() == Qt.Checked
+    def getPattern(self):
+        pattern = self.findChild(QLineEdit, "pattern")
+        return pattern.text().strip()
 
     @Slot()
     def on_buttonBox_accepted(self):
@@ -93,6 +94,15 @@ class ProfileDialog(QDialog, Ui_Dialog):
                                  '"{}" is not a valid image pattern')
                        .format(self.getMask()),
                        Id.translate('profile', 'Mask'))
+            return False
+        now = datetime.datetime.now()
+        try:
+            now.strftime(self.getPattern())
+        except ValueError:
+            self.error(translate('profile',
+                                 '"{}" is not a valid date pattern')
+                       .format(self.getPattern()),
+                       Id.translate('profile', 'Pattern'))
             return False
         return True
 

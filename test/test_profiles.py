@@ -3,6 +3,7 @@ from PySide2.QtWidgets import QApplication, QTableView, QPushButton
 from qtimgren import main_window, profile_manager, profiles, profile
 from unittest.mock import patch, Mock
 
+
 class TestProfiles(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -12,8 +13,8 @@ class TestProfiles(unittest.TestCase):
 
     def setUp(self) -> None:
         self.main = main_window.MainWindow()
-        self.profiles = [profile_manager.Profile('foo', '.', 'IMG*.JPG', False),
-                    profile_manager.Profile('bar', '.', 'DSCF*.JPG', False)]
+        self.profiles = [profile_manager.Profile('foo', '.', 'IMG*.JPG'),
+                    profile_manager.Profile('bar', '.', 'DSCF*.JPG')]
         self.dialog = profiles.ProfilesDialog(self.profiles, self.main)
 
     def tearDown(self) -> None:
@@ -26,7 +27,7 @@ class TestProfiles(unittest.TestCase):
 
     def test_duplicate(self):
         self.dialog.model.set_profile(1, profile_manager.Profile(
-            'foo', '.', 'DSCF*.JPG', True)
+            'foo', '.', 'DSCF*.JPG')
         )
         with patch.object(profiles, 'QMessageBox') as msgbox:
             self.assertFalse(self.dialog.valid())
@@ -66,7 +67,7 @@ class TestProfiles(unittest.TestCase):
             sub.getName.return_value = 'foobar'
             sub.getPath.return_value = '.'
             sub.getMask.return_value = 'I*.JPEG'
-            sub.isRecurse.return_value = False
+            sub.getPattern.return_value = profile_manager.defaultPattern
             edit.clicked.emit()
             sub.exec.assert_called_once_with()
             ProfileDialog.assert_called_once_with(self.dialog, self.profiles[1])

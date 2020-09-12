@@ -2,17 +2,20 @@ from PySide2.QtWidgets import QMessageBox,  QApplication,  QActionGroup,  QActio
 from PySide2.QtCore import QSettings,  QObject,  Signal
 
 
+defaultPattern = '%Y%m%d_%H%M%S.jpg'
+
+
 class Profile:
-    def __init__(self,  name,  path,  mask,  recurse):
+    def __init__(self,  name,  path,  mask,  pattern=defaultPattern):
         self.name = name
         self.path = path
         self.mask = mask
-        self.recurse = recurse
+        self.pattern = pattern
         
     @staticmethod
     def from_dialog(dialog):
         return Profile(dialog.getName(), dialog.getPath(),
-                       dialog.getMask(), dialog.isRecurse())
+                       dialog.getMask(), dialog.getPattern())
 
 
 class ProfileManager(QObject):
@@ -36,7 +39,7 @@ class ProfileManager(QObject):
         groups = settings.childGroups()
         self.profiles = [Profile(p,  settings.value(f'{p}/path'),
                                  settings.value(f'{p}/mask'),
-                                 settings.value(f'{p}/recurse',  type=bool))
+                                 settings.value(f'{p}/pattern'))
                          for p in groups]
         settings.endGroup()
         self.actGroup = QActionGroup(self.parent)
@@ -56,7 +59,7 @@ class ProfileManager(QObject):
         for p in self.profiles:
             settings.setValue(f'{p.name}/path',  p.path)
             settings.setValue(f'{p.name}/mask',  p.mask)
-            settings.setValue(f'{p.name}/recurse',  p.recurse)
+            settings.setValue(f'{p.name}/pattern',  p.pattern)
         settings.endGroup()
         if self.active_profile is not None:
             settings.setValue('active_profile',  self.active_profile.name)
@@ -65,11 +68,11 @@ class ProfileManager(QObject):
         for p in self.profiles:
             yield p.name
     
-    def add_action(self, name, path, mask, recurse):
+    def add_action(self, name, path, mask, pattern):
         if name in self.names():
             QMessageBox.warning(self.parent,  None,  '{} already exists'.format(name))
         else:
-            self.profiles.append(Profile(name,  path,  mask,  recurse))
+            self.profiles.append(Profile(name,  path,  mask,  pattern))
             self.do_add_action(name)
     
     def do_add_action(self,  name):
@@ -81,7 +84,7 @@ class ProfileManager(QObject):
             
     def add_from_dialog(self,  dialog):
         self.add_action(dialog.getName(),  dialog.getPath(),
-                        dialog.getMask(),  dialog.isRecurse())
+                        dialog.getMask(),  dialog.getPattern())
 
     def get_profile(self,  name):
         for p in self.profiles:

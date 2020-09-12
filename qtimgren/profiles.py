@@ -36,13 +36,13 @@ class ProfilesModel(QAbstractTableModel):
         elif col == 2:
             return p.mask
         else:
-            return p.recurse
+            return p.pattern
     
     def headerData(self,  section,  orientation,  role=Qt.DisplayRole):
         headers = [translate('profiles', 'Name'),
                    translate('profiles', 'Path'),
                    translate('profiles', 'Mask'),
-                   translate('profiles', 'recurse')]
+                   translate('profiles', 'Pattern')]
         if role != Qt.DisplayRole or orientation != Qt.Horizontal:
             return None
         return headers[section]
