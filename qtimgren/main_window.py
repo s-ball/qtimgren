@@ -6,13 +6,15 @@ Module implementing MainWindow.
 
 
 from PySide2.QtCore import Slot,  Qt, QSettings, QByteArray
-from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu, QWidget
+from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu, \
+    QWidget, QTableView, QDoubleSpinBox
 
 from .ui_main_window import Ui_MainWindow
 from .about import About
 from .profile import ProfileDialog
 from .profiles import ProfilesDialog
 from .profile_manager import ProfileManager
+from .main_view import Model
 from typing import Optional
 
 
@@ -35,6 +37,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.restoreGeometry(geom)
         profile_menu = self.findChild(QMenu,  "menu_Profiles")
         self.profile_manager = ProfileManager(profile_menu,  self)
+        self.view = self.findChild(QTableView, 'tableView')
+        self.model = Model(self.profile_manager.active_profile, self.view)
+        self.profile_manager.profileChanged.connect(self.model.profileChanged)
+        self.findChild(QDoubleSpinBox, 'delta').valueChanged.connect(
+            self.model.deltaChanged)
     
     @Slot()
     def on_action_About_triggered(self):

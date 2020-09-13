@@ -19,7 +19,7 @@ class Profile:
 
 
 class ProfileManager(QObject):
-    profileChanged = Signal()
+    profileChanged = Signal(Profile)
 
     def __init__(self, menu, parent=None):
         super().__init__(parent)
@@ -95,7 +95,7 @@ class ProfileManager(QObject):
     def set_active_profile(self):
         action = self.actGroup.checkedAction()
         self.active_profile = self.get_profile(action.text())
-        self.profileChanged.emit()
+        self.profileChanged.emit(self.active_profile)
     
     def reset_profiles(self,  profiles):
         self.clear_menu()

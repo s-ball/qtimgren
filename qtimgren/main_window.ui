@@ -6,20 +6,71 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>793</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>QtImgren</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTableView" name="tableView"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>&amp;Delta (minutes)</string>
+          </property>
+          <property name="buddy">
+           <cstring>delta</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="delta">
+          <property name="decimals">
+           <number>3</number>
+          </property>
+          <property name="minimum">
+           <double>-14400.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>14400.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="rename">
+          <property name="text">
+           <string>&amp;Rename</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="back">
+          <property name="text">
+           <string>&amp;Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>793</width>
      <height>26</height>
     </rect>
    </property>
@@ -27,7 +78,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionChange_Folder"/>
     <addaction name="action_Merge"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
@@ -84,13 +134,19 @@
   </action>
   <action name="action_Merge">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>&amp;Merge</string>
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>tableView</tabstop>
+  <tabstop>delta</tabstop>
+  <tabstop>rename</tabstop>
+  <tabstop>back</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
