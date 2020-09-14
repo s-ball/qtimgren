@@ -18,7 +18,14 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTableView" name="tableView"/>
+       <widget class="View" name="tableView">
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -42,6 +49,13 @@
           </property>
           <property name="maximum">
            <double>14400.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="reset">
+          <property name="text">
+           <string>Reset &amp;selection</string>
           </property>
          </widget>
         </item>
@@ -141,9 +155,23 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>View</class>
+   <extends>QTableView</extends>
+   <header>.main_view.h</header>
+   <slots>
+    <slot>deltaChanged(double)</slot>
+    <slot>rename()</slot>
+    <slot>back()</slot>
+    <slot>reset_selection()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>delta</tabstop>
+  <tabstop>reset</tabstop>
   <tabstop>rename</tabstop>
   <tabstop>back</tabstop>
  </tabstops>
@@ -162,6 +190,70 @@
     <hint type="destinationlabel">
      <x>399</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>delta</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>tableView</receiver>
+   <slot>deltaChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>267</x>
+     <y>511</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>267</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rename</sender>
+   <signal>clicked()</signal>
+   <receiver>tableView</receiver>
+   <slot>rename()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>624</x>
+     <y>526</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>484</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>back</sender>
+   <signal>clicked()</signal>
+   <receiver>tableView</receiver>
+   <slot>back()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>669</x>
+     <y>513</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>668</x>
+     <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reset</sender>
+   <signal>clicked()</signal>
+   <receiver>tableView</receiver>
+   <slot>reset_selection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>375</x>
+     <y>508</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>478</y>
     </hint>
    </hints>
   </connection>

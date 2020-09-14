@@ -94,7 +94,8 @@ class ProfileManager(QObject):
 
     def set_active_profile(self):
         action = self.actGroup.checkedAction()
-        self.active_profile = self.get_profile(action.text())
+        self.active_profile = self.get_profile(action.text()) if action \
+            is not None else None
         self.profileChanged.emit(self.active_profile)
     
     def reset_profiles(self,  profiles):
@@ -103,15 +104,17 @@ class ProfileManager(QObject):
         if len(profiles) > 0:
             if self.active_profile.name not in (p.name for p in profiles):
                 active = profiles[0].name
-                self.active_profile = self.get_profile(active)
             else:
                 active = self.active_profile.name
             for name in self.names():
                 action = self.do_add_action(name)
                 if name == active:
                     action.setChecked(True)
-            self.profileChanged.emit()
-    
+        else:
+            active = None
+        self.active_profile = self.get_profile(active)
+        self.profileChanged.emit(self.active_profile)
+
     def clear_menu(self):
         while len(self.actGroup.actions()) > 0:
             self.actGroup.removeAction(self.actGroup.actions()[0])

@@ -5,9 +5,8 @@ Module implementing MainWindow.
 """
 
 
-from PySide2.QtCore import Slot,  Qt, QSettings, QByteArray
-from PySide2.QtWidgets import QMainWindow,  QApplication,  QMenu, \
-    QWidget, QTableView, QDoubleSpinBox
+from PySide2.QtCore import Slot,  Qt, QSettings
+from PySide2.QtWidgets import QMainWindow,  QApplication,  QWidget
 
 from .ui_main_window import Ui_MainWindow
 from .about import About
@@ -35,14 +34,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         geom = settings.value('MainWindow/geom')
         if geom is not None:
             self.restoreGeometry(geom)
-        profile_menu = self.findChild(QMenu,  "menu_Profiles")
-        self.profile_manager = ProfileManager(profile_menu,  self)
-        self.view = self.findChild(QTableView, 'tableView')
-        self.model = Model(self.profile_manager.active_profile, self.view)
-        self.profile_manager.profileChanged.connect(self.model.profileChanged)
-        self.findChild(QDoubleSpinBox, 'delta').valueChanged.connect(
-            self.model.deltaChanged)
-    
+        self.profile_manager = ProfileManager(self.menu_Profiles, self)
+        view = self.tableView
+        model = Model(self.profile_manager.active_profile, view)
+        view.setModel(model)
+        self.profile_manager.profileChanged.connect(view.profileChanged)
+
     @Slot()
     def on_action_About_triggered(self):
         """
@@ -83,4 +80,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def close(self) -> bool:
         settings = QSettings()
         settings.setValue('MainWindow/geom', self.saveGeometry())
-        super().close()
+        return super().close()
