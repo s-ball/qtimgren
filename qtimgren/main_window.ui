@@ -19,6 +19,12 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="View" name="tableView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
@@ -85,7 +91,7 @@
      <x>0</x>
      <y>0</y>
      <width>793</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

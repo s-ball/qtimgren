@@ -1,6 +1,8 @@
-from PySide2.QtWidgets import QTableView, QStyledItemDelegate, QStyleOptionViewItem
+from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
+    QStyleOptionViewItem, QApplication
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
-    QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, QRect
+    QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
+    QTimer, QSettings
 from PySide2.QtGui import QImage, QPainter, QPixmap, QPixmapCache
 from pyimgren.pyimgren import Renamer, exif_dat
 from.profile_manager import Profile
@@ -93,10 +95,11 @@ class Model(QAbstractTableModel):
 class View(QTableView):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setItemDelegateForColumn(0, ImageDelegate(self))
+        QApplication.instance().aboutToQuit.connect(self.save)
 
     def setModel(self, model : QAbstractItemModel):
         super().setModel(model)
+        self.load()
         self.reset_selection()
 
     @Slot()
@@ -122,9 +125,58 @@ class View(QTableView):
         item_sel = self.model().item_selection()
         selection.select(item_sel, QItemSelectionModel.ClearAndSelect)
 
+    @Slot()
+    def save(self):
+        settings = QSettings()
+        settings.beginGroup('View')
+        settings.beginWriteArray('col_size')
+        for i in range(3):
+            settings.setArrayIndex(i)
+            settings.setValue('col', self.columnWidth(i))
+        settings.endArray()
+        settings.endGroup()
+
+    def load(self):
+        settings = QSettings()
+        settings.beginGroup('View')
+        geom = settings.value('geom')
+        sz = settings.beginReadArray('col_size')
+        for i in range(sz):
+            settings.setArrayIndex(i)
+            w = settings.value('col')
+            self.setColumnWidth(i, w)
+        settings.endArray()
+        settings.endGroup()
+        delegate = ImageDelegate(self)
+        self.setItemDelegateForColumn(0, delegate)
+        self.pre_load(delegate)
+
+
     def selected_files(self):
         return [self.model().data(ix, Qt.DisplayRole)
                 for ix in self.selectionModel().selectedRows(1)]
+
+    def pre_load(self, delegate):
+        view = self
+        model = view.model()
+        width = view.columnWidth(0)
+        cur = 0
+        timer = QTimer(view)
+
+        def step():
+            nonlocal width, cur, model
+            if view.model() is not model:
+                cur = 0
+                model = view.model()
+            if view.columnWidth(0) != width:
+                cur = 0
+                width = view.columnWidth(0)
+            if cur < len(model.files):
+                delegate._do_get_pixmap(model, cur, width)
+                cur += 1
+
+        timer.timeout.connect(step)
+        timer.start()
 
 
 class ImageDelegate(QStyledItemDelegate):
@@ -148,7 +200,10 @@ class ImageDelegate(QStyledItemDelegate):
         view = option.styleObject
         model = view.model()
         w = view.columnWidth(0)
-        file = model.files[index.row()]
+        return self._do_get_pixmap(model, index.row(), w)
+
+    def _do_get_pixmap(self, model, row, w):
+        file = model.files[row]
         try:
             key = self.cache_key[file]
             pixmap = QPixmapCache.find(key)
@@ -161,5 +216,3 @@ class ImageDelegate(QStyledItemDelegate):
             pixmap = QPixmap.fromImage(image.scaledToWidth(w))
             self.cache_key[file] = QPixmapCache.insert(pixmap)
         return pixmap
-
-

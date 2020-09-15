@@ -39,6 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         model = Model(self.profile_manager.active_profile, view)
         view.setModel(model)
         self.profile_manager.profileChanged.connect(view.profileChanged)
+        QApplication.instance().aboutToQuit.connect(self.save)
 
     @Slot()
     def on_action_About_triggered(self):
@@ -77,7 +78,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.profile_manager.reset_profiles(dialog.model.profiles)
 
     @Slot()
-    def close(self) -> bool:
+    def save(self) -> bool:
         settings = QSettings()
-        settings.setValue('MainWindow/geom', self.saveGeometry())
-        return super().close()
+        settings.beginGroup('MainWindow')
+        geom = self.saveGeometry()
+        settings.setValue('geom', geom)
+        settings.endGroup()
