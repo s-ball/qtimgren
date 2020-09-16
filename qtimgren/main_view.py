@@ -105,7 +105,10 @@ class View(QTableView):
 
     @Slot()
     def profileChanged(self, profile):
+        old = self.model().profile.path
         self.model().profileChanged(profile)
+        if old != profile.path:
+            self.itemDelegateForColumn(0).reset_cache()
         self.reset_selection()
 
     @Slot()
@@ -133,7 +136,9 @@ class View(QTableView):
         settings.beginWriteArray('col_size')
         for i in range(3):
             settings.setArrayIndex(i)
-            settings.setValue('col', self.columnWidth(i))
+            w = self.columnWidth(i)
+            if w != 0:
+                settings.setValue('col', w)
         settings.endArray()
         settings.setValue('display_images',
                           self.images_display.checkState() == Qt.Checked)
@@ -174,24 +179,24 @@ class View(QTableView):
 
     def pre_load(self, delegate):
         view = self
-        model = view.model()
+        files = view.model().files
         width = view.columnWidth(0)
         cur = 0
         timer = QTimer(view)
 
         def step():
-            nonlocal width, cur, model
-            if view.model() is not model:
+            nonlocal width, cur, files
+            if view.model().files is not files:
                 cur = 0
-                model = view.model()
+                files = view.model().files
             if view.columnWidth(0) != 0 and view.columnWidth(0) != width:
                 cur = 0
                 width = view.columnWidth(0)
-            if cur < len(model.files) and width != 0:
-                print(cur, len(model.files), width)
-                delegate.do_get_pixmap(model, cur, width)
+            if cur < len(files) and width != 0:
+                print(cur, len(files), width)
+                delegate.do_get_pixmap(view.model(), cur, width)
                 cur += 1
-            if cur >= len(model.files):
+            if cur >= len(files):
                 timer.setInterval(1000)
             else:
                 timer.setInterval(0)
@@ -238,3 +243,6 @@ class ImageDelegate(QStyledItemDelegate):
             self.cache[file] = pixmap
             print(file, pixmap, w)
         return pixmap
+
+    def reset_cache(self):
+        self.cache.clear()
