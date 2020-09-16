@@ -97,8 +97,9 @@ class View(QTableView):
         super().__init__(parent)
         QApplication.instance().aboutToQuit.connect(self.save)
 
-    def setModel(self, model : QAbstractItemModel):
+    def initialize(self, model : QAbstractItemModel, images_display):
         super().setModel(model)
+        self.images_display = images_display
         self.load()
         self.reset_selection()
 
@@ -134,18 +135,32 @@ class View(QTableView):
             settings.setArrayIndex(i)
             settings.setValue('col', self.columnWidth(i))
         settings.endArray()
+        settings.setValue('display_images',
+                          self.images_display.checkState() == Qt.Checked)
         settings.endGroup()
+
+    @Slot()
+    def select_renamed(self):
+        pass
+
+    @Slot()
+    def display_images(self, display):
+        self.setColumnHidden(0, not display)
 
     def load(self):
         settings = QSettings()
         settings.beginGroup('View')
-        geom = settings.value('geom')
         sz = settings.beginReadArray('col_size')
         for i in range(sz):
             settings.setArrayIndex(i)
             w = settings.value('col')
             self.setColumnWidth(i, w)
         settings.endArray()
+        display = settings.value('display_images', type=bool)
+        if not display:
+            self.setColumnHidden(0, True)
+        self.images_display.setCheckState(Qt.Checked if display
+                                          else Qt.Unchecked)
         settings.endGroup()
         delegate = ImageDelegate(self)
         self.setItemDelegateForColumn(0, delegate)
@@ -168,12 +183,17 @@ class View(QTableView):
             if view.model() is not model:
                 cur = 0
                 model = view.model()
-            if view.columnWidth(0) != width:
+            if view.columnWidth(0) != 0 and view.columnWidth(0) != width:
                 cur = 0
                 width = view.columnWidth(0)
-            if cur < len(model.files):
+            if cur < len(model.files) and width != 0:
+                print(cur, len(model.files), width)
                 delegate._do_get_pixmap(model, cur, width)
                 cur += 1
+            if cur >= len(model.files):
+                timer.setInterval(1000)
+            else:
+                timer.setInterval(0)
 
         timer.timeout.connect(step)
         timer.start()
@@ -183,7 +203,7 @@ class ImageDelegate(QStyledItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.cache_key = {}
-        QPixmapCache.setCacheLimit(1024000)
+        QPixmapCache.setCacheLimit(102400)
 
     def sizeHint(self, option:QStyleOptionViewItem, index:QModelIndex) -> QSize:
         pixmap = self.get_pixmap(option, index)
@@ -203,6 +223,8 @@ class ImageDelegate(QStyledItemDelegate):
         return self._do_get_pixmap(model, index.row(), w)
 
     def _do_get_pixmap(self, model, row, w):
+        if w == 0:
+            return QPixmap()
         file = model.files[row]
         try:
             key = self.cache_key[file]
@@ -215,4 +237,5 @@ class ImageDelegate(QStyledItemDelegate):
             image = QImage(os.path.join(model.profile.path, file))
             pixmap = QPixmap.fromImage(image.scaledToWidth(w))
             self.cache_key[file] = QPixmapCache.insert(pixmap)
+            print(file, pixmap, w)
         return pixmap
