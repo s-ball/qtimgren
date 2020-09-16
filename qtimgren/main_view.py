@@ -1,11 +1,11 @@
 from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
-    QStyleOptionViewItem, QApplication
+    QStyleOptionViewItem, QApplication, QHeaderView
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
     QTimer, QSettings
-from PySide2.QtGui import QImage, QPainter, QPixmap, QPixmapCache
+from PySide2.QtGui import QImage, QPainter
 from pyimgren.pyimgren import Renamer, exif_dat
-from.profile_manager import Profile
+from .profile_manager import Profile
 import os.path
 import re
 import typing
@@ -43,7 +43,7 @@ class Model(QAbstractTableModel):
     def columnCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return 4
 
-    def headerData(self, section:int, orientation:Qt.Orientation,
+    def headerData(self, section: int, orientation: Qt.Orientation,
                    role: int = Qt.DisplayRole) -> typing.Any:
         header = ['Image', 'Name', 'Original', 'New name']
         if orientation == Qt.Orientation.Horizontal and role == Qt.DisplayRole:
@@ -97,7 +97,7 @@ class View(QTableView):
         super().__init__(parent)
         QApplication.instance().aboutToQuit.connect(self.save)
 
-    def initialize(self, model : QAbstractItemModel, images_display):
+    def initialize(self, model: QAbstractItemModel, images_display):
         super().setModel(model)
         self.images_display = images_display
         self.load()
@@ -146,6 +146,8 @@ class View(QTableView):
     @Slot()
     def display_images(self, display):
         self.setColumnHidden(0, not display)
+        if not display:
+            self.verticalHeader().resizeSections(QHeaderView.ResizeToContents)
 
     def load(self):
         settings = QSettings()
@@ -165,7 +167,6 @@ class View(QTableView):
         delegate = ImageDelegate(self)
         self.setItemDelegateForColumn(0, delegate)
         self.pre_load(delegate)
-
 
     def selected_files(self):
         return [self.model().data(ix, Qt.DisplayRole)
@@ -188,7 +189,7 @@ class View(QTableView):
                 width = view.columnWidth(0)
             if cur < len(model.files) and width != 0:
                 print(cur, len(model.files), width)
-                delegate._do_get_pixmap(model, cur, width)
+                delegate.do_get_pixmap(model, cur, width)
                 cur += 1
             if cur >= len(model.files):
                 timer.setInterval(1000)
@@ -202,40 +203,38 @@ class View(QTableView):
 class ImageDelegate(QStyledItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.cache_key = {}
-        QPixmapCache.setCacheLimit(102400)
+        self.cache = {}
 
-    def sizeHint(self, option:QStyleOptionViewItem, index:QModelIndex) -> QSize:
+    def sizeHint(self, option: QStyleOptionViewItem, index: QModelIndex) -> QSize:
         pixmap = self.get_pixmap(option, index)
         return QSize() if pixmap.isNull() else pixmap.size()
 
-    def paint(self, painter:QPainter, option:QStyleOptionViewItem, index:QModelIndex):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         pixmap = self.get_pixmap(option, index)
         if not pixmap.isNull():
             view = option.styleObject
             view.setRowHeight(index.row(), pixmap.height())
-            painter.drawPixmap(option.rect, pixmap)
+            painter.drawImage(option.rect, pixmap)
 
-    def get_pixmap(self, option: QStyleOptionViewItem, index: QModelIndex) -> QPixmap:
+    def get_pixmap(self, option: QStyleOptionViewItem, index: QModelIndex) -> QImage:
         view = option.styleObject
         model = view.model()
         w = view.columnWidth(0)
-        return self._do_get_pixmap(model, index.row(), w)
+        return self.do_get_pixmap(model, index.row(), w)
 
-    def _do_get_pixmap(self, model, row, w):
+    def do_get_pixmap(self, model, row, w):
         if w == 0:
-            return QPixmap()
+            return QImage()
         file = model.files[row]
         try:
-            key = self.cache_key[file]
-            pixmap = QPixmapCache.find(key)
+            pixmap = self.cache[file]
             if (pixmap is not None) and (not pixmap.isNull()) and (pixmap.width() != w):
                 pixmap = None
         except KeyError:
             pixmap = None
         if pixmap is None:
             image = QImage(os.path.join(model.profile.path, file))
-            pixmap = QPixmap.fromImage(image.scaledToWidth(w))
-            self.cache_key[file] = QPixmapCache.insert(pixmap)
+            pixmap = image.scaledToWidth(w)
+            self.cache[file] = pixmap
             print(file, pixmap, w)
         return pixmap
