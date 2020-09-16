@@ -2,7 +2,7 @@ from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem, QApplication, QHeaderView
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
-    QTimer, QSettings
+    QTimer, QSettings, Signal
 from PySide2.QtGui import QImage, QPainter
 from pyimgren.pyimgren import Renamer, exif_dat
 from .profile_manager import Profile
@@ -34,7 +34,7 @@ class Model(QAbstractTableModel):
             self.files = [entry.name for entry in os.scandir(self.profile.path)
                           if entry.is_dir() or self.rx.match(entry.name)]
             self.renamer = Renamer(self.profile.path, self.profile.mask,
-                                   self.profile.pattern)
+                                   self.profile.pattern, ext_mask='')
             self.orig = self.renamer.load_names()
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
@@ -82,19 +82,39 @@ class Model(QAbstractTableModel):
         self.dataChanged.emit(self.index(0, 3),
                               self.index(self.rowCount() - 1, 3))
 
-    def item_selection(self) -> QItemSelection:
+    def item_selection(self, direct: bool = True) -> QItemSelection:
         sel = QItemSelection()
         sel1 = QItemSelection()
-        for i, file in enumerate(self.files):
-            if fnmatch(file, self.renamer.src_mask):
-                sel1.select(self.index(i, 0), self.index(i, 3))
-                sel.merge(sel1, QItemSelectionModel.SelectCurrent)
+        if direct:
+            for i, file in enumerate(self.files):
+                if fnmatch(file, self.renamer.src_mask):
+                    sel1.select(self.index(i, 0), self.index(i, 3))
+                    sel.merge(sel1, QItemSelectionModel.SelectCurrent)
+        else:
+            for i, file in enumerate(self.files):
+                if file in self.renamer.load_names():
+                    sel1.select(self.index(i, 0), self.index(i, 3))
+                    sel.merge(sel1, QItemSelectionModel.SelectCurrent)
         return sel
+
+    def rename(self, files: list):
+        self.renamer.rename(*files)
+        self.reset()
+
+    def back(self, files: list):
+        self.renamer.back(*files)
+        self.reset()
+
+    def reset(self):
+        self.beginResetModel()
+        self.ini_files()
+        self.endResetModel()
 
 
 class View(QTableView):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.images_display = None
         QApplication.instance().aboutToQuit.connect(self.save)
 
     def initialize(self, model: QAbstractItemModel, images_display):
@@ -117,17 +137,24 @@ class View(QTableView):
 
     @Slot()
     def rename(self):
-        print(self.selected_files())
+        self.model().rename(self.selected_files())
 
     @Slot()
     def back(self):
-        selection = self.selectionModel()
+        self.model().back(self.selected_files())
 
     @Slot()
     def reset_selection(self):
+        return self._do_selection(True)
+
+    def _do_selection(self, direction: bool):
         selection = self.selectionModel()
-        item_sel = self.model().item_selection()
+        item_sel = self.model().item_selection(direction)
         selection.select(item_sel, QItemSelectionModel.ClearAndSelect)
+
+    @Slot()
+    def select_renamed(self):
+        return self._do_selection(False)
 
     @Slot()
     def save(self):
@@ -143,10 +170,6 @@ class View(QTableView):
         settings.setValue('display_images',
                           self.images_display.checkState() == Qt.Checked)
         settings.endGroup()
-
-    @Slot()
-    def select_renamed(self):
-        pass
 
     @Slot()
     def display_images(self, display):
@@ -232,7 +255,7 @@ class ImageDelegate(QStyledItemDelegate):
             return QImage()
         file = model.files[row]
         try:
-            pixmap = self.cache[file]
+            pixmap = self.cache[model.orig.get(file, file)]
             if (pixmap is not None) and (not pixmap.isNull()) and (pixmap.width() != w):
                 pixmap = None
         except KeyError:
@@ -240,8 +263,8 @@ class ImageDelegate(QStyledItemDelegate):
         if pixmap is None:
             image = QImage(os.path.join(model.profile.path, file))
             pixmap = image.scaledToWidth(w)
-            self.cache[file] = pixmap
-            print(file, pixmap, w)
+            self.cache[model.orig.get(file, file)] = pixmap
+            print(model.orig.get(file, file), pixmap, w)
         return pixmap
 
     def reset_cache(self):
