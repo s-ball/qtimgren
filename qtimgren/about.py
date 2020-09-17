@@ -4,7 +4,7 @@
 Module implementing About.
 """
 
-from PySide2.QtWidgets import QDialog,  QLabel, QWidget
+from PySide2.QtWidgets import QDialog, QWidget
 
 from .ui_about import Ui_About
 from . import __version__
@@ -21,11 +21,9 @@ class About(QDialog, Ui_About):
         Constructor
         
         @param parent reference to the parent widget
-        @type QWidget
         """
         super(About, self).__init__(parent)
         self.setupUi(self)
-        version = self.findChild(QLabel, 'version')
-        version.setText(version.text() + __version__)
-        lib_label = self.findChild(QLabel,  'libversion')
+        self.version.setText(self.version.text() + __version__)
+        lib_label = self.libversion
         lib_label.setText(lib_label.text().replace('0.0.0', lib_version))

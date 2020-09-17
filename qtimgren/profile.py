@@ -5,7 +5,7 @@ Module implementing ProfileDialog.
 """
 
 from PySide2.QtCore import Slot, Qt
-from PySide2.QtWidgets import QDialog, QLineEdit, QFileDialog, QCheckBox, \
+from PySide2.QtWidgets import QDialog, QFileDialog, \
     QMessageBox, QWidget, QApplication
 import datetime
 
@@ -30,16 +30,12 @@ class ProfileDialog(QDialog, Ui_Dialog):
         """
         super(ProfileDialog, self).__init__(parent)
         self.setupUi(self)
-        self.path = self.findChild(QLineEdit, "path")
         self.names = [] if names is None else tuple(names)
         if profile is not None:
-            child = self.findChild(QLineEdit, 'name')
-            child.setText(profile.name)
-            child = self.findChild(QLineEdit, 'mask')
-            child.setText(profile.mask)
+            self.name.setText(profile.name)
+            self.mask_edit.setText(profile.mask)
             self.path.setText(profile.path)
-            child = self.findChild(QLineEdit, 'pattern')
-            child.setText(profile.pattern)
+            self.pattern.setText(profile.pattern)
 
     @Slot()
     def on_change_clicked(self):
@@ -51,23 +47,20 @@ class ProfileDialog(QDialog, Ui_Dialog):
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
         self.path.setText(wd)
 
-    def getName(self):
-        name = self.findChild(QLineEdit, "name")
-        return name.text().strip()
+    def get_name(self):
+        return self.name.text().strip()
 
-    def getPath(self):
+    def get_path(self):
         return self.path.text().strip()
 
-    def getMask(self):
-        mask = self.findChild(QLineEdit, "mask")
-        return mask.text().strip()
+    def get_mask(self):
+        return self.mask_edit.text().strip()
 
-    def getPattern(self):
-        pattern = self.findChild(QLineEdit, "pattern")
-        return pattern.text().strip()
+    def get_pattern(self):
+        return self.pattern.text().strip()
 
     @Slot()
-    def on_buttonBox_accepted(self):
+    def on_button_box_accepted(self):
         if self.valid():
             self.accept()
 
@@ -75,40 +68,41 @@ class ProfileDialog(QDialog, Ui_Dialog):
         """
         Validate the content of the dialog.
         """
-        if self.getName() in self.names:
+        if self.get_name() in self.names:
             self.error(translate('profile', '"{}" is already used')
-                       .format(self.getName()),
+                       .format(self.get_name()),
                        Id.translate('profile', 'Name'))
             return False
-        if self.getName() == '':
+        if self.get_name() == '':
             self.error(translate('profile', 'Name cannot be empty'),
                        Id.translate('profile', 'Name'))
             return False
-        if not os.path.isdir(self.getPath()):
+        if not os.path.isdir(self.get_path()):
             self.error(translate('profiles', '"{}" is not a valid folder')
-                       .format(self.getPath()),
+                       .format(self.get_path()),
                        Id.translate('profile', 'Path'))
             return False
-        if '*' not in self.getMask() and '?' not in self.getMask():
+        if '*' not in self.get_mask() and '?' not in self.get_mask():
             self.error(translate('profile',
                                  '"{}" is not a valid image pattern')
-                       .format(self.getMask()),
+                       .format(self.get_mask()),
                        Id.translate('profile', 'Mask'))
             return False
         now = datetime.datetime.now()
         try:
-            now.strftime(self.getPattern())
+            now.strftime(self.get_pattern())
         except ValueError:
             self.error(translate('profile',
                                  '"{}" is not a valid date pattern')
-                       .format(self.getPattern()),
+                       .format(self.get_pattern()),
                        Id.translate('profile', 'Pattern'))
             return False
         return True
 
     def error(self, msg, field):
         QMessageBox.warning(self, translate('profile', field), msg)
-        self.findChild(QLineEdit, field.lower()).setFocus(Qt.OtherFocusReason)
+        attr = 'mask_edit' if field == 'Mask' else field.lower()
+        getattr(self, attr).setFocus(Qt.OtherFocusReason)
 
 
 def translate(ctx, txt):

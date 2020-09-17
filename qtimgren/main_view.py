@@ -2,7 +2,7 @@ from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem, QApplication, QHeaderView
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
-    QTimer, QSettings, Signal
+    QTimer, QSettings
 from PySide2.QtGui import QImage, QPainter
 from pyimgren.pyimgren import Renamer, exif_dat
 from .profile_manager import Profile
@@ -70,14 +70,14 @@ class Model(QAbstractTableModel):
         return None
 
     @Slot()
-    def profileChanged(self, profile):
+    def profile_changed(self, profile):
         self.beginResetModel()
         self.profile = profile
         self.ini_files()
         self.endResetModel()
 
     @Slot()
-    def deltaChanged(self, delta):
+    def delta_changed(self, delta):
         self.renamer.delta = delta
         self.dataChanged.emit(self.index(0, 3),
                               self.index(self.rowCount() - 1, 3))
@@ -124,16 +124,16 @@ class View(QTableView):
         self.reset_selection()
 
     @Slot()
-    def profileChanged(self, profile):
+    def profile_changed(self, profile):
         old = self.model().profile.path
-        self.model().profileChanged(profile)
+        self.model().profile_changed(profile)
         if old != profile.path:
             self.itemDelegateForColumn(0).reset_cache()
         self.reset_selection()
 
-    @Slot()
-    def deltaChanged(self, delta):
-        self.model().deltaChanged(delta)
+    @Slot(float)
+    def delta_changed(self, delta):
+        self.model().delta_changed(delta)
 
     @Slot()
     def rename(self):
@@ -216,7 +216,6 @@ class View(QTableView):
                 cur = 0
                 width = view.columnWidth(0)
             if cur < len(files) and width != 0:
-                print(cur, len(files), width)
                 delegate.do_get_pixmap(view.model(), cur, width)
                 cur += 1
             if cur >= len(files):
@@ -264,8 +263,4 @@ class ImageDelegate(QStyledItemDelegate):
             image = QImage(os.path.join(model.profile.path, file))
             pixmap = image.scaledToWidth(w)
             self.cache[model.orig.get(file, file)] = pixmap
-            print(model.orig.get(file, file), pixmap, w)
         return pixmap
-
-    def reset_cache(self):
-        self.cache.clear()

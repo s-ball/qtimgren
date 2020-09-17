@@ -28,19 +28,19 @@ class TestMainWindow(unittest.TestCase):
         about.exec = about.exec_
         with patch.object(qtimgren.main_window, 'About') as About:
             About.return_value = about
-            action = self.window.findChild(QAction, 'action_About')
+            action = self.window.action_about
             action.triggered.emit()
             about.exec_.assert_called_once_with()
 
     def test_about_qt(self):
         with patch.object(qtimgren.main_window, 'QApplication') as qApp:
-            action = self.window.findChild(QAction, 'actionAbout_Qt')
+            action = self.window.action_about_qt
             action.triggered.emit()
             qApp.aboutQt.assert_called_once_with()
 
     def test_close(self):
         self.assertTrue(self.window.isVisible())
-        action = self.window.findChild(QAction, 'action_Quit')
+        action = self.window.action_quit
         action.triggered.emit()
         self.assertFalse(self.window.isVisible())
 
@@ -53,7 +53,7 @@ class TestMainWindow(unittest.TestCase):
             dialog.exec_ = Mock()
             dialog.exec = dialog.exec_
             dialog.exec_.return_value = 1
-            action = self.window.findChild(QAction, 'action_New_profile')
+            action = self.window.action_new_profile
             action.triggered.emit()
             Dialog.assert_called_once_with(self.window, names=['a', 'b'])
             dialog.exec_.assert_called_once_with()
@@ -68,7 +68,7 @@ class TestMainWindow(unittest.TestCase):
             dialog.model = Mock()
             dialog.exec = Mock()
             dialog.exec_ = dialog.exec
-            action = self.window.findChild(QAction, 'action_Manage_profiles')
+            action = self.window.action_manage_profiles
             action.triggered.emit()
             Dialog.assert_called_once_with(pm.profiles, self.window)
             dialog.exec.assert_called_once_with()

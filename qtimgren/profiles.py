@@ -6,7 +6,7 @@ Module implementing ProfilesDialog.
 
 from PySide2.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
 from PySide2.QtCore import QSettings
-from PySide2.QtWidgets import QDialog,  QTableView,  QMessageBox, QApplication
+from PySide2.QtWidgets import QDialog, QMessageBox, QApplication
 
 from .ui_profiles import Ui_profiles
 from .profile import ProfileDialog
@@ -71,7 +71,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
         super(ProfilesDialog, self).__init__(parent)
         self.setupUi(self)
         self.model = ProfilesModel(profiles)
-        self.view = self.findChild(QTableView,  'tableView')
+        self.view = self.table_view
         self.view.setModel(self.model)
         settings = QSettings()
         settings.beginGroup('ProfilesDialog')
@@ -113,7 +113,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
             self.model.removeRows(row,  1)
 
     @Slot()
-    def on_buttonBox_accepted(self):
+    def on_button_box_accepted(self):
         if self.valid():
             self.accept()
 

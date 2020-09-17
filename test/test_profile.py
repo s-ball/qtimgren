@@ -1,7 +1,6 @@
 import unittest
 import qtimgren.profile
 from PySide2.QtWidgets import *
-from PySide2.QtCore import Qt
 from qtimgren.main_window import MainWindow
 from qtimgren.profile_manager import Profile
 from unittest.mock import patch
@@ -29,17 +28,14 @@ class TestProfile(unittest.TestCase):
         names = ('a', 'b')
         dialog = qtimgren.profile.ProfileDialog(self.main, names=names)
         self.assertEqual(names, dialog.names)
-        name = dialog.findChild(QLineEdit, 'name')
-        self.assertEqual('', name.text())
+        self.assertEqual('', dialog.name.text())
 
     def test_edit(self):
         profile = Profile('a', 'b', 'c', 'd')
         dialog = qtimgren.profile.ProfileDialog(self.main, profile)
         self.assertEqual(0, len(dialog.names))
-        name = dialog.findChild(QLineEdit, 'name')
-        self.assertEqual('a', name.text())
-        pattern = dialog.findChild(QLineEdit, 'pattern')
-        self.assertEqual('d', pattern.text())
+        self.assertEqual('a', dialog.name.text())
+        self.assertEqual('d', dialog.pattern.text())
 
     def test_valid_name_empty(self):
         names = ('a', 'b')
@@ -52,8 +48,7 @@ class TestProfile(unittest.TestCase):
         names = ('a', 'b')
         dialog = qtimgren.profile.ProfileDialog(self.main, names=names)
         with patch.object(qtimgren.profile, 'QMessageBox') as msg_box:
-            child = dialog.findChild(QLineEdit, 'name')
-            child.setText('a')
+            dialog.name.setText('a')
             self.assertFalse(dialog.valid())
             self.assertEqual(1, msg_box.warning.call_count)
 
@@ -61,10 +56,8 @@ class TestProfile(unittest.TestCase):
         names = ('a', 'b')
         dialog = qtimgren.profile.ProfileDialog(self.main, names=names)
         with patch.object(qtimgren.profile, 'QMessageBox') as msg_box:
-            name = dialog.findChild(QLineEdit, 'name')
-            name.setText('c')
-            child = dialog.findChild(QLineEdit, 'path')
-            child.setText(__file__)
+            dialog.name.setText('c')
+            dialog.path.setText(__file__)
             self.assertFalse(dialog.valid())
             self.assertEqual(1, msg_box.warning.call_count)
 
@@ -72,12 +65,9 @@ class TestProfile(unittest.TestCase):
         names = ('a', 'b')
         dialog = qtimgren.profile.ProfileDialog(self.main, names=names)
         with patch.object(qtimgren.profile, 'QMessageBox') as msg_box:
-            name = dialog.findChild(QLineEdit, 'name')
-            name.setText('c')
-            path = dialog.findChild(QLineEdit, 'path')
-            path.setText('.')
-            child = dialog.findChild(QLineEdit, 'mask')
-            child.setText('foo')
+            dialog.name.setText('c')
+            dialog.path.setText('.')
+            dialog.mask_edit.setText('foo')
             self.assertFalse(dialog.valid())
             self.assertEqual(1, msg_box.warning.call_count)
 
@@ -85,14 +75,10 @@ class TestProfile(unittest.TestCase):
         names = ('a', 'b')
         dialog = qtimgren.profile.ProfileDialog(self.main, names=names)
         with patch.object(qtimgren.profile, 'QMessageBox') as msg_box:
-            name = dialog.findChild(QLineEdit, 'name')
-            name.setText('c')
-            path = dialog.findChild(QLineEdit, 'path')
-            path.setText('.')
-            child = dialog.findChild(QLineEdit, 'mask')
-            child.setText('*.jpeg')
-            pattern = dialog.findChild(QLineEdit, 'pattern')
-            pattern.setText('foo%')
+            dialog.name.setText('c')
+            dialog.path.setText('.')
+            dialog.mask_edit.setText('*.jpeg')
+            dialog.pattern.setText('foo%')
             self.assertFalse(dialog.valid())
             self.assertEqual(1, msg_box.warning.call_count)
 

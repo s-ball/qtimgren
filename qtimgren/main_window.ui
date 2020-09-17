@@ -131,51 +131,51 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_Merge"/>
+    <addaction name="action_merge"/>
     <addaction name="separator"/>
-    <addaction name="action_Quit"/>
+    <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_About"/>
-    <addaction name="actionAbout_Qt"/>
+    <addaction name="action_about"/>
+    <addaction name="action_about_qt"/>
    </widget>
    <widget class="QMenu" name="menu_Profiles">
     <property name="title">
      <string>&amp;Profiles</string>
     </property>
-    <addaction name="action_New_profile"/>
+    <addaction name="action_new_profile"/>
     <addaction name="separator"/>
     <addaction name="separator"/>
-    <addaction name="action_Manage_profiles"/>
+    <addaction name="action_manage_profiles"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Profiles"/>
    <addaction name="menu_Help"/>
   </widget>
-  <action name="action_Quit">
+  <action name="action_quit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
   </action>
-  <action name="action_About">
+  <action name="action_about">
    <property name="text">
     <string>&amp;About</string>
    </property>
   </action>
-  <action name="actionAbout_Qt">
+  <action name="action_about_qt">
    <property name="text">
     <string>About &amp;Qt</string>
    </property>
   </action>
-  <action name="action_New_profile">
+  <action name="action_new_profile">
    <property name="text">
     <string>&amp;New profile</string>
    </property>
   </action>
-  <action name="action_Manage_profiles">
+  <action name="action_manage_profiles">
    <property name="text">
     <string>&amp;Manage profiles</string>
    </property>
@@ -185,7 +185,7 @@
     <string>Change &amp;Folder</string>
    </property>
   </action>
-  <action name="action_Merge">
+  <action name="action_merge">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -200,7 +200,7 @@
    <extends>QTableView</extends>
    <header>.main_view.h</header>
    <slots>
-    <slot>deltaChanged(double)</slot>
+    <slot>delta_changed(double)</slot>
     <slot>rename()</slot>
     <slot>back()</slot>
     <slot>reset_selection()</slot>
@@ -218,7 +218,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>action_Quit</sender>
+   <sender>action_quit</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
@@ -237,7 +237,7 @@
    <sender>delta</sender>
    <signal>valueChanged(double)</signal>
    <receiver>tableView</receiver>
-   <slot>deltaChanged(double)</slot>
+   <slot>delta_changed(double)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>267</x>

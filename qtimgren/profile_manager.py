@@ -14,12 +14,12 @@ class Profile:
         
     @staticmethod
     def from_dialog(dialog):
-        return Profile(dialog.getName(), dialog.getPath(),
-                       dialog.getMask(), dialog.getPattern())
+        return Profile(dialog.get_name(), dialog.get_path(),
+                       dialog.get_mask(), dialog.get_pattern())
 
 
 class ProfileManager(QObject):
-    profileChanged = Signal(Profile)
+    profile_changed = Signal(Profile)
 
     def __init__(self, menu, parent=None):
         super().__init__(parent)
@@ -70,7 +70,11 @@ class ProfileManager(QObject):
     
     def add_action(self, name, path, mask, pattern):
         if name in self.names():
-            QMessageBox.warning(self.parent,  None,  '{} already exists'.format(name))
+            app = QApplication.instance()
+            QMessageBox.warning(self.parent,  app.applicationName(),
+                                app.translate('profile_manager',
+                                              '{} already exists')
+                                .format(name))
         else:
             self.profiles.append(Profile(name,  path,  mask,  pattern))
             self.do_add_action(name)
@@ -83,8 +87,8 @@ class ProfileManager(QObject):
         return action
             
     def add_from_dialog(self,  dialog):
-        self.add_action(dialog.getName(),  dialog.getPath(),
-                        dialog.getMask(),  dialog.getPattern())
+        self.add_action(dialog.get_name(), dialog.get_path(),
+                        dialog.get_mask(), dialog.get_pattern())
 
     def get_profile(self,  name):
         for p in self.profiles:
@@ -96,7 +100,7 @@ class ProfileManager(QObject):
         action = self.actGroup.checkedAction()
         self.active_profile = self.get_profile(action.text()) if action \
             is not None else None
-        self.profileChanged.emit(self.active_profile)
+        self.profile_changed.emit(self.active_profile)
     
     def reset_profiles(self,  profiles):
         self.clear_menu()
@@ -113,7 +117,7 @@ class ProfileManager(QObject):
         else:
             active = None
         self.active_profile = self.get_profile(active)
-        self.profileChanged.emit(self.active_profile)
+        self.profile_changed.emit(self.active_profile)
 
     def clear_menu(self):
         while len(self.actGroup.actions()) > 0:

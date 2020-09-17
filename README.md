@@ -67,7 +67,7 @@ Once installed, you can run the application:
 
 ## Disclaimer: pre-alpha quality
 
-As already said, this is currently just a work in progess.
+As already said, this is currently just a work in progress.
 ## License
 
 This work is licenced under a MIT Licence. See [LICENSE.txt](https://raw.githubusercontent.com/s-ball/MockSelector/master/LICENCE.txt)

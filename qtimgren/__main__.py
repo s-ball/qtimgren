@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QLocale, QTranslator
+from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo
 from .main_window import MainWindow
 from . import resource
 import sys
@@ -8,6 +8,10 @@ import sys
 def run():
     app = QApplication(sys.argv)
     loc = QLocale()
+    qt_trans = QTranslator()
+    qt_trans.load(loc, 'qt', '_',
+                  QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+    app.installTranslator(qt_trans)
     translator = QTranslator()
     translator.load(loc, 'qtimgren', '_', ':')
     app.installTranslator(translator)

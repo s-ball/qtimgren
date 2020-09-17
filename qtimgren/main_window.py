@@ -38,11 +38,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         view = self.tableView
         model = Model(self.profile_manager.active_profile, view)
         view.initialize(model, self.images_display)
-        self.profile_manager.profileChanged.connect(view.profileChanged)
+        self.profile_manager.profile_changed.connect(view.profile_changed)
         QApplication.instance().aboutToQuit.connect(self.save)
 
     @Slot()
-    def on_action_About_triggered(self):
+    def on_action_about_triggered(self):
         """
         Displays About dialog.
         """
@@ -51,14 +51,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         about.exec_()
     
     @Slot()
-    def on_actionAbout_Qt_triggered(self):
+    def on_action_about_qt_triggered(self):
         """
         Displays About Qt dialog.
         """
         QApplication.aboutQt()
 
     @Slot()
-    def on_action_New_profile_triggered(self):
+    def on_action_new_profile_triggered(self):
         """
         Create a new profile.
         """
@@ -68,7 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.profile_manager.add_from_dialog(profile)
     
     @Slot()
-    def on_action_Manage_profiles_triggered(self):
+    def on_action_manage_profiles_triggered(self):
         """
         Manage (edit or remove) existing profiles.
         """
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.profile_manager.reset_profiles(dialog.model.profiles)
 
     @Slot()
-    def save(self) -> bool:
+    def save(self):
         settings = QSettings()
         settings.beginGroup('MainWindow')
         geom = self.saveGeometry()

@@ -47,11 +47,6 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nom du profil&lt;/p&gt;&lt;p&gt;Servira d&apos;entrée dans le menu &lt;span style=&quot; font-style:italic;&quot;&gt;Profils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.ui" line="60"/>
-        <source>&amp;Path</source>
-        <translation type="obsolete">&amp;Répertoire</translation>
-    </message>
-    <message>
         <location filename="../qtimgren/profile.ui" line="91"/>
         <source>Path of the image (jpeg) files</source>
         <translation>Répertoire des fichiers image (jpeg)</translation>
@@ -70,11 +65,6 @@
         <location filename="../qtimgren/profile.ui" line="122"/>
         <source>Pattern of camera images (e.g. IMG*.JPG or DSCF*.JPG)</source>
         <translation>Modèles des noms de fichiers image (par example IMG*.JPG ou DSCF*.JPG)</translation>
-    </message>
-    <message>
-        <location filename="../qtimgren/profile.ui" line="129"/>
-        <source>&amp;Recurse into sub-folder</source>
-        <translation type="obsolete">Utilise les &amp;sous-dossiers</translation>
     </message>
     <message>
         <location filename="../qtimgren/profile.ui" line="60"/>
@@ -105,97 +95,140 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="28"/>
+        <location filename="../qtimgren/main_window.ui" line="132"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="37"/>
+        <location filename="../qtimgren/main_window.ui" line="140"/>
         <source>&amp;Help</source>
         <translation>&amp;?</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="44"/>
+        <location filename="../qtimgren/main_window.ui" line="147"/>
         <source>&amp;Profiles</source>
         <translation>&amp;Profils</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="57"/>
+        <location filename="../qtimgren/main_window.ui" line="160"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="62"/>
+        <location filename="../qtimgren/main_window.ui" line="165"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="67"/>
+        <location filename="../qtimgren/main_window.ui" line="170"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="72"/>
+        <location filename="../qtimgren/main_window.ui" line="175"/>
         <source>&amp;New profile</source>
         <translation>&amp;Nouveau profil</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="77"/>
+        <location filename="../qtimgren/main_window.ui" line="180"/>
         <source>&amp;Manage profiles</source>
         <translation>&amp;Gestion des profils</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="82"/>
+        <location filename="../qtimgren/main_window.ui" line="185"/>
         <source>Change &amp;Folder</source>
         <translation>Change de &amp;répertoire</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="90"/>
+        <location filename="../qtimgren/main_window.ui" line="193"/>
         <source>&amp;Merge</source>
         <translation>&amp;Combine</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="29"/>
+        <source>Display &amp;images</source>
+        <translation>Affiche les &amp;images</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="52"/>
+        <source>Automatic selections</source>
+        <translation>Sélections automatiques</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="60"/>
+        <source>Default &amp;selection</source>
+        <translation>&amp;Sélection par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="67"/>
+        <source>Select renamed &amp;images</source>
+        <translation>Images re&amp;nommées</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="81"/>
+        <source>&amp;Delta (minutes)</source>
+        <translation>Décalage (minutes)</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="104"/>
+        <source>&amp;Rename</source>
+        <translation>&amp;Renomme</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="111"/>
+        <source>&amp;Back</source>
+        <translation>Noms d&apos;&amp;origine</translation>
     </message>
 </context>
 <context>
     <name>profile</name>
     <message>
-        <location filename="../qtimgren/profile.py" line="80"/>
+        <location filename="../qtimgren/profile.py" line="73"/>
         <source>&quot;{}&quot; is already used</source>
         <translation>&quot;{}&quot; est déjà utilisé</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="84"/>
+        <location filename="../qtimgren/profile.py" line="77"/>
         <source>Name cannot be empty</source>
         <translation>Le nom ne peut pas être vide</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="95"/>
+        <location filename="../qtimgren/profile.py" line="88"/>
         <source>&quot;{}&quot; is not a valid image pattern</source>
         <translation>&quot;{}&quot; n&apos;est pas un modèle valide</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="85"/>
+        <location filename="../qtimgren/profile.py" line="78"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="90"/>
+        <location filename="../qtimgren/profile.py" line="83"/>
         <source>Path</source>
         <translation>Répertoire</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="96"/>
+        <location filename="../qtimgren/profile.py" line="89"/>
         <source>Mask</source>
         <translation>Modèle</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="104"/>
+        <location filename="../qtimgren/profile.py" line="97"/>
         <source>&quot;{}&quot; is not a valid date pattern</source>
         <translation>&quot;{}&quot; n&apos;est pas un modèle de date valide</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="105"/>
+        <location filename="../qtimgren/profile.py" line="98"/>
         <source>Pattern</source>
         <translation>Modèle de data</translation>
+    </message>
+</context>
+<context>
+    <name>profile_manager</name>
+    <message>
+        <location filename="../qtimgren/profile_manager.py" line="77"/>
+        <source>{} already exists</source>
+        <translation>{} existe déjà</translation>
     </message>
 </context>
 <context>
@@ -226,7 +259,7 @@
         <translation>&amp;Supprime</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.py" line="89"/>
+        <location filename="../qtimgren/profile.py" line="82"/>
         <source>&quot;{}&quot; is not a valid folder</source>
         <translation>&quot;{}&quot; n&apos;est pas un dossier valide</translation>
     </message>
