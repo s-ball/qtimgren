@@ -1,5 +1,10 @@
 #  Copyright (c) 2020 SBA - MIT License
 
+import os.path
+import sys
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 from setuptools import setup
 try:
     from setuptools_scm import get_version as scm_version
