@@ -1,7 +1,10 @@
 from PySide2.QtWidgets import QApplication
 from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo
 from .main_window import MainWindow
-from . import resource
+try:
+    from . import resource
+except ImportError:
+    pass
 import sys
 
 
