@@ -17,6 +17,9 @@ Ui_*
 *.egg-info
 version.py
 
+/build
+/dist
+
 /.coverage
 /htmlcov/
 *.pro

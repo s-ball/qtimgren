@@ -4,13 +4,14 @@ from setuptools import setup
 try:
     from setuptools_scm import get_version as scm_version
 except ImportError:
-    scm_version = None
+    def scm_version(*_args, **_kwargs): raise LookupError
+
 import os.path
 import re
 import subprocess
 
 
-name = 'QtImgren'
+name = 'qtimgren'
 wd = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -19,7 +20,7 @@ def get_version() -> str:
     _version = '0.0.0'  # fallback value should never be used
     try:    # first from git using setuptools_scm
         _version = scm_version(write_to=os.path.join(wd, name, 'version.py'))
-    except (TypeError, LookupError):
+    except LookupError:
         try:  # else from a previous version.py
             with open(os.path.join(wd, name, 'version.py')) as fd:
                 for line in fd:
@@ -77,7 +78,7 @@ if __name__ == '__main__':
             #   3 - Alpha
             #   4 - Beta
             #   5 - Production/Stable
-            'Development Status :: 2 - Pre-Alpha',
+            'Development Status :: 3 - Alpha',
 
             # Indicate who your project is intended for
             'Intended Audience :: End Users/Desktop',

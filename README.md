@@ -5,7 +5,30 @@
 
 ## Description
 
-This is a GUI around the [pyimgren](https://pypi.org/project/pyimgren/) package. This is currently only a work in progress...
+This is a GUI around the [pyimgren](https://pypi.org/project/pyimgren/) package. Currently it is able to rename camera images
+via pyimgren forth and back. Its main feature is that it allows a manual
+selection of the images to rename.
+
+Of course buttons are there to allow default selections.
+
+It is based on *profiles*. For `QtImgren`, a profile is what is required for
+pyimgren configuration:
+
+* a folder
+* a source pattern to identify camera images (typically IMG*.JPG or DSCF*.JPG)
+* a compatible with `datatime.strftime` pattern to build the new name from
+the JPEG timestamp
+* and of course a unique name
+
+Thanks to pyimgren, it is possible to use a delta in minutes to cope with
+a digital camera having a wrong time.
+
+In order to make image selection easier, thumbnails can be displayed in the
+main application window along with the current, future and original names. But
+as image computation and display are expensive tasks, the display can be
+turned off. Anyway, the computation is asynchronous, meaning that the
+application can be used as soon as the currently displayed images are 
+available.
 
 ## Installation
 
@@ -65,9 +88,12 @@ Once installed, you can run the application:
 ```
 
 
-## Disclaimer: pre-alpha quality
+## Disclaimer: alpha quality
 
-As already said, this is currently just a work in progress.
+It works, and is based on pyimgren which I have used for years. But corner
+cases like renaming files more than once or trying to rename back images
+with no registered original names need additional tests
+
 ## License
 
 This work is licenced under a MIT Licence. See [LICENSE.txt](https://raw.githubusercontent.com/s-ball/MockSelector/master/LICENCE.txt)
