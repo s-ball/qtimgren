@@ -15,8 +15,8 @@ import os.path
 import re
 import subprocess
 
-from tools.builder import BuildUi, BuildQm, BuildRc, build_py
-
+import sys
+sys.path.append('.')
 
 name = 'qtimgren'
 wd = os.path.abspath(os.path.dirname(__file__))
@@ -73,6 +73,8 @@ def get_long_desc(_version) -> str:
 
 
 if __name__ == '__main__':
+    from tools.builder import BuildUi, BuildQm, BuildRc, build_py
+
     version = get_version()
     long_description = get_long_desc(version)
     setup(
@@ -110,7 +112,7 @@ if __name__ == '__main__':
         description='GUI over the pyimgren package',
         long_description=long_description,
         long_description_content_type='text/markdown',
-        cmdclass = {
+        cmdclass={
             'build_ui': BuildUi,
             'build_qm': BuildQm,
             'build_rc': BuildRc,

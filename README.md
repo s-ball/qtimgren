@@ -47,20 +47,17 @@ downloading a zipfile but if you want to make changes, you should
 
 You can then install it in your main Python installation or in a venv with:
 
-    pip install -e .
+    pip install -r requirements.txt
+    python setup.py build
 
 or on Windows with the launcher:
 
-    py -m pip install -e .
+    py -m pip install -r requirements.txt
+    py setup.py build
     
 `pip` should be used to install it for the first time in order to have
 `setuptools-scm` to generate the `version.py` file from git metadata.
 Once this is done, `setup.py` can be used with no special issue.
-
-Alternatively you can manually install `setuptools-scm`:
-
-    pip install setuptools-scm
-    python setup.py install
 
 #### Special handling of `version.py`:
 
@@ -84,9 +81,17 @@ PEP-517 to know that `setuptools-scm` is required before the build.
 Once installed, you can run the application:
 
 ```
-    python -m QtImgren
+    python -m qtimgren
 ```
 
+## Internationalization
+
+The application is natively written is English, and contains a (source) French
+translation of its IHM. It depends on Qt Linguist tools for generating the
+binary file used at run-time. The required tool `lrelease` exists in the
+Windows PySide2 distribution, but not in Linux or Mac ones. On those
+platforms, you need a to install the Qt development tools and ensure that
+they are accessible via the path.
 
 ## Disclaimer: alpha quality
 

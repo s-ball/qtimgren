@@ -55,7 +55,6 @@ class BuildUi(Command):
         self.packages = None
 
     def finalize_options(self):
-        name = self.distribution.get_name()
         if self.force is None:
             self.force = False
         if self.uic is None:
@@ -218,13 +217,16 @@ class BuildRc(Command):
 
 
 def find_exec_builder():
-    from PySide2.QtCore import QLibraryInfo as Info
-    import shutil
+    try:
+        from PySide2.QtCore import QLibraryInfo as Info
+        import shutil
 
-    libex = Info.location(Info.LibraryExecutablesPath)
-    path = os.environ.get('PATH', os.defpath)
-    if libex not in path.split(os.pathsep):
-        path += os.pathsep + libex
+        libex = Info.location(Info.LibraryExecutablesPath)
+        path = os.environ.get('PATH', os.defpath)
+        if libex not in path.split(os.pathsep):
+            path += os.pathsep + libex
+    except ImportError:
+        Info = shutil = None
     return lambda prog: shutil.which(prog, path=path)
 
 
