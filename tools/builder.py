@@ -1,3 +1,5 @@
+#  Copyright (c) 2020  SBA - MIT License
+
 from setuptools.command.build_py import build_py as _build_py
 from distutils.command.build import build as _build
 from distutils.cmd import Command
@@ -179,7 +181,9 @@ class BuildRc(Command):
             with open(qrc, 'w') as out:
                 out.write('<!DOCTYPE RCC>\n<RCC version="1.0">\n  <qresource>\n')
                 for file in files:
-                    out.write('    <file>' + os.path.abspath(file) + '</file>\n')
+                    out.write('    <file alias="{}">{}</file>\n'
+                              .format(os.path.basename(file),
+                                      os.path.abspath(file)))
                 out.write('  </qresource>\n</RCC>\n')
 
             p = subprocess.run(self.cmd + [qrc, '-o', self.rcfile])
