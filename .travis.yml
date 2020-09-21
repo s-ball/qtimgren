@@ -7,7 +7,7 @@ python:
         - "3.8"
 services: xvfb
 env:
-        - QT_QPA_PLATFORM=offscreen
+        - QT_QPA_PLATFORM=linuxfb
 install:
         - pip install -r requirements.txt
         - pip install setuptools_scm
