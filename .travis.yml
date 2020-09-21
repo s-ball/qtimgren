@@ -1,15 +1,11 @@
 language: python
 cache: pip
-addons:
-        apt:
-                update: true
-                packages:
-                        - libxkbcommon-x11-0
 python:
         - "3.5"
         - "3.6"
         - "3.7"
         - "3.8"
+services: xvfb
 install:
         - pip install -r requirements.txt
         - pip install setuptools_scm
