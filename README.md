@@ -34,7 +34,7 @@ available.
 
 ### From PyPI
 
-Not currently available...
+    pip install qtimgren
 
 ### From Github
 
@@ -47,17 +47,16 @@ downloading a zipfile but if you want to make changes, you should
 
 You can then install it in your main Python installation or in a venv with:
 
-    pip install -r requirements.txt
-    python setup.py build
+    pip install -e .
 
 or on Windows with the launcher:
 
-    py -m pip install -r requirements.txt
-    py setup.py build
+    py -m pip install -e .
     
-`pip` should be used to install it for the first time in order to have
-`setuptools-scm` to generate the `version.py` file from git metadata.
-Once this is done, `setup.py` can be used with no special issue.
+Alternatively, you can use the `setup.py` script to build the unversioned
+files without installing anything:
+
+    python setup.py build
 
 #### Special handling of `version.py`:
 
@@ -80,18 +79,25 @@ PEP-517 to know that `setuptools-scm` is required before the build.
 
 Once installed, you can run the application:
 
-```
-    python -m qtimgren
-```
-
+    qtimgren
+   
 ## Internationalization
 
-The application is natively written is English, and contains a (source) French
+The application is natively written is English, and contains a French
 translation of its IHM. It depends on Qt Linguist tools for generating the
 binary file used at run-time. The required tool `lrelease` exists in the
 Windows PySide2 distribution, but not in Linux or Mac ones. On those
 platforms, you need a to install the Qt development tools and ensure that
 they are accessible via the path.
+
+Of course, if you install from a PyPi wheel, the compiled message files are
+included as a resource.
+
+At run time, the system default language is used by default, or can be
+explicitly specified with the `--lang` option:
+
+    qtimgren --lang=fr           # forces fr language
+    qtimgren --lang=C            # forces native english language
 
 ## Disclaimer: alpha quality
 
