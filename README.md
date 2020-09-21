@@ -1,5 +1,5 @@
-<!-- [![Build Status](https://travis-ci.com/s-ball/MockSelector.svg?branch=master)](https://travis-ci.com/s-ball/MockSelector)
-[![codecov](https://codecov.io/gh/s-ball/MockSelector/branch/master/graph/badge.svg)](https://codecov.io/gh/s-ball/MockSelector)
+[![Build Status](https://travis-ci.com/s-ball/qtimgren.svg?branch=master)](https://travis-ci.com/s-ball/qtimgren)
+<!-- [![codecov](https://codecov.io/gh/s-ball/MockSelector/branch/master/graph/badge.svg)](https://codecov.io/gh/s-ball/MockSelector)
 -->
 # qtimgren
 
