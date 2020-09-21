@@ -7,10 +7,10 @@ python:
         - "3.8"
 services: xvfb
 env:
-        - QT_QPA_PLATFORM=linuxfb
+        - QT_QPA_PLATFORM=offscreen
 install:
         - pip install -r requirements.txt
         - pip install setuptools_scm
         - python setup.py build
 script:
-        - xvfb-run -e /dev/stdout -a python -m unittest discover
+        - python -m unittest discover
