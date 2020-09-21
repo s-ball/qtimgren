@@ -1,5 +1,11 @@
 language: python
 cache: pip
+addons:
+        apt:
+                update: true
+                packages:
+                        - libxkbcommon-x11-0
+                        - xdpyinfo
 python:
         - "3.5"
         - "3.6"
