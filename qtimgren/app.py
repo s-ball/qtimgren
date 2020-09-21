@@ -15,11 +15,11 @@ def parse(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--lang', '-l',
                         help='force a specific language (or native)')
-    return parser.parse_args(argv)
+    return parser.parse_known_args(argv)
 
 
 def run():
-    params = parse(sys.argv[1:])
+    params = parse(sys.argv[1:])[0]
     app = QApplication(sys.argv)
     if params.lang or (params.lang != 'native'):
         loc = QLocale(params.lang)

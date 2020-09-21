@@ -1,11 +1,8 @@
 language: python
 cache: pip
 python:
-        - "3.5"
         - "3.6"
         - "3.7"
-        - "3.8"
-services: xvfb
 env:
         - QT_QPA_PLATFORM=offscreen
 install:

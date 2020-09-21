@@ -1,7 +1,7 @@
 <!-- [![Build Status](https://travis-ci.com/s-ball/MockSelector.svg?branch=master)](https://travis-ci.com/s-ball/MockSelector)
 [![codecov](https://codecov.io/gh/s-ball/MockSelector/branch/master/graph/badge.svg)](https://codecov.io/gh/s-ball/MockSelector)
 -->
-# QtImgren
+# qtimgren
 
 ## Description
 
@@ -11,7 +11,7 @@ selection of the images to rename.
 
 Of course buttons are there to allow default selections.
 
-It is based on *profiles*. For `QtImgren`, a profile is what is required for
+It is based on *profiles*. For `qtimgren`, a profile is what is required for
 pyimgren configuration:
 
 * a folder
@@ -39,7 +39,7 @@ available.
 ### From Github
 
 This is the recommended way if you want to contribute or simply tweak
-`QtImgren` to your own requirements. You can get a local copy by
+`qtimgren` to your own requirements. You can get a local copy by
 downloading a zipfile but if you want to make changes, you should
  rather clone the repository to have access to all `git` goodies:
 
