@@ -11,4 +11,4 @@ install:
         - pip install setuptools_scm
         - python setup.py build
 script:
-        - python -m unittest discover
+        - xvfb-run python -m unittest discover
