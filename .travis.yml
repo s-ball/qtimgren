@@ -6,6 +6,8 @@ python:
         - "3.7"
         - "3.8"
 services: xvfb
+env:
+        - QT_QPA_PLATFORM=offscreen
 install:
         - pip install -r requirements.txt
         - pip install setuptools_scm
