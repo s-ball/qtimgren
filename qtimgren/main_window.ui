@@ -124,7 +124,7 @@
      <x>0</x>
      <y>0</y>
      <width>793</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -132,6 +132,7 @@
      <string>&amp;File</string>
     </property>
     <addaction name="action_merge"/>
+    <addaction name="action_settings"/>
     <addaction name="separator"/>
     <addaction name="action_quit"/>
    </widget>
@@ -191,6 +192,11 @@
    </property>
    <property name="text">
     <string>&amp;Merge</string>
+   </property>
+  </action>
+  <action name="action_settings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>
@@ -304,8 +310,8 @@
    <slot>select_renamed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>573</x>
-     <y>464</y>
+     <x>771</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel">
      <x>573</x>

@@ -170,6 +170,7 @@ class View(QTableView):
         settings.endArray()
         settings.setValue('display_images',
                           self.images_display.checkState() == Qt.Checked)
+        settings.setValue('cache_size', self.cache_size)
         settings.endGroup()
 
     @Slot()
@@ -180,7 +181,11 @@ class View(QTableView):
 
     @Slot()
     def set_cache_size(self, size):
-        ImageDelegate.do_get_image = lru_cache(maxsize=size)(ImageDelegate.do_get_image)
+        self.cache_size = size
+        if size == -1:
+            size = None
+        ImageDelegate.do_get_image = lru_cache(maxsize=size)(
+            ImageDelegate.do_get_image)
 
     def load(self):
         settings = QSettings()
@@ -196,7 +201,9 @@ class View(QTableView):
             self.setColumnHidden(0, True)
         self.images_display.setCheckState(Qt.Checked if display
                                           else Qt.Unchecked)
+        self.cache_size = settings.value('cache_size', 1000)
         settings.endGroup()
+        self.set_cache_size(self.cache_size)
         delegate = ImageDelegate(self)
         self.setItemDelegateForColumn(0, delegate)
         self.pre_load(delegate)
