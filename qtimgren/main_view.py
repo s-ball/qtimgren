@@ -11,6 +11,7 @@ import re
 import typing
 import datetime
 from fnmatch import fnmatch
+from functools import lru_cache
 
 
 class Model(QAbstractTableModel):
@@ -52,7 +53,7 @@ class Model(QAbstractTableModel):
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
         file = self.files[index.row()]
         if role == Qt.DisplayRole:
-            if index.column() == 1:
+            if index.column() <= 1:
                 return file
             if index.column() == 2:
                 return self.orig.get(file, None)
@@ -128,7 +129,7 @@ class View(QTableView):
         old = self.model().profile.path
         self.model().profile_changed(profile)
         if old != profile.path:
-            self.itemDelegateForColumn(0).reset_cache()
+            ImageDelegate.do_get_image.cache_clear()
         self.reset_selection()
 
     @Slot(float)
@@ -177,6 +178,10 @@ class View(QTableView):
         if not display:
             self.verticalHeader().resizeSections(QHeaderView.ResizeToContents)
 
+    @Slot()
+    def set_cache_size(self, size):
+        ImageDelegate.do_get_image = lru_cache(maxsize=size)(ImageDelegate.do_get_image)
+
     def load(self):
         settings = QSettings()
         settings.beginGroup('View')
@@ -209,14 +214,18 @@ class View(QTableView):
 
         def step():
             nonlocal width, cur, files
-            if view.model().files is not files:
+            model = view.model()
+            if model.files is not files:
                 cur = 0
                 files = view.model().files
+                ImageDelegate.do_get_image.cache_clear()
             if view.columnWidth(0) != 0 and view.columnWidth(0) != width:
                 cur = 0
                 width = view.columnWidth(0)
+                ImageDelegate.do_get_image.cache_clear()
             if cur < len(files) and width != 0:
-                delegate.do_get_pixmap(view.model(), cur, width)
+                delegate.do_get_image(os.path.join(model.profile.path,
+                                                   model.files[cur]), width)
                 cur += 1
             if cur >= len(files):
                 timer.setInterval(1000)
@@ -243,24 +252,20 @@ class ImageDelegate(QStyledItemDelegate):
             view.setRowHeight(index.row(), pixmap.height())
             painter.drawImage(option.rect, pixmap)
 
-    def get_pixmap(self, option: QStyleOptionViewItem, index: QModelIndex) -> QImage:
+    def get_pixmap(self, option: QStyleOptionViewItem,
+                   index: QModelIndex) -> QImage:
         view = option.styleObject
         model = view.model()
         w = view.columnWidth(0)
-        return self.do_get_pixmap(model, index.row(), w)
-
-    def do_get_pixmap(self, model, row, w):
         if w == 0:
             return QImage()
-        file = model.files[row]
-        try:
-            pixmap = self.cache[model.orig.get(file, file)]
-            if (pixmap is not None) and (not pixmap.isNull()) and (pixmap.width() != w):
-                pixmap = None
-        except KeyError:
-            pixmap = None
-        if pixmap is None:
-            image = QImage(os.path.join(model.profile.path, file))
-            pixmap = image.scaledToWidth(w)
-            self.cache[model.orig.get(file, file)] = pixmap
-        return pixmap
+        else:
+            file = model.data(index)
+            file = os.path.join(model.profile.path, file)
+            return self.do_get_image(file, w)
+
+    @lru_cache(maxsize=None)
+    def do_get_image(self, file, w):
+        image = QImage(file)
+        image = image.scaledToWidth(w)
+        return image
