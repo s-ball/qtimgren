@@ -22,7 +22,7 @@ def run():
     params = parse(sys.argv[1:])[0]
     app = QApplication(sys.argv)
     if params.lang or (params.lang != 'native'):
-        loc = QLocale(params.lang)
+        loc = QLocale(params.lang) if params.lang is not None else QLocale()
         qt_trans = QTranslator()
         qt_trans.load(loc, 'qt', '_',
                       QLibraryInfo.location(QLibraryInfo.TranslationsPath))
