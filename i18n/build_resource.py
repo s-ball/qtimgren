@@ -25,9 +25,12 @@ class Builder:
 
     def write_qrc(self):
         with open(self.qrc, 'w') as out:
-            out.write('<!DOCTYPE RCC>\n<RCC version="1.0">\n  <qresource>\n')
+            out.write('<!DOCTYPE RCC>\n<RCC version="1.0">\n  <qresource prefix="/lang">\n')
             for file in self.files:
-                out.write('    <file>' + file + '</file>\n')
+                splitted = file.rsplit('.', 1)[0].split('_', 1)
+                name = splitted[1] if len(splitted) == 2 else file
+                out.write('    <file alias="' + name + '">'
+                          + file + '</file>\n')
             out.write('  </qresource>\n</RCC>\n')
         return self
 

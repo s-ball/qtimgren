@@ -28,7 +28,7 @@ def run():
                       QLibraryInfo.location(QLibraryInfo.TranslationsPath))
         app.installTranslator(qt_trans)
         translator = QTranslator()
-        translator.load(loc, 'qtimgren', '_', ':')
+        translator.load(loc, '', '', ':/lang', '')
         app.installTranslator(translator)
     app.setOrganizationName('SBA')
     app.setApplicationName('QtImgren')

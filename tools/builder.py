@@ -179,11 +179,13 @@ class BuildRc(Command):
         with tempfile.TemporaryDirectory() as d:
             qrc = os.path.join(d, 'resource.qrc')
             with open(qrc, 'w') as out:
-                out.write('<!DOCTYPE RCC>\n<RCC version="1.0">\n  <qresource>\n')
+                out.write('<!DOCTYPE RCC>\n<RCC version="1.0">\n  <qresource prefix="/lang">\n')
                 for file in files:
+                    name = os.path.basename(file)
+                    splitted = name.rsplit('.', 1)[0].split('_', 1)
+                    if len(splitted) == 2: name = splitted[1]
                     out.write('    <file alias="{}">{}</file>\n'
-                              .format(os.path.basename(file),
-                                      os.path.abspath(file)))
+                              .format(name, os.path.abspath(file)))
                 out.write('  </qresource>\n</RCC>\n')
 
             p = subprocess.run(self.cmd + [qrc, '-o', self.rcfile])
