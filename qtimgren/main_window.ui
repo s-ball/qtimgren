@@ -196,7 +196,7 @@
   </action>
   <action name="action_settings">
    <property name="text">
-    <string>Cache &amp;settings</string>
+    <string>&amp;Settings</string>
    </property>
   </action>
  </widget>

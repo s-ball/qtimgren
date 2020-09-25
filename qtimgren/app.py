@@ -1,7 +1,7 @@
 #  Copyright (c) 2020  SBA - MIT License
 
 from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo
+from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo, QDir,QSettings
 from .main_window import MainWindow
 import argparse
 try:
@@ -9,6 +9,50 @@ try:
 except ImportError:
     pass
 import sys
+
+
+
+class Application(QApplication):
+    def __init__(self, argv):
+        params = parse(sys.argv[1:])[0]
+        super().__init__(argv)
+        self.setOrganizationName('SBA')
+        self.setApplicationName('QtImgren')
+        if params.lang or (params.lang != 'native'):
+            if params.lang:
+                loc = QLocale(params.lang)
+            else:
+                settings = QSettings()
+                lang = settings.value('MainWindow/lang')
+            loc = QLocale() if lang is None else QLocale(lang)
+            self.qt_trans = QTranslator()
+            self.qt_trans.load(loc, 'qt', '_', QLibraryInfo
+                               .location(QLibraryInfo.TranslationsPath))
+            self.installTranslator(self.qt_trans)
+            self.translator = QTranslator()
+            self.translator.load(loc, '', '', ':/lang', '')
+            self.installTranslator(self.translator)
+        self.main_window = MainWindow()
+
+    def set_language(self, lang):
+        self.removeTranslator(self.translator)
+        self.removeTranslator(self.qt_trans)
+        loc = QLocale(lang)
+        self.qt_trans.load(loc, 'qt', '_',
+                      QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+        self.installTranslator(self.qt_trans)
+        self.translator.load(loc, '', '', ':/lang', '')
+        self.installTranslator(self.translator)
+
+    def get_language(self):
+        lang = self.translator.language()
+        return 'C' if (lang is None or lang == '') else lang
+
+    def get_languages(self):
+        for lang in QDir(':/lang').entryList():
+            loc = QLocale(lang)
+            name = loc.nativeLanguageName()
+            yield lang, name
 
 
 def parse(argv):
@@ -19,19 +63,7 @@ def parse(argv):
 
 
 def run():
-    params = parse(sys.argv[1:])[0]
-    app = QApplication(sys.argv)
-    if params.lang or (params.lang != 'native'):
-        loc = QLocale(params.lang) if params.lang is not None else QLocale()
-        qt_trans = QTranslator()
-        qt_trans.load(loc, 'qt', '_',
-                      QLibraryInfo.location(QLibraryInfo.TranslationsPath))
-        app.installTranslator(qt_trans)
-        translator = QTranslator()
-        translator.load(loc, '', '', ':/lang', '')
-        app.installTranslator(translator)
-    app.setOrganizationName('SBA')
-    app.setApplicationName('QtImgren')
-    main_window = MainWindow()
-    main_window.show()
+    global qt_trans, translator, loc
+    app = Application(sys.argv)
+    app.main_window.show()
     sys.exit(app.exec_())

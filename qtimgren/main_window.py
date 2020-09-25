@@ -92,6 +92,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.tableView.cache_size = settings.cache_size.value()
                 self.tableView.use_cache = use_cache
                 self.tableView.set_cache_size()
+            QApplication.instance().set_language(
+                settings.language.currentData())
+            self.retranslateUi(self)
 
     @Slot()
     def save(self):
@@ -99,4 +102,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings.beginGroup('MainWindow')
         geom = self.saveGeometry()
         settings.setValue('geom', geom)
+        settings.setValue('lang', QApplication.instance().get_language())
         settings.endGroup()
