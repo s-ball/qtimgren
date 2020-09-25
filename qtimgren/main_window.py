@@ -81,19 +81,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @Slot()
     def on_action_settings_triggered(self):
         settings = Settings(self)
-        settings.image_display.setCheckState(self.images_display.checkState())
+        settings.use_cache.setCheckState(
+            Qt.Checked if self.tableView.use_cache else Qt.Unchecked)
         settings.cache_size.setValue(self.tableView.cache_size)
         cr = settings.exec_()
         if cr:
-            print(settings.image_display.checkState(),
-                  settings.cache_size.value())
-            if (settings.image_display.checkState()
-                    != self.images_display.checkState()):
-                self.images_display.setCheckState(
-                    settings.image_display.checkState())
-                self.images_display.clicked.emit()
-            if settings.cache_size.value() != self.tableView.cache_size:
-                self.tableView.set_cache_size(settings.cache_size.value())
+            use_cache = settings.use_cache.checkState() == Qt.Checked
+            if (settings.cache_size.value() != self.tableView.cache_size
+                    or use_cache != self.tableView.use_cache):
+                self.tableView.cache_size = settings.cache_size.value()
+                self.tableView.use_cache = use_cache
+                self.tableView.set_cache_size()
 
     @Slot()
     def save(self):

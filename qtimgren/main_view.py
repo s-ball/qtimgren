@@ -116,6 +116,7 @@ class View(QTableView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.images_display = None
+        self.cache_id = 0
         QApplication.instance().aboutToQuit.connect(self.save)
 
     def initialize(self, model: QAbstractItemModel, images_display):
@@ -171,6 +172,7 @@ class View(QTableView):
         settings.setValue('display_images',
                           self.images_display.checkState() == Qt.Checked)
         settings.setValue('cache_size', self.cache_size)
+        settings.setValue('use_cache', self.use_cache)
         settings.endGroup()
 
     @Slot()
@@ -180,12 +182,18 @@ class View(QTableView):
             self.verticalHeader().resizeSections(QHeaderView.ResizeToContents)
 
     @Slot()
-    def set_cache_size(self, size):
-        self.cache_size = size
-        if size == -1:
-            size = None
+    def set_cache_size(self):
+        if self.use_cache:
+            size = self.cache_size
+            if size == -1:
+                size = None
+        else:
+            size = 0
         ImageDelegate.do_get_image = lru_cache(maxsize=size)(
-            ImageDelegate.do_get_image)
+            ImageDelegate.do_get_image.__wrapped__)
+        self.cache_id += 1
+        if self.cache_id >= 32768:
+            self.cache_id = 0
 
     def load(self):
         settings = QSettings()
@@ -202,8 +210,9 @@ class View(QTableView):
         self.images_display.setCheckState(Qt.Checked if display
                                           else Qt.Unchecked)
         self.cache_size = settings.value('cache_size', 1000)
+        self.use_cache = settings.value('use_cache', type=bool)
         settings.endGroup()
-        self.set_cache_size(self.cache_size)
+        self.set_cache_size()
         delegate = ImageDelegate(self)
         self.setItemDelegateForColumn(0, delegate)
         self.pre_load(delegate)
@@ -218,9 +227,10 @@ class View(QTableView):
         width = view.columnWidth(0)
         cur = 0
         timer = QTimer(view)
+        cache_id = self.cache_id
 
         def step():
-            nonlocal width, cur, files
+            nonlocal width, cur, files, cache_id
             model = view.model()
             if model.files is not files:
                 cur = 0
@@ -230,6 +240,15 @@ class View(QTableView):
                 cur = 0
                 width = view.columnWidth(0)
                 ImageDelegate.do_get_image.cache_clear()
+            if self.cache_id != cache_id:
+                cache_id = self.cache_id
+                cur = 0
+            if not self.use_cache:
+                cur = len(files)
+            else:
+                info = ImageDelegate.do_get_image.cache_info()
+                if info.maxsize is not None and info.currsize >= info.maxsize:
+                    cur = len(files)
             if cur < len(files) and width != 0:
                 delegate.do_get_image(os.path.join(model.profile.path,
                                                    model.files[cur]), width)
