@@ -100,47 +100,47 @@
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="140"/>
+        <location filename="../qtimgren/main_window.ui" line="141"/>
         <source>&amp;Help</source>
         <translation>&amp;?</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="147"/>
+        <location filename="../qtimgren/main_window.ui" line="148"/>
         <source>&amp;Profiles</source>
         <translation>&amp;Profils</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="160"/>
+        <location filename="../qtimgren/main_window.ui" line="161"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="165"/>
+        <location filename="../qtimgren/main_window.ui" line="166"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="170"/>
+        <location filename="../qtimgren/main_window.ui" line="171"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="175"/>
+        <location filename="../qtimgren/main_window.ui" line="176"/>
         <source>&amp;New profile</source>
         <translation>&amp;Nouveau profil</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="180"/>
+        <location filename="../qtimgren/main_window.ui" line="181"/>
         <source>&amp;Manage profiles</source>
         <translation>&amp;Gestion des profils</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="185"/>
+        <location filename="../qtimgren/main_window.ui" line="186"/>
         <source>Change &amp;Folder</source>
         <translation>Change de &amp;répertoire</translation>
     </message>
     <message>
-        <location filename="../qtimgren/main_window.ui" line="193"/>
+        <location filename="../qtimgren/main_window.ui" line="194"/>
         <source>&amp;Merge</source>
         <translation>&amp;Combine</translation>
     </message>
@@ -178,6 +178,11 @@
         <location filename="../qtimgren/main_window.ui" line="111"/>
         <source>&amp;Back</source>
         <translation>Noms d&apos;&amp;origine</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="199"/>
+        <source>&amp;Settings</source>
+        <translation>&amp;Configuration</translation>
     </message>
 </context>
 <context>
@@ -287,6 +292,54 @@
         <location filename="../qtimgren/profiles.py" line="127"/>
         <source>&quot;{1}&quot; is a duplicate&lt;br/&gt;already present at row {0}</source>
         <translation>{1} est déjà présent&lt;br/&gt;ligne {0}</translation>
+    </message>
+</context>
+<context>
+    <name>settings</name>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="14"/>
+        <source>Settings</source>
+        <translation>Configuration</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="31"/>
+        <source>&amp;Use cache</source>
+        <translation>&amp;Utilisation du cache</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="41"/>
+        <source>If unchecked no image caching will occur. It will save memory at the price of slow and not smocth scrolling</source>
+        <translation>Si non coché, les vignettes ne seront pas mise en cache. Cela économise de la mémoire au prix d&apos;un défilement long et saccadé</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="51"/>
+        <source>Cache &amp;size</source>
+        <translation>&amp;Taille du cache</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="61"/>
+        <source>Maximum number of images that can be cached or &quot;unlimited&apos;. It should be unlimited if you have enough memory, but can allow qtimgren to run on smaller systems.</source>
+        <translation>Nombre maximum d&apos;images à mettre en cache ou &quot;illimité&quot;. Utiliser de préférnce illimité si vous avez suffisamment de mémoire, mais des valeurs faibles peuvent permettre à qtimgren de fonctionner sur des systèmes limités.</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="64"/>
+        <source>Unlimited</source>
+        <translation>Illimité</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="83"/>
+        <source>Choose the language for the interface</source>
+        <translation>Choix de la langue utilisée dans l&apos;application</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.ui" line="86"/>
+        <source>&amp;Language</source>
+        <translation>&amp;Langue</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/settings.py" line="16"/>
+        <source>English</source>
+        <translation>Anglais</translation>
     </message>
 </context>
 </TS>
