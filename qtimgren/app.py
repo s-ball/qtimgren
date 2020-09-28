@@ -13,25 +13,29 @@ import sys
 
 
 class Application(QApplication):
+    known_lang = {'C': QApplication.translate('app', 'English'),
+                   'fr': QApplication.translate('app', 'French')}
+
     def __init__(self, argv):
         params = parse(sys.argv[1:])[0]
         super().__init__(argv)
         self.setOrganizationName('SBA')
         self.setApplicationName('QtImgren')
-        if params.lang or (params.lang != 'native'):
-            if params.lang:
-                loc = QLocale(params.lang)
-            else:
-                settings = QSettings()
-                lang = settings.value('MainWindow/lang')
+        if params.lang is None:
+            settings = QSettings()
+            lang = settings.value('MainWindow/lang')
             loc = QLocale() if lang is None else QLocale(lang)
-            self.qt_trans = QTranslator()
-            self.qt_trans.load(loc, 'qt', '_', QLibraryInfo
-                               .location(QLibraryInfo.TranslationsPath))
-            self.installTranslator(self.qt_trans)
-            self.translator = QTranslator()
-            self.translator.load(loc, '', '', ':/lang', '')
-            self.installTranslator(self.translator)
+        elif params.lang == 'native':
+            loc = QLocale(None)
+        else:
+            loc = QLocale(params.lang)
+        self.qt_trans = QTranslator()
+        self.qt_trans.load(loc, 'qt', '_', QLibraryInfo
+                           .location(QLibraryInfo.TranslationsPath))
+        self.installTranslator(self.qt_trans)
+        self.translator = QTranslator()
+        self.translator.load(loc, '', '', ':/lang', '')
+        self.installTranslator(self.translator)
         self.main_window = MainWindow()
 
     def set_language(self, lang):
@@ -49,9 +53,13 @@ class Application(QApplication):
         return 'C' if (lang is None or lang == '') else lang
 
     def get_languages(self):
+        yield 'C', self.translate('app', 'English')
         for lang in QDir(':/lang').entryList():
-            loc = QLocale(lang)
-            name = loc.nativeLanguageName()
+            if lang in self.known_lang:
+                name = self.translate('app', self.known_lang[lang])
+            else:
+                loc = QLocale(lang)
+                name = loc.nativeLanguageName()
             yield lang, name
 
 

@@ -12,13 +12,11 @@ class Settings(QDialog, Ui_settings):
 
     def init_language(self):
         app = QApplication.instance()
-        self.language.addItem(app.translate(
-            'settings', 'English'), 'C')
         cur = app.get_language()
         item = 0
         for i, lang in enumerate(app.get_languages()):
             if cur == lang[0]:
-                item = i+1
+                item = i
             self.language.addItem(lang[1], lang[0])
         self.language.setCurrentIndex(item)
 

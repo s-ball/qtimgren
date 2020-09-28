@@ -72,14 +72,14 @@
         <translation>&amp;Dossier</translation>
     </message>
     <message>
-        <location filename="../qtimgren/profile.ui" line="125"/>
-        <source>*.JPG</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../qtimgren/profile.ui" line="132"/>
         <source>New name &amp;pattern</source>
         <translation>M&amp;odèle de nouveau nom</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/profile.ui" line="125"/>
+        <source>*.JPG</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../qtimgren/profile.ui" line="142"/>
@@ -89,11 +89,6 @@
 </context>
 <context>
     <name>MainWindow</name>
-    <message>
-        <location filename="../qtimgren/main_window.ui" line="14"/>
-        <source>QtImgren</source>
-        <translation></translation>
-    </message>
     <message>
         <location filename="../qtimgren/main_window.ui" line="132"/>
         <source>&amp;File</source>
@@ -184,6 +179,24 @@
         <source>&amp;Settings</source>
         <translation>&amp;Configuration</translation>
     </message>
+    <message>
+        <location filename="../qtimgren/main_window.ui" line="14"/>
+        <source>QtImgren</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>app</name>
+    <message>
+        <location filename="../qtimgren/app.py" line="57"/>
+        <source>English</source>
+        <translation>Anglais</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/app.py" line="19"/>
+        <source>French</source>
+        <translation>Français</translation>
+    </message>
 </context>
 <context>
     <name>profile</name>
@@ -225,7 +238,7 @@
     <message>
         <location filename="../qtimgren/profile.py" line="98"/>
         <source>Pattern</source>
-        <translation>Modèle de data</translation>
+        <translation>Modèle de date</translation>
     </message>
 </context>
 <context>
@@ -339,7 +352,7 @@
     <message>
         <location filename="../qtimgren/settings.py" line="16"/>
         <source>English</source>
-        <translation>Anglais</translation>
+        <translation type="obsolete">Anglais</translation>
     </message>
 </context>
 </TS>
