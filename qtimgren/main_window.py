@@ -16,6 +16,7 @@ from .profile_manager import ProfileManager
 from .main_view import Model
 from typing import Optional
 from .settings import Settings
+from .merge_dialog import MergeDialog
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -35,6 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         geom = settings.value('MainWindow/geom')
         if geom is not None:
             self.restoreGeometry(geom)
+        self.merge_folder = settings.value('MainWindow/merge', '.')
         self.profile_manager = ProfileManager(self.menu_Profiles, self)
         view = self.tableView
         model = Model(self.profile_manager.active_profile, view)
@@ -97,10 +99,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.retranslateUi(self)
 
     @Slot()
+    def on_action_merge_triggered(self):
+        profile = self.profile_manager.active_profile
+        if profile is not None:
+            renamer = self.tableView.model().renamer
+            merge = MergeDialog(profile, renamer, self.merge_folder, self)
+            merge.view.use_cache = self.tableView.use_cache
+            merge.view.cache_size = self.tableView.cache_size
+            cr = merge.exec_()
+            self.merge_folder = merge.folder.text()
+            if cr:
+                renamer.merge(self.merge_folder, *(merge.selected_files()))
+                self.tableView.model().reset()
+
+    @Slot()
     def save(self):
         settings = QSettings()
         settings.beginGroup('MainWindow')
         geom = self.saveGeometry()
         settings.setValue('geom', geom)
         settings.setValue('lang', QApplication.instance().get_language())
+        settings.setValue('merge', self.merge_folder)
         settings.endGroup()
