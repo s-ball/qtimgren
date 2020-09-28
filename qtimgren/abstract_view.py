@@ -38,6 +38,8 @@ class Model(QAbstractTableModel):
             self.folder = folder
             self.renamer = renamer
         if self.folder is not None:
+            if not os.path.isdir(self.folder):
+                self.folder = '.'
             self.files = [entry.name for entry in os.scandir(self.folder)
                           if entry.is_dir() or self.rx.match(entry.name)]
 

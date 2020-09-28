@@ -137,7 +137,7 @@
     <message>
         <location filename="../qtimgren/main_window.ui" line="194"/>
         <source>&amp;Merge</source>
-        <translation>&amp;Combine</translation>
+        <translation>Com&amp;bine</translation>
     </message>
     <message>
         <location filename="../qtimgren/main_window.ui" line="29"/>

@@ -33,8 +33,9 @@ class MergeDialog(QDialog, Ui_Dialog):
         wd = QFileDialog.getExistingDirectory(
             self, directory=self.folder.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
-        self.folder.setText(wd)
-        self.view.model().folder_changed(wd)
+        if wd != '':
+            self.folder.setText(wd)
+            self.view.model().folder_changed(wd)
 
     def save(self):
         self.view.save()

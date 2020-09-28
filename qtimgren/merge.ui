@@ -73,6 +73,11 @@
    <header>.merge.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>folder</tabstop>
+  <tabstop>change</tabstop>
+  <tabstop>view</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
