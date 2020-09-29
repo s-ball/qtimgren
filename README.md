@@ -99,11 +99,18 @@ explicitly specified with the `--lang` option:
     qtimgren --lang=fr           # forces fr language
     qtimgren --lang=C            # forces native english language
 
-## Disclaimer: alpha quality
+## Contributions
 
-It works, and is based on pyimgren which I have used for years. But corner
-cases like renaming files more than once or trying to rename back images
-with no registered original names need additional tests
+Contributions are welcome, including translations or just issues on GitHub.
+Problems are expected to be documented so that they can be reproduced. But
+I only develop this on my free time, so I cannot guarantee quick answers...
+
+## Disclaimer: beta quality
+
+All functionalities are now implemented, and the underlying pyimgren module
+has been used for years. I trust it enough to handle my own photographies
+with it. Yet it still lacks a decent documentation, and
+has not been extensively tested
 
 ## License
 
