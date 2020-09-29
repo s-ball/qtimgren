@@ -86,6 +86,21 @@
         <source>%Y%m%d_%H%M%S.jpg</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="../qtimgren/merge.ui" line="14"/>
+        <source>Folder to merge</source>
+        <translation>Dossier à combiner</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/merge.ui" line="28"/>
+        <source>&amp;Folder</source>
+        <translation>&amp;Dossier</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/merge.ui" line="41"/>
+        <source>&amp;Change</source>
+        <translation>&amp;Changer</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -353,6 +368,29 @@
         <location filename="../qtimgren/settings.py" line="16"/>
         <source>English</source>
         <translation type="obsolete">Anglais</translation>
+    </message>
+</context>
+<context>
+    <name>view</name>
+    <message>
+        <location filename="../qtimgren/abstract_view.py" line="54"/>
+        <source>Image</source>
+        <translation>Image</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/abstract_view.py" line="54"/>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/abstract_view.py" line="55"/>
+        <source>Original</source>
+        <translation>Nom d&apos;origine</translation>
+    </message>
+    <message>
+        <location filename="../qtimgren/abstract_view.py" line="56"/>
+        <source>New name</source>
+        <translation>Nouveau nom</translation>
     </message>
 </context>
 </TS>

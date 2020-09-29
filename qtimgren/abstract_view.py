@@ -1,8 +1,8 @@
 from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
-    QStyleOptionViewItem, QApplication, QHeaderView
+    QStyleOptionViewItem, QHeaderView
 from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
-    QTimer, QSettings
+    QTimer, QSettings, QCoreApplication
 from PySide2.QtGui import QImage, QPainter
 from pyimgren.pyimgren import Renamer, exif_dat
 from .profile_manager import Profile
@@ -51,7 +51,8 @@ class Model(QAbstractTableModel):
 
     def headerData(self, section: int, orientation: Qt.Orientation,
                    role: int = Qt.DisplayRole) -> typing.Any:
-        header = ['Image', 'Name', 'Original', 'New name']
+        header = [translate('view', 'Image'), translate('view', 'Name'),
+                  translate('view', 'Original'), translate('view', 'New name')]
         if orientation == Qt.Orientation.Horizontal and role == Qt.DisplayRole:
             return header[section]
 
@@ -262,3 +263,6 @@ class ImageDelegate(QStyledItemDelegate):
         image = QImage(file)
         image = image.scaledToWidth(w)
         return image
+
+
+translate = QCoreApplication.translate
