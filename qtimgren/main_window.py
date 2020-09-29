@@ -106,6 +106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             merge = MergeDialog(profile, renamer, self.merge_folder, self)
             merge.view.use_cache = self.tableView.use_cache
             merge.view.cache_size = self.tableView.cache_size
+            merge.view.images_display = self.tableView.images_display
             cr = merge.exec_()
             self.merge_folder = merge.folder.text()
             if cr:

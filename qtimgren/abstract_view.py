@@ -150,18 +150,20 @@ class View(QTableView):
         sz = settings.beginReadArray('col_size')
         for i in range(sz):
             settings.setArrayIndex(i)
-            w = settings.value('col')
+            w = settings.value('col', type=int)
             if w is not None:
                 self.setColumnWidth(i, w)
         settings.endArray()
         if ini_check:
             display = settings.value('display_images', type=bool)
-            if not display:
-                self.setColumnHidden(0, True)
             self.images_display.setCheckState(Qt.Checked if display
                                               else Qt.Unchecked)
             self.use_cache = settings.value('use_cache', type=bool)
             self.cache_size = settings.value('cache_size')
+        else:
+            display = self.images_display
+        if not display:
+            self.setColumnHidden(0, True)
         settings.endGroup()
         delegate = ImageDelegate(self)
         self.setItemDelegateForColumn(0, delegate)
@@ -256,6 +258,8 @@ class ImageDelegate(QStyledItemDelegate):
         else:
             file = model.data(index)
             file = os.path.join(model.profile.path, file)
+            if os.path.isdir(file):
+                return QImage
             return self.do_get_image(file, w)
 
     @lru_cache(maxsize=None)

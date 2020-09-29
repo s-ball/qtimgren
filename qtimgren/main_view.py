@@ -35,7 +35,7 @@ class View(AbstractView):
 
     @Slot()
     def profile_changed(self, profile):
-        old = self.model().profile.path
+        old = self.model().profile.path if self.model().profile else None
         self.model().profile_changed(profile)
         if old != profile.path:
             ImageDelegate.do_get_image.cache_clear()
