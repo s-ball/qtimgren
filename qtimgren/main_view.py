@@ -23,6 +23,11 @@ class Model(AbstractModel):
         self.renamer.back(*files)
         self.reset()
 
+    def folder_changed(self, folder):
+        self.beginResetModel()
+        self.ini_files(None, folder)
+        self.endResetModel()
+
 
 class View(AbstractView):
     def __init__(self, parent=None):

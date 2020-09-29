@@ -1,7 +1,7 @@
 #  Copyright (c) 2020  SBA - MIT License
 
 from PySide2.QtWidgets import QDialog, QFileDialog
-from PySide2.QtCore import Slot, Qt, QSettings
+from PySide2.QtCore import Slot, Qt, QSettings, QCoreApplication
 import os.path
 from .ui_merge import Ui_Dialog
 from .merge import MergeModel
@@ -31,7 +31,7 @@ class MergeDialog(QDialog, Ui_Dialog):
     @Slot()
     def on_change_clicked(self):
         wd = QFileDialog.getExistingDirectory(
-            self, directory=self.folder.text(),
+            self, translate('merge', 'New folder'), self.folder.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
         if wd != '':
             self.folder.setText(wd)
@@ -52,3 +52,5 @@ class MergeDialog(QDialog, Ui_Dialog):
         if geom is not None:
             self.restoreGeometry(geom)
         settings.endGroup()
+
+translate = QCoreApplication.translate

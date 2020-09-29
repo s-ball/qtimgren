@@ -31,17 +31,19 @@ class Model(QAbstractTableModel):
     def ini_files(self, renamer, folder):
         if folder is None:
             self.folder = self.profile.path
-            self.renamer = Renamer(self.profile.path, self.profile.mask,
+        else:
+            self.folder = folder
+        if renamer is None:
+            self.renamer = Renamer(self.folder, self.profile.mask,
                                    self.profile.pattern, ext_mask='')
             self.orig = self.renamer.load_names()
         else:
-            self.folder = folder
             self.renamer = renamer
         if self.folder is not None:
             if not os.path.isdir(self.folder):
                 self.folder = '.'
-            self.files = [entry.name for entry in os.scandir(self.folder)
-                          if entry.is_dir() or self.rx.match(entry.name)]
+            self.files = ['..'] + [entry.name for entry in os.scandir(
+                self.folder) if entry.is_dir() or self.rx.match(entry.name)]
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.files)
@@ -65,7 +67,7 @@ class Model(QAbstractTableModel):
                 return self.orig.get(file, None)
             if index.column() == 3:
                 try:
-                    dat = exif_dat(os.path.join(self.profile.path, file))
+                    dat = exif_dat(os.path.join(self.folder, file))
                     if dat is not None:
                         dat += datetime.timedelta(minutes=self.renamer.delta)
                         return dat.strftime(self.profile.pattern)
@@ -73,14 +75,14 @@ class Model(QAbstractTableModel):
                     pass
         elif index.column() == 0:
             if role == Qt.DecorationRole:
-                return QImage(os.path.join(self.profile.path, file))
+                return QImage(os.path.join(self.folder, file))
         return None
 
     @Slot()
     def profile_changed(self, profile):
         self.beginResetModel()
         self.profile = profile
-        self.ini_files(self.renamer, self.folder)
+        self.ini_files(self.renamer, self.profile.path)
         self.endResetModel()
 
     @Slot()
@@ -114,6 +116,7 @@ class View(QTableView):
         super().__init__(parent)
         self.images_display = None
         self.cache_id = 0
+        self.doubleClicked.connect(self.on_double_click)
 
     def initialize(self, model: QAbstractItemModel, images_display,
                    ini_check=True):
@@ -131,6 +134,17 @@ class View(QTableView):
         self.setColumnHidden(0, not display)
         if not display:
             self.verticalHeader().resizeSections(QHeaderView.ResizeToContents)
+
+    @Slot(QModelIndex)
+    def on_double_click(self, index):
+        print('index', index.row(), 'clicked')
+        model = self.model()
+        path = os.path.join(model.folder, model.data(model.index(
+            index.row(), 1), Qt.DisplayRole))
+        if os.path.isdir(path):
+            if hasattr(self.parent(), 'folder'):
+                self.parent().folder.setText(path)
+            model.folder_changed(path)
 
     def set_cache_size(self):
         if self.use_cache:
@@ -220,7 +234,7 @@ class View(QTableView):
                 if info.maxsize is not None and info.currsize >= info.maxsize:
                     cur = len(files)
             if cur < len(files) and width != 0:
-                delegate.do_get_image(os.path.join(model.profile.path,
+                delegate.do_get_image(os.path.join(model.folder,
                                                    model.files[cur]), width)
                 cur += 1
             if cur >= len(files):
@@ -257,9 +271,9 @@ class ImageDelegate(QStyledItemDelegate):
             return QImage()
         else:
             file = model.data(index)
-            file = os.path.join(model.profile.path, file)
+            file = os.path.join(model.folder, file)
             if os.path.isdir(file):
-                return QImage
+                return QImage()
             return self.do_get_image(file, w)
 
     @lru_cache(maxsize=None)

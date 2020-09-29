@@ -214,6 +214,14 @@
     </message>
 </context>
 <context>
+    <name>merge</name>
+    <message>
+        <location filename="../qtimgren/merge_dialog.py" line="34"/>
+        <source>New folder</source>
+        <translation>Nouveau dossier</translation>
+    </message>
+</context>
+<context>
     <name>profile</name>
     <message>
         <location filename="../qtimgren/profile.py" line="73"/>
@@ -373,22 +381,22 @@
 <context>
     <name>view</name>
     <message>
-        <location filename="../qtimgren/abstract_view.py" line="54"/>
+        <location filename="../qtimgren/abstract_view.py" line="56"/>
         <source>Image</source>
         <translation>Image</translation>
     </message>
     <message>
-        <location filename="../qtimgren/abstract_view.py" line="54"/>
+        <location filename="../qtimgren/abstract_view.py" line="56"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../qtimgren/abstract_view.py" line="55"/>
+        <location filename="../qtimgren/abstract_view.py" line="57"/>
         <source>Original</source>
         <translation>Nom d&apos;origine</translation>
     </message>
     <message>
-        <location filename="../qtimgren/abstract_view.py" line="56"/>
+        <location filename="../qtimgren/abstract_view.py" line="58"/>
         <source>New name</source>
         <translation>Nouveau nom</translation>
     </message>
