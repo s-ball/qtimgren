@@ -1,3 +1,7 @@
+0.4.1: Add installers
+    - add a Pyinstaller script
+    - add an InnoSetup script for a Windows installer
+
 0.4.0: First beta version
     - add caching for image thumbnails
     - allow directory changes with a double click
