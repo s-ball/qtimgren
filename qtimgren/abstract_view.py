@@ -172,8 +172,8 @@ class View(QTableView):
             display = settings.value('display_images', type=bool)
             self.images_display.setCheckState(Qt.Checked if display
                                               else Qt.Unchecked)
-            self.use_cache = settings.value('use_cache', type=bool)
-            self.cache_size = settings.value('cache_size')
+            self.use_cache = settings.value('use_cache', True, type=bool)
+            self.cache_size = settings.value('cache_size', 1000)
         else:
             display = self.images_display
         if not display:

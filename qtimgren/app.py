@@ -30,7 +30,7 @@ class Application(QApplication):
         else:
             loc = QLocale(params.lang)
         self.qt_trans = QTranslator()
-        self.qt_trans.load(loc, 'qt', '_', QLibraryInfo
+        self.qt_trans.load(loc, 'qtbase', '_', QLibraryInfo
                            .location(QLibraryInfo.TranslationsPath))
         self.installTranslator(self.qt_trans)
         self.translator = QTranslator()
