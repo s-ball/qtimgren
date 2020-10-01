@@ -143,7 +143,7 @@ class BuildQm(Command):
 
 
 class BuildRc(Command):
-    description = "\"build\" a resource.py file from *.qm ones"
+    description = "\"build\" a resource.py file from *.qm ones and icon"
 
     user_options = [
         ('force', 'f', 'rebuild unconditionaly'),
@@ -175,7 +175,7 @@ class BuildRc(Command):
                 rcdir = self.packages[0]
             self.rcfile = os.path.join(rcdir, 'resource.py')
 
-    def compile(self, files):
+    def compile(self, files, icon=None):
         with tempfile.TemporaryDirectory() as d:
             qrc = os.path.join(d, 'resource.qrc')
             with open(qrc, 'w') as out:
@@ -186,6 +186,9 @@ class BuildRc(Command):
                     if len(splitted) == 2: name = splitted[1]
                     out.write('    <file alias="{}">{}</file>\n'
                               .format(name, os.path.abspath(file)))
+                if icon is not None:
+                    out.write('  </qresource>\n  <qresource prefix="/icon">\n')
+                    out.write('    <file alias="app.ico">{}</file>\n'.format(icon))
                 out.write('  </qresource>\n</RCC>\n')
 
             p = subprocess.run(self.cmd + [qrc, '-o', self.rcfile])
@@ -204,6 +207,7 @@ class BuildRc(Command):
         self.announce("Build rc - force: {} - rcc: {}".format(
             self.force, ' '.join(self.cmd)))
         files = []
+        args = [files]
         process = False
         for p in self.i18n:
             for file in glob.glob(os.path.join(p, '**', '*.qm'),
@@ -211,11 +215,13 @@ class BuildRc(Command):
                 files.append(file)
                 if not process and newer(file, self.rcfile):
                     process = True
+        if os.path.exists('resources/qtimgren.ico'):
+            args.append(os.path.abspath('resources/qtimgren.ico'))
         if process or self.force:
             if len(files) == 0:
                 self.announce("No qm files found", level=WARN)
             else:
-                self.execute(self.compile, [files],
+                self.execute(self.compile, args,
                              'Building {}'.format(self.rcfile))
 
     def get_outputs(self):

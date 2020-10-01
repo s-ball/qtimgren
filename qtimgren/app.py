@@ -2,6 +2,7 @@
 
 from PySide2.QtWidgets import QApplication
 from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo, QDir,QSettings
+from PySide2.QtGui import QIcon
 from .main_window import MainWindow
 import argparse
 try:
@@ -36,6 +37,7 @@ class Application(QApplication):
         self.translator = QTranslator()
         self.translator.load(loc, '', '', ':/lang', '')
         self.installTranslator(self.translator)
+        self.setWindowIcon(QIcon(':/icon/app.ico'))
         self.main_window = MainWindow()
 
     def set_language(self, lang):
