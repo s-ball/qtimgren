@@ -25,3 +25,4 @@ version.py
 *.pro
 *.qm
 /qtimgren/resource.py
+/file_version_info.txt

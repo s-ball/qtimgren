@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QtImgren"
-#define MyAppVersion "0.4.1dev2"
+#define MyAppVersion GetFileVersion("dist\qtimgren\qtimgren.exe")
 #define MyAppPublisher "SBA"
 #define MyAppURL "https://github.com/s-ball/qtimgren"
 #define MyAppExeName "qtimgren.exe"
