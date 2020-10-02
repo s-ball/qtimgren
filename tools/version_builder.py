@@ -87,9 +87,11 @@ def run(version):
     v1, v2, v3, v4, flags = parse_version(version)
     with open('file_version_info.txt', 'w') as fd:
         fd.write(build(v1, v2, v3, v4, flags, version))
+    print('Built file_version_info.txt for {} ({}.{}.{}.{})'.format(
+        version, v1, v2, v3, v4))
 
 
 if __name__ == '__main__':
-    from qtimgren.version import version
+    from qtimgren.version import version as app_version
 
-    run(version)
+    run(app_version)
