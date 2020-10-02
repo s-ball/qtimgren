@@ -32,6 +32,13 @@ available.
 
 ## Installation
 
+### Direct installation on Windows
+
+Thanks to PyInstaller and InnoSetup, an installer and a portable zip file
+are available on [Github](https://github.com/s-ball/qtimgren/releases).
+
+That way you have no dependencies, not even on Python.
+
 ### From PyPI
 
     pip install qtimgren
