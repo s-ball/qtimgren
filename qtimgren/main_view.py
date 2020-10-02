@@ -1,6 +1,5 @@
 from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import Qt, Slot, QItemSelectionModel, \
-    QAbstractItemModel, QSettings
+from PySide2.QtCore import Slot, QItemSelectionModel, QAbstractItemModel
 import re
 from functools import lru_cache
 from .abstract_view import Model as AbstractModel, View as AbstractView, \
@@ -34,7 +33,8 @@ class View(AbstractView):
         super().__init__(parent)
         QApplication.instance().aboutToQuit.connect(self.save)
 
-    def initialize(self, model: QAbstractItemModel, images_display):
+    def initialize(self, model: QAbstractItemModel, images_display,
+                   **_kwargs):
         super().initialize(model, images_display)
         self.reset_selection()
 

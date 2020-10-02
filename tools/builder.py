@@ -46,7 +46,7 @@ class BuildUi(Command):
     description = "\"build\" ui_*.py files from *.ui ones"
 
     user_options = [
-        ('force', 'f', 'rebuild unconditionaly'),
+        ('force', 'f', 'rebuild unconditionally'),
         ('uic=', 'u', 'uic compiler (default pyside2-uic')
     ]
 
@@ -96,7 +96,7 @@ class BuildQm(Command):
     description = "\"build\" *.qm files from *.ts ones (requires lrelease)"
 
     user_options = [
-        ('force', 'f', 'rebuild unconditionaly'),
+        ('force', 'f', 'rebuild unconditionally'),
         ('lrelease=', 'l', 'language file compiler (default lrelease')
     ]
 
@@ -107,7 +107,6 @@ class BuildQm(Command):
         self.i18n = None
 
     def finalize_options(self):
-        name = self.distribution.get_name()
         if self.force is None:
             self.force = False
         if self.lrelease is None:
@@ -146,7 +145,7 @@ class BuildRc(Command):
     description = "\"build\" a resource.py file from *.qm ones and icon"
 
     user_options = [
-        ('force', 'f', 'rebuild unconditionaly'),
+        ('force', 'f', 'rebuild unconditionally'),
         ('rcc=', 'l', 'resource compiler (default pyside2-rcc')
     ]
 
@@ -229,16 +228,17 @@ class BuildRc(Command):
 
 
 def find_exec_builder():
+    import shutil
+
+    path = os.environ.get('PATH', os.defpath)
     try:
         from PySide2.QtCore import QLibraryInfo as Info
-        import shutil
 
         libex = Info.location(Info.LibraryExecutablesPath)
-        path = os.environ.get('PATH', os.defpath)
         if libex not in path.split(os.pathsep):
             path += os.pathsep + libex
     except ImportError:
-        Info = shutil = None
+        pass
     return lambda prog: shutil.which(prog, path=path)
 
 

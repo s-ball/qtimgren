@@ -1,10 +1,11 @@
 #  Copyright (c) 2020  SBA - MIT License
 
 from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo, QDir,QSettings
+from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo, QDir, QSettings
 from PySide2.QtGui import QIcon
 from .main_window import MainWindow
 import argparse
+
 try:
     from . import resource
 except ImportError:
@@ -12,10 +13,9 @@ except ImportError:
 import sys
 
 
-
 class Application(QApplication):
     known_lang = {'C': QApplication.translate('app', 'English'),
-                   'fr': QApplication.translate('app', 'French')}
+                  'fr': QApplication.translate('app', 'French')}
 
     def __init__(self, argv):
         params = parse(sys.argv[1:])[0]
@@ -45,7 +45,7 @@ class Application(QApplication):
         self.removeTranslator(self.qt_trans)
         loc = QLocale(lang)
         self.qt_trans.load(loc, 'qt', '_',
-                      QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+                           QLibraryInfo.location(QLibraryInfo.TranslationsPath))
         self.installTranslator(self.qt_trans)
         self.translator.load(loc, '', '', ':/lang', '')
         self.installTranslator(self.translator)
@@ -73,7 +73,6 @@ def parse(argv):
 
 
 def run():
-    global qt_trans, translator, loc
     app = Application(sys.argv)
     app.main_window.show()
     sys.exit(app.exec_())

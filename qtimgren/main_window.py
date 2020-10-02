@@ -40,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.profile_manager = ProfileManager(self.menu_Profiles, self)
         view = self.tableView
         model = Model(self.profile_manager.active_profile, view)
-        view.initialize(model, self.images_display)
+        view.initialize(model, self.images_display, )
         self.profile_manager.profile_changed.connect(view.profile_changed)
         QApplication.instance().aboutToQuit.connect(self.save)
 

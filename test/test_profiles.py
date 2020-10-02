@@ -29,9 +29,9 @@ class TestProfiles(unittest.TestCase):
         self.dialog.model.set_profile(1, profile_manager.Profile(
             'foo', '.', 'DSCF*.JPG')
                                       )
-        with patch.object(profiles, 'QMessageBox') as msgbox:
+        with patch.object(profiles, 'QMessageBox') as msg_box:
             self.assertFalse(self.dialog.valid())
-            self.assertEqual(1, msgbox.warning.call_count)
+            self.assertEqual(1, msg_box.warning.call_count)
 
     def test_remove(self):
         view = self.dialog.table_view

@@ -17,7 +17,7 @@ from functools import lru_cache
 class Model(QAbstractTableModel):
     rx = re.compile(r'.*\.jpe?g*', re.I)
 
-    def __init__(self, profile: Profile, parent=None, renamer = None,
+    def __init__(self, profile: Profile, parent=None, renamer=None,
                  folder=None):
         super().__init__(parent)
         self.profile = profile

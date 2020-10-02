@@ -17,8 +17,8 @@ class MergeDialog(QDialog, Ui_Dialog):
         try:
             images_display = parent.images_display.checkState() == Qt.Checked
         except LookupError:
-            image_display = True
-        self.view.initialize(model, images_display, False)
+            images_display = True
+        self.view.initialize(model, images_display, )
 
     def selected_files(self):
         return self.view.selected_files()
@@ -52,5 +52,6 @@ class MergeDialog(QDialog, Ui_Dialog):
         if geom is not None:
             self.restoreGeometry(geom)
         settings.endGroup()
+
 
 translate = QCoreApplication.translate

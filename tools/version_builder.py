@@ -91,4 +91,5 @@ def run(version):
 
 if __name__ == '__main__':
     from qtimgren.version import version
+
     run(version)

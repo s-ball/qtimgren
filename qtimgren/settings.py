@@ -1,6 +1,6 @@
 #  Copyright (c) 2020  SBA - MIT License
 from PySide2.QtWidgets import QDialog, QApplication
-from PySide2.QtCore import Qt, Slot, QDir, QLocale
+from PySide2.QtCore import Qt, Slot
 from .ui_settings import Ui_settings
 
 
