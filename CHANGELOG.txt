@@ -1,3 +1,9 @@
+0.4.2: Manage versions in the installers (Windows only)
+    - both the installer and the installed program have a VERSIONINFO
+    resource with the current version
+    - the application has a dedicated icon
+    - update the README to refer the installers
+
 0.4.1: Add installers
     - add a Pyinstaller script
     - add an InnoSetup script for a Windows installer
