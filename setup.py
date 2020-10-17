@@ -15,6 +15,31 @@ import subprocess
 
 import sys
 
+def build_py2app_args(version):
+    # config for py2app on macos
+    try:
+        import py2app
+        py2app_args = {
+            'app': ['start.py'],
+            'data_files': [],
+            'options': {
+                'py2app': {
+                    'packages': ['PySide2'],
+                    'iconfile': 'resources/qtimgren.icns',
+                    'plist': {
+                        'CFBundleDevelopmentRegion': 'English',
+                        'CFBundleIdentifier': 'org.sba.qtimgren',
+                        'CFBundleVersion': version,
+                        'NSHumanReadableCopyright': u'Copyright 2020 s-ball',
+                    }
+                }
+            }
+        }
+    except ImportError:
+        py2app_args = {}
+    return py2app_args
+
+
 sys.path.append('.')
 
 name = 'qtimgren'
@@ -75,6 +100,7 @@ if __name__ == '__main__':
 
     version = get_version()
     long_description = get_long_desc(version)
+    py2app_args = build_py2app_args(version)
     setup(
         version=version,
         long_description=long_description,
@@ -87,4 +113,5 @@ if __name__ == '__main__':
             'build_ext': build_py,
             'check': build_py,
         },
+        **py2app_args,
     )
