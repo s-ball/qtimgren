@@ -82,7 +82,7 @@ class Model(QAbstractTableModel):
     def profile_changed(self, profile):
         self.beginResetModel()
         self.profile = profile
-        self.ini_files(self.renamer, self.profile.path)
+        self.ini_files(None, None)
         self.endResetModel()
 
     @Slot()
