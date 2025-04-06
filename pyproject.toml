@@ -1,7 +1,57 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4",
-            "PySide2>=5.12"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["hatchling", "hatch-vcs", "hatch-pyside >= 0.5.4"]
+build-backend = "hatchling.build"
 
-[tool.setuptools_scm]
-write_to = "qtimgren/version.py"
+[project]
+name = "qtimgren"
+description = "GUI over the pyimgren package"
+dynamic = ["version"]
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "s-ball", email = "s-ball@laposte.net" }
+]
+requires-python = ">=3.9"
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Intended Audience :: End Users/Desktop",
+  "Environment :: X11 Applications :: Qt",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Multimedia :: Graphics",
+]
+dependencies = ["pyside6", "pyimgren >= 1.0"]
+
+[project.optional-dependencies]
+cfg = [ "hatch-pyside"]
+
+[project.urls]
+Changelog = "https://github.com/s-ball/qtimgren/blob/master/CHANGES.txt"
+Issues = "https://github.com/s-ball/qtimgren/issues"
+Source = "https://github.com/s-ball/qtimgren"
+
+# use hatch-vcs to provide the version number from git and
+# generate the "pyimgren/version.py" file.
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "qtimgren/version.py"
+
+[tool.hatch.build.hooks.pyside]
+folders = ["qtimgren", "i18n"]
+
+# ensure po files nor pot ones are excluded from the wheel
+[tool.hatch.build.targets.wheel]
+packages = ["qtimgren"]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.13", "3.12", "3.11", "3.10", "3.9"]

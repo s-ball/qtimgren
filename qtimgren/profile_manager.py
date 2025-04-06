@@ -1,5 +1,6 @@
-from PySide2.QtWidgets import QMessageBox,  QApplication,  QActionGroup,  QAction
-from PySide2.QtCore import QSettings,  QObject,  Signal
+from PySide6.QtGui import QAction, QActionGroup
+from PySide6.QtWidgets import QMessageBox,  QApplication
+from PySide6.QtCore import QSettings,  QObject,  Signal
 
 
 defaultPattern = '%Y%m%d_%H%M%S.jpg'

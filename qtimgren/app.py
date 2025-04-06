@@ -1,13 +1,13 @@
 #  Copyright (c) 2020  SBA - MIT License
 
-from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QLocale, QTranslator, QLibraryInfo, QDir, QSettings
-from PySide2.QtGui import QIcon
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QLocale, QTranslator, QLibraryInfo, QDir, QSettings
+from PySide6.QtGui import QIcon
 from .main_window import MainWindow
 import argparse
 
 try:
-    from . import resource
+    from . import rc_qtimgren
 except ImportError:
     pass
 import sys
@@ -27,7 +27,7 @@ class Application(QApplication):
             lang = settings.value('MainWindow/lang')
             loc = QLocale() if lang is None else QLocale(lang)
         elif params.lang == 'native':
-            loc = QLocale(None)
+            loc = QLocale()
         else:
             loc = QLocale(params.lang)
         self.qt_trans = QTranslator()

@@ -4,8 +4,8 @@
 Module implementing ProfileDialog.
 """
 
-from PySide2.QtCore import Slot, Qt
-from PySide2.QtWidgets import QDialog, QFileDialog, \
+from PySide6.QtCore import Slot, Qt
+from PySide6.QtWidgets import QDialog, QFileDialog, \
     QMessageBox, QWidget, QApplication
 import datetime
 

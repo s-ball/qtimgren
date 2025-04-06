@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import Slot, QItemSelectionModel, QAbstractItemModel
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Slot, QItemSelectionModel, QAbstractItemModel
 import re
 from functools import lru_cache
 from .abstract_view import Model as AbstractModel, View as AbstractView, \

@@ -4,7 +4,7 @@
 Module implementing About.
 """
 
-from PySide2.QtWidgets import QDialog, QWidget
+from PySide6.QtWidgets import QDialog, QWidget
 
 from .ui_about import Ui_About
 from . import __version__

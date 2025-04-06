@@ -1,3 +1,6 @@
+0.5.0: Major changes:
+    - use hatchling as a build backend
+
 0.4.2: Manage versions in the installers (Windows only)
     - both the installer and the installed program have a VERSIONINFO
     resource with the current version

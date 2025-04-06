@@ -1,7 +1,7 @@
 #  Copyright (c) 2020  SBA - MIT License
 
-from PySide2.QtWidgets import QDialog, QFileDialog
-from PySide2.QtCore import Slot, Qt, QSettings, QCoreApplication
+from PySide6.QtWidgets import QDialog, QFileDialog
+from PySide6.QtCore import Slot, Qt, QSettings, QCoreApplication
 import os.path
 from .ui_merge import Ui_Dialog
 from .merge import MergeModel

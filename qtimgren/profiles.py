@@ -4,9 +4,9 @@
 Module implementing ProfilesDialog.
 """
 
-from PySide2.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
-from PySide2.QtCore import QSettings
-from PySide2.QtWidgets import QDialog, QMessageBox, QApplication
+from PySide6.QtCore import Slot,  QAbstractTableModel, QModelIndex, Qt
+from PySide6.QtCore import QSettings
+from PySide6.QtWidgets import QDialog, QMessageBox, QApplication
 
 from .ui_profiles import Ui_profiles
 from .profile import ProfileDialog

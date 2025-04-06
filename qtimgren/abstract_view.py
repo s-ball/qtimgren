@@ -1,10 +1,10 @@
-from PySide2.QtWidgets import QTableView, QStyledItemDelegate, \
+from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem, QHeaderView
-from PySide2.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
+from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
     QTimer, QSettings, QCoreApplication
-from PySide2.QtGui import QImage, QPainter
-from pyimgren.pyimgren import Renamer, exif_dat
+from PySide6.QtGui import QImage, QPainter
+from pyimgren.renamer import Renamer, exif_dat
 from .profile_manager import Profile
 import os.path
 import re
@@ -34,7 +34,7 @@ class Model(QAbstractTableModel):
         else:
             self.folder = folder
         if renamer is None:
-            self.renamer = Renamer(self.folder, self.profile.mask,
+            self.renamer = Renamer(self.folder,
                                    self.profile.pattern, ext_mask='')
             self.orig = self.renamer.load_names()
         else:

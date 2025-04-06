@@ -5,8 +5,8 @@ Module implementing MainWindow.
 """
 
 
-from PySide2.QtCore import Slot,  Qt, QSettings
-from PySide2.QtWidgets import QMainWindow,  QApplication,  QWidget
+from PySide6.QtCore import Slot,  Qt, QSettings
+from PySide6.QtWidgets import QMainWindow,  QApplication,  QWidget
 
 from .ui_main_window import Ui_MainWindow
 from .about import About

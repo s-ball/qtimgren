@@ -26,3 +26,6 @@ version.py
 *.qm
 /qtimgren/resource.py
 /file_version_info.txt
+
+/venv
+.idea

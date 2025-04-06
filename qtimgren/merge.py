@@ -1,6 +1,6 @@
 #  Copyright (c) 2020  SBA - MIT License
 
-from PySide2.QtCore import QAbstractItemModel
+from PySide6.QtCore import QAbstractItemModel
 from .abstract_view import Model, View
 from .profiles import Profile
 
