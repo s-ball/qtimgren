@@ -5,7 +5,8 @@
 
 ## Description
 
-This is a GUI around the [pyimgren](https://pypi.org/project/pyimgren/) package. Currently it is able to rename camera images
+This is a GUI around the [pyimgren](https://pypi.org/project/pyimgren/) package.
+Currently, it is able to rename camera images
 via pyimgren forth and back. Its main feature is that it allows a manual
 selection of the images to rename.
 
@@ -35,7 +36,7 @@ available.
 ### Direct installation on Windows
 
 Thanks to PyInstaller and InnoSetup, an installer and a portable zip file
-are available on [Github](https://github.com/s-ball/qtimgren/releases).
+are available on [GitHub](https://github.com/s-ball/qtimgren/releases).
 
 That way you have no dependencies, not even on Python.
 
@@ -43,7 +44,7 @@ That way you have no dependencies, not even on Python.
 
     pip install qtimgren
 
-### From Github
+### From GitHub
 
 This is the recommended way if you want to contribute or simply tweak
 `qtimgren` to your own requirements. You can get a local copy by
@@ -60,27 +61,23 @@ or on Windows with the launcher:
 
     py -m pip install -e .
     
-Alternatively, you can use the `setup.py` script to build the unversioned
-files without installing anything:
-
-    python setup.py build
-
 #### Special handling of `version.py`:
 
-`QtImgren` relies on `setuptools-scm` to automatically extract a
+`QtImgren` relies on `hatch-vcs` to automatically extract a
 version number from git metadata and store it in a `version.py` file
-for later use. The requires the availability of both `git` (which should
-not be a problem when the project is downloaded from Github), and
-`setuptools-scm`. If it fails because one is not available or because
+for later use. This requires the availability of both `git` (which should
+not be a problem when the project is downloaded from GitHub), and
+an installation via `pip` or a build through a PEP518 compatible tool.
+If it fails because one is not available or because
 git metadata is not there (if you only downloaded a zip archive from
-Github), the version is set to 0.0.0
+GitHub), the version is set to 0.0.0
 
 For that reason, if you do not use git to download the sources, you
 should download a source distribution from PyPI, because the latter
 contains a valid `version.py`
 
 `pip` uses the `pyproject.toml` file with respect to PEP-518 and
-PEP-517 to know that `setuptools-scm` is required before the build.
+PEP-517 to know that `hatch-vcs` is required before the build.
 
 ## Basic use
 
@@ -92,10 +89,8 @@ Once installed, you can run the application:
 
 The application is natively written is English, and contains a French
 translation of its IHM. It depends on Qt Linguist tools for generating the
-binary file used at run-time. The required tool `lrelease` exists in the
-Windows PySide2 distribution, but not in Linux or Mac ones. On those
-platforms, you need a to install the Qt development tools and ensure that
-they are accessible via the path.
+binary file used at run-time. This is automatically done at build or install
+time by the `hatch-pyside` project.
 
 Of course, if you install from a PyPi wheel, the compiled message files are
 included as a resource.
@@ -115,7 +110,7 @@ I only develop this on my free time, so I cannot guarantee quick answers...
 ## Disclaimer: beta quality
 
 All functionalities are now implemented, and the underlying pyimgren module
-has been used for years. I trust it enough to handle my own photographies
+has been used for years. I trust it enough to handle my own photographs
 with it. Yet it still lacks a decent documentation, and
 has not been extensively tested
 

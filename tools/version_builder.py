@@ -4,7 +4,7 @@
 This is a utility file aimed at building a VERSIONINFO resource for
 pyinstaller on Windows.
 It is intended to be used from the top-level project folder (the one
-containing setup.py
+containing pyproject.toml
 """
 
 import re
@@ -45,10 +45,10 @@ VSVersionInfo(
       StringTable(
         u'000004b0',
         [StringStruct(u'Comments', u'GUI frontend over pyimgren to rename digital camera images.'),
-        StringStruct(u'CompanyName', u'SBA'),
+        StringStruct(u'CompanyName', u's-ball'),
         StringStruct(u'FileDescription', u'QtImgren'),
         StringStruct(u'FileVersion', u'{version}'),
-        StringStruct(u'LegalCopyright', u'Copyright (c) 2020  SBA - MIT License'),
+        StringStruct(u'LegalCopyright', u'Copyright (c) 2020-current  s-ball - MIT License'),
         StringStruct(u'OriginalFileName', u'QtImgren'),
         StringStruct(u'ProductName', u'QtImgren'),
         StringStruct(u'ProductVersion', u'{version}')])

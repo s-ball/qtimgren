@@ -1,6 +1,6 @@
-.eric6project/
-.ropeproject/
-.directory/
+.*
+!/.gitignore
+
 *.e4p
 *.pyc
 *.pyo
@@ -13,6 +13,7 @@ tmp/
 __pycache__/
 *.DS_Store
 Ui_*
+ui_*
 *.swp
 *.egg*
 version.py
@@ -20,11 +21,11 @@ version.py
 /build
 /dist
 
-/.coverage
 /htmlcov/
 *.pro
 *.qm
 /qtimgren/resource.py
+rc_qtimgren.py
 /file_version_info.txt
 
 /venv
