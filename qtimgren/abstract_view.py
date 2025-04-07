@@ -25,6 +25,7 @@ class Model(QAbstractTableModel):
         self.orig = {}
         self.folder = None
         self.renamer = None
+        self.delta = 0
         if profile is not None:
             self.ini_files(renamer, folder)
 
@@ -87,6 +88,7 @@ class Model(QAbstractTableModel):
 
     @Slot()
     def delta_changed(self, delta):
+        self.delta = delta
         self.dataChanged.emit(self.index(0, 3),
                               self.index(self.rowCount() - 1, 3))
 
@@ -95,7 +97,7 @@ class Model(QAbstractTableModel):
         sel1 = QItemSelection()
         if direct:
             for i, file in enumerate(self.files):
-                if fnmatch(file, self.renamer.src_mask):
+                if fnmatch(file, self.profile.mask):
                     sel1.select(self.index(i, 0), self.index(i, 3))
                     sel.merge(sel1, QItemSelectionModel.SelectCurrent)
         else:

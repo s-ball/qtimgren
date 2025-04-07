@@ -1,6 +1,6 @@
 import unittest
 import qtimgren.profile
-from PySide2.QtWidgets import *
+from PySide6.QtWidgets import *
 from qtimgren.main_window import MainWindow
 from qtimgren.profile_manager import Profile
 from unittest.mock import patch

@@ -43,7 +43,7 @@ class ProfileDialog(QDialog, Ui_Dialog):
         Select the profile folder.
         """
         wd = QFileDialog.getExistingDirectory(
-            self, directory=self.path.text(),
+            self, dir=self.path.text(),
             options=QFileDialog.ShowDirsOnly | QFileDialog.DontUseNativeDialog)
         self.path.setText(wd)
 

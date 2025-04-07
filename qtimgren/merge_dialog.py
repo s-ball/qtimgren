@@ -18,7 +18,7 @@ class MergeDialog(QDialog, Ui_Dialog):
             images_display = parent.images_display.checkState() == Qt.Checked
         except LookupError:
             images_display = True
-        self.view.initialize(model, images_display, )
+        self.view.initialize(model, images_display, False)
 
     def selected_files(self):
         return self.view.selected_files()

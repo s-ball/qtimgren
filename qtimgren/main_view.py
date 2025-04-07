@@ -9,17 +9,12 @@ from .abstract_view import Model as AbstractModel, View as AbstractView, \
 class Model(AbstractModel):
     rx = re.compile(r'.*\.jpe?g*', re.I)
 
-    @Slot()
-    def delta_changed(self, delta):
-        self.renamer.delta = delta
-        super().delta_changed(delta)
-
     def rename(self, files: list):
-        self.renamer.rename(*files)
+        self.renamer.rename(*files, delta=self.delta)
         self.reset()
 
     def back(self, files: list):
-        self.renamer.back(*files)
+        self.renamer.back(*files, delta=self.delta)
         self.reset()
 
     def folder_changed(self, folder):

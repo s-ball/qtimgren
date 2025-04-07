@@ -110,7 +110,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             cr = merge.exec_()
             self.merge_folder = merge.folder.text()
             if cr:
-                renamer.merge(self.merge_folder, *(merge.selected_files()))
+                renamer.merge(*(merge.selected_files()),
+                              src_folder = self.merge_folder,
+                              delta=self.tableView.model().delta)
                 self.tableView.model().reset()
 
     @Slot()

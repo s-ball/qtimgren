@@ -1,5 +1,5 @@
 import unittest
-from PySide2.QtWidgets import *
+from PySide6.QtWidgets import *
 from qtimgren.main_window import MainWindow
 from unittest.mock import Mock, patch
 import qtimgren.main_window

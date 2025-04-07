@@ -1,5 +1,5 @@
 import unittest
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 from qtimgren import main_window, profile_manager, profiles, profile
 from unittest.mock import patch, Mock
 
