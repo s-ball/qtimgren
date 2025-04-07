@@ -43,8 +43,8 @@ class Model(QAbstractTableModel):
         if self.folder is not None:
             if not os.path.isdir(self.folder):
                 self.folder = '.'
-            self.files = ['..'] + [entry.name for entry in os.scandir(
-                self.folder) if entry.is_dir() or self.rx.match(entry.name)]
+            self.files = [entry.name for entry in os.scandir(
+                self.folder) if self.rx.match(entry.name)]
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.files)
