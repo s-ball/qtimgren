@@ -70,7 +70,7 @@ class Model(QAbstractTableModel):
                 try:
                     dat = exif_dat(os.path.join(self.folder, file))
                     if dat is not None:
-                        dat += datetime.timedelta(minutes=self.renamer.delta)
+                        dat += datetime.timedelta(minutes=self.delta)
                         return dat.strftime(self.profile.pattern)
                 except OSError:
                     pass
