@@ -76,7 +76,7 @@ class Model(QAbstractTableModel):
                     pass
         elif index.column() == 0:
             if role == Qt.DecorationRole:
-                return QImage(os.path.join(self.folder, file))
+                return QImage()
         return None
 
     @Slot()
