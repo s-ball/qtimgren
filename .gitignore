@@ -1,6 +1,8 @@
 .*
 !/.gitignore
 
+ui_*.py
+
 *.e4p
 *.pyc
 *.pyo

@@ -46,12 +46,14 @@ fallback-version = "0.0.0"
 [tool.hatch.build.hooks.vcs]
 version-file = "qtimgren/version.py"
 
-[tool.hatch.build.hooks.pyside]
+[tool.hatch.build.targets.wheel.hooks.pyside]
 folders = ["qtimgren"]
 
-# ensure po files nor pot ones are excluded from the wheel
+# ensure non comiled files are excluded from the wheel
 [tool.hatch.build.targets.wheel]
 packages = ["qtimgren"]
+exclude = ["*.ts", "*.pyproject", "*.qrc", "*.ui", "*.qm"]
+artifacts = ["rc_*.py"]
 
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.13", "3.12", "3.11", "3.10", "3.9"]
