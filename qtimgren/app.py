@@ -20,7 +20,7 @@ class Application(QApplication):
     def __init__(self, argv):
         params = parse(sys.argv[1:])[0]
         super().__init__(argv)
-        self.setOrganizationName('SBA')
+        self.setOrganizationName('s-ball')
         self.setApplicationName('QtImgren')
         if params.lang is None:
             settings = QSettings()
