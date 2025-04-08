@@ -2,15 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QtImgren"
-#define MyAppVersion GetFileVersion("dist\qtimgren\qtimgren.exe")
-#define MyAppPublisher "SBA"
-#define MyAppURL "https://github.com/s-ball/qtimgren"
+#define MyAppVersion "0.5.0"
+#define MyAppPublisher "s-ball"
+#define MyAppURL "https://github/s-ball/qtimgren"
 #define MyAppExeName "qtimgren.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{36230036-873E-4A98-AB90-D2E644D5F2D9}
+AppId={{C643926A-C33C-4D3C-8E50-E83179BD596C}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -18,13 +18,22 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\{#MyAppPublisher}\{#MyAppName}
-DisableProgramGroupPage=yes
-LicenseFile=C:\Users\serge.ballesta\PycharmProjects\qtimgren\LICENCE.txt
-; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
+DefaultDirName={autopf}\{#MyAppName}
+; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
+; on anything but x64 and Windows 11 on Arm.
+ArchitecturesAllowed=x64compatible
+; "ArchitecturesInstallIn64BitMode=x64compatible" requests that the
+; install be done in "64-bit mode" on x64 or Windows 11 on Arm,
+; meaning it should use the native 64-bit Program Files directory and
+; the 64-bit view of the registry.
+ArchitecturesInstallIn64BitMode=x64compatible
+DefaultGroupName={#MyAppName}
+LicenseFile=LICENCE.txt
+; Remove the following line to run in administrative install mode (install for all users.)
+PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=qtimgren-setup-{#MyAppVersion}
+OutputBaseFilename=qtimgren_setup
+SetupIconFile=icon\qtimgren.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -37,70 +46,15 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\qtimgren.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_asyncio.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_bz2.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_ctypes.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_decimal.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_elementtree.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_hashlib.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_lzma.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_multiprocessing.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_overlapped.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_queue.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_socket.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_ssl.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_testcapi.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\_tkinter.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\base_library.zip"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\d3dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\libcrypto-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\libffi-7.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\libssl-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\MSVCP140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\MSVCP140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\pyexpat.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\pyside2.abi3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\python3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\python38.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5DBus.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Pdf.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Qml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5QmlModels.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Quick.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5VirtualKeyboard.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5WebSockets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\qtimgren.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\select.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\shiboken2.abi3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\tcl86t.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\tk86t.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\unicodedata.pyd"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\VCRUNTIME140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\VCRUNTIME140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\Include\*"; DestDir: "{app}\Include"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\lib2to3\*"; DestDir: "{app}\lib2to3"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\PySide2\*"; DestDir: "{app}\PySide2"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\shiboken2\*"; DestDir: "{app}\shiboken2"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\tcl\*"; DestDir: "{app}\tcl"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\serge.ballesta\PycharmProjects\qtimgren\dist\qtimgren\tk\*"; DestDir: "{app}\tk"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\qtimgren\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\qtimgren\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
-[Registry]
-Root: HKCU; Subkey: "Software\{#MyAppPublisher}"; Flags: uninsdeletekeyifempty dontcreatekey
-Root: HKCU; Subkey: "Software\{#MyAppPublisher}\{#MyAppName}"; Flags: uninsdeletekey dontcreatekey

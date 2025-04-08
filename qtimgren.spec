@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , version='file_version_info.txt', icon='resources\\qtimgren.ico')
+          console=False , version='file_version_info.txt', icon='icon\\qtimgren.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
