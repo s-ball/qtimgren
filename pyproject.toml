@@ -47,7 +47,7 @@ fallback-version = "0.0.0"
 version-file = "qtimgren/version.py"
 
 [tool.hatch.build.hooks.pyside]
-folders = ["qtimgren", "i18n"]
+folders = ["qtimgren"]
 
 # ensure po files nor pot ones are excluded from the wheel
 [tool.hatch.build.targets.wheel]

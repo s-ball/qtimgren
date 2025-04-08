@@ -3,6 +3,6 @@
     <file alias="fr">qtimgren_fr.qm</file>
   </qresource>
   <qresource prefix="/icon">
-    <file alias="app.ico">../resources/qtimgren.ico</file>
+    <file alias="app.ico">../icon/qtimgren.ico</file>
   </qresource>
 </RCC>
