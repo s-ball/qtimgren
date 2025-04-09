@@ -1,3 +1,7 @@
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
+
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import QMessageBox,  QApplication
 from PySide6.QtCore import QSettings,  QObject,  Signal

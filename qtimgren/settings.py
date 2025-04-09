@@ -1,4 +1,7 @@
-#  Copyright (c) 2020  SBA - MIT License
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
+
 from PySide6.QtWidgets import QDialog, QApplication
 from PySide6.QtCore import Qt, Slot
 from .ui_settings import Ui_settings

@@ -1,3 +1,7 @@
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
+
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Slot, QItemSelectionModel, QAbstractItemModel
 import re

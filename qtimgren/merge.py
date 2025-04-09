@@ -1,4 +1,6 @@
-#  Copyright (c) 2020  SBA - MIT License
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
 
 from PySide6.QtCore import QAbstractItemModel
 from .abstract_view import Model, View

@@ -1,3 +1,7 @@
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
+
 from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem, QHeaderView
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \

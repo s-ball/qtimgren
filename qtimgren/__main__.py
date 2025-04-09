@@ -1,4 +1,6 @@
-#  Copyright (c) 2020  SBA - MIT License
+#  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
+#  #
+#  SPDX-License-Identifier: MIT
 
 from .app import run
 
