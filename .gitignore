@@ -32,3 +32,6 @@ rc_qtimgren.py
 
 /venv
 .idea
+
+qtimgren.dist
+Output
