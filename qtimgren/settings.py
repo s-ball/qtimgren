@@ -17,6 +17,7 @@ class Settings(QDialog, Ui_settings):
         app = QApplication.instance()
         cur = app.get_language()
         item = 0
+        lst = list()
         for i, lang in enumerate(app.get_languages()):
             if cur == lang[0]:
                 item = i

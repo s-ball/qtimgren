@@ -32,12 +32,12 @@ class Application(QApplication):
             loc = QLocale()
         else:
             loc = QLocale(params.lang)
-        self.qt_trans = QTranslator()
-        self.qt_trans.load(loc, 'qtbase', '_', QLibraryInfo
-                           .location(QLibraryInfo.TranslationsPath))
-        self.installTranslator(self.qt_trans)
         self.translator = QTranslator()
-        self.translator.load(loc, '', '', ':/lang', '')
+        if self.translator.load(loc, '', '', ':/lang', ''):
+            self.qt_trans = QTranslator()
+            self.qt_trans.load(loc, 'qtbase', '_', QLibraryInfo
+                               .location(QLibraryInfo.TranslationsPath))
+            self.installTranslator(self.qt_trans)
         self.installTranslator(self.translator)
         self.setWindowIcon(QIcon(':/icon/app.ico'))
         self.main_window = MainWindow()
@@ -59,12 +59,16 @@ class Application(QApplication):
     def get_languages(self):
         yield 'C', self.translate('app', 'English')
         for lang in QDir(':/lang').entryList():
+            l = lang
+            loc = QLocale(lang)
             if lang in self.known_lang:
                 name = self.translate('app', self.known_lang[lang])
             else:
-                loc = QLocale(lang)
                 name = loc.nativeLanguageName()
-            yield lang, name
+            t = QTranslator()
+            if t.load(loc, '', '', ':/lang', ''):
+                l = t.language()
+            yield l, name
 
 
 def parse(argv):
