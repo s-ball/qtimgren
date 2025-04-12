@@ -33,11 +33,11 @@ class Application(QApplication):
         else:
             loc = QLocale(params.lang)
         self.translator = QTranslator()
+        self.qt_trans = QTranslator()
         if self.translator.load(loc, '', '', ':/lang', ''):
-            self.qt_trans = QTranslator()
             self.qt_trans.load(loc, 'qtbase', '_', QLibraryInfo
                                .location(QLibraryInfo.TranslationsPath))
-            self.installTranslator(self.qt_trans)
+        self.installTranslator(self.qt_trans)
         self.installTranslator(self.translator)
         self.setWindowIcon(QIcon(':/icon/app.ico'))
         self.main_window = MainWindow()
