@@ -9,22 +9,22 @@
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="about.ui" line="67"/>
+        <location filename="about.ui" line="49"/>
         <source>Version: </source>
         <translation>Version : </translation>
     </message>
     <message>
-        <location filename="about.ui" line="80"/>
+        <location filename="about.ui" line="56"/>
         <source>(pyimgren version: 0.0.0)</source>
         <translation>(pyimgren version : 0.0.0)</translation>
     </message>
     <message>
-        <location filename="about.ui" line="35"/>
-        <source>Ok</source>
-        <translation></translation>
+        <location filename="about.ui" line="63"/>
+        <source>Python version:</source>
+        <translation>Version de Python :</translation>
     </message>
     <message>
-        <location filename="about.ui" line="54"/>
+        <location filename="about.ui" line="29"/>
         <source>QtImgren</source>
         <translation></translation>
     </message>
@@ -37,52 +37,45 @@
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="37"/>
+        <location filename="profile.ui" line="27"/>
         <source>&amp;Name</source>
         <translation>&amp;Nom</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="47"/>
+        <location filename="profile.ui" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the profile&lt;/p&gt;&lt;p&gt;Will be used in the &lt;span style=&quot; font-style:italic;&quot;&gt;Profiles&lt;/span&gt; menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nom du profil&lt;/p&gt;&lt;p&gt;Servira d&apos;entrée dans le menu &lt;span style=&quot; font-style:italic;&quot;&gt;Profils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="91"/>
+        <location filename="profile.ui" line="62"/>
         <source>Path of the image (jpeg) files</source>
         <translation>Répertoire des fichiers image (jpeg)</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="104"/>
+        <location filename="profile.ui" line="69"/>
         <source>&amp;Select</source>
         <translation>&amp;Choisir</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="112"/>
         <source>Image &amp;mask</source>
-        <translation>&amp;Masque des images</translation>
+        <translation type="vanished">&amp;Masque des images</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="122"/>
         <source>Pattern of camera images (e.g. IMG*.JPG or DSCF*.JPG)</source>
-        <translation>Modèles des noms de fichiers image (par example IMG*.JPG ou DSCF*.JPG)</translation>
+        <translation type="vanished">Modèles des noms de fichiers image (par example IMG*.JPG ou DSCF*.JPG)</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="60"/>
+        <location filename="profile.ui" line="50"/>
         <source>&amp;Directory</source>
         <translation>&amp;Dossier</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="132"/>
+        <location filename="profile.ui" line="78"/>
         <source>New name &amp;pattern</source>
         <translation>M&amp;odèle de nouveau nom</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="125"/>
-        <source>*.JPG</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="profile.ui" line="142"/>
+        <location filename="profile.ui" line="88"/>
         <source>%Y%m%d_%H%M%S.jpg</source>
         <translation></translation>
     </message>
@@ -208,13 +201,13 @@
 <context>
     <name>app</name>
     <message>
-        <location filename="app.py" line="17"/>
-        <location filename="app.py" line="59"/>
+        <location filename="app.py" line="19"/>
+        <location filename="app.py" line="61"/>
         <source>English</source>
         <translation>Anglais</translation>
     </message>
     <message>
-        <location filename="app.py" line="20"/>
+        <location filename="app.py" line="22"/>
         <source>French</source>
         <translation>Français</translation>
     </message>
@@ -222,7 +215,7 @@
 <context>
     <name>merge</name>
     <message>
-        <location filename="merge_dialog.py" line="34"/>
+        <location filename="merge_dialog.py" line="36"/>
         <source>New folder</source>
         <translation>Nouveau dossier</translation>
     </message>
@@ -230,43 +223,41 @@
 <context>
     <name>profile</name>
     <message>
-        <location filename="profile.py" line="73"/>
+        <location filename="profile.py" line="71"/>
         <source>&quot;{}&quot; is already used</source>
         <translation>&quot;{}&quot; est déjà utilisé</translation>
     </message>
     <message>
-        <location filename="profile.py" line="77"/>
+        <location filename="profile.py" line="75"/>
         <source>Name cannot be empty</source>
         <translation>Le nom ne peut pas être vide</translation>
     </message>
     <message>
-        <location filename="profile.py" line="88"/>
         <source>&quot;{}&quot; is not a valid image pattern</source>
-        <translation>&quot;{}&quot; n&apos;est pas un modèle valide</translation>
+        <translation type="vanished">&quot;{}&quot; n&apos;est pas un modèle valide</translation>
     </message>
     <message>
-        <location filename="profile.py" line="74"/>
-        <location filename="profile.py" line="78"/>
+        <location filename="profile.py" line="72"/>
+        <location filename="profile.py" line="76"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="profile.py" line="83"/>
+        <location filename="profile.py" line="81"/>
         <source>Path</source>
         <translation>Répertoire</translation>
     </message>
     <message>
-        <location filename="profile.py" line="89"/>
         <source>Mask</source>
-        <translation>Modèle</translation>
+        <translation type="vanished">Modèle</translation>
     </message>
     <message>
-        <location filename="profile.py" line="97"/>
+        <location filename="profile.py" line="89"/>
         <source>&quot;{}&quot; is not a valid date pattern</source>
         <translation>&quot;{}&quot; n&apos;est pas un modèle de date valide</translation>
     </message>
     <message>
-        <location filename="profile.py" line="98"/>
+        <location filename="profile.py" line="90"/>
         <source>Pattern</source>
         <translation>Modèle de date</translation>
     </message>
@@ -274,7 +265,7 @@
 <context>
     <name>profile_manager</name>
     <message>
-        <location filename="profile_manager.py" line="78"/>
+        <location filename="profile_manager.py" line="79"/>
         <source>{} already exists</source>
         <translation>{} existe déjà</translation>
     </message>
@@ -307,7 +298,7 @@
         <translation>&amp;Supprime</translation>
     </message>
     <message>
-        <location filename="profile.py" line="82"/>
+        <location filename="profile.py" line="80"/>
         <source>&quot;{}&quot; is not a valid folder</source>
         <translation>&quot;{}&quot; n&apos;est pas un dossier valide</translation>
     </message>
@@ -322,12 +313,11 @@
         <translation>Répertoire</translation>
     </message>
     <message>
-        <location filename="profiles.py" line="44"/>
         <source>Mask</source>
-        <translation>Modèle</translation>
+        <translation type="vanished">Modèle</translation>
     </message>
     <message>
-        <location filename="profiles.py" line="46"/>
+        <location filename="profiles.py" line="45"/>
         <source>Pattern</source>
         <translation>Modèle de date</translation>
     </message>
@@ -391,22 +381,22 @@
 <context>
     <name>view</name>
     <message>
-        <location filename="abstract_view.py" line="57"/>
+        <location filename="abstract_view.py" line="61"/>
         <source>Image</source>
         <translation>Image</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="57"/>
+        <location filename="abstract_view.py" line="61"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="58"/>
+        <location filename="abstract_view.py" line="62"/>
         <source>Original</source>
         <translation>Nom d&apos;origine</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="59"/>
+        <location filename="abstract_view.py" line="63"/>
         <source>New name</source>
         <translation>Nouveau nom</translation>
     </message>
