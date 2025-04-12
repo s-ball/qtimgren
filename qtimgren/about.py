@@ -7,6 +7,7 @@
 """
 Module implementing About.
 """
+import platform
 
 from PySide6.QtWidgets import QDialog, QWidget
 
@@ -31,3 +32,5 @@ class About(QDialog, Ui_About):
         self.version.setText(self.version.text() + __version__)
         lib_label = self.libversion
         lib_label.setText(lib_label.text().replace('0.0.0', lib_version))
+        self.python_version.setText(
+            f'{self.python_version.text()} {platform.python_version()}')
