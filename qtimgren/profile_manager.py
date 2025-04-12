@@ -11,16 +11,15 @@ defaultPattern = '%Y%m%d_%H%M%S.jpg'
 
 
 class Profile:
-    def __init__(self,  name,  path,  mask,  pattern=defaultPattern):
+    def __init__(self,  name,  path,  pattern=defaultPattern):
         self.name = name
         self.path = path
-        self.mask = mask
         self.pattern = pattern
         
     @staticmethod
     def from_dialog(dialog):
         return Profile(dialog.get_name(), dialog.get_path(),
-                       dialog.get_mask(), dialog.get_pattern())
+                       dialog.get_pattern())
 
 
 class ProfileManager(QObject):
@@ -43,7 +42,6 @@ class ProfileManager(QObject):
         settings.beginGroup('profiles')
         groups = settings.childGroups()
         self.profiles = [Profile(p,  settings.value(f'{p}/path'),
-                                 settings.value(f'{p}/mask'),
                                  settings.value(f'{p}/pattern'))
                          for p in groups]
         settings.endGroup()
@@ -63,7 +61,6 @@ class ProfileManager(QObject):
         settings.remove('')
         for p in self.profiles:
             settings.setValue(f'{p.name}/path',  p.path)
-            settings.setValue(f'{p.name}/mask',  p.mask)
             settings.setValue(f'{p.name}/pattern',  p.pattern)
         settings.endGroup()
         if self.active_profile is not None:
@@ -73,7 +70,7 @@ class ProfileManager(QObject):
         for p in self.profiles:
             yield p.name
     
-    def add_action(self, name, path, mask, pattern):
+    def add_action(self, name, path, pattern):
         if name in self.names():
             app = QApplication.instance()
             QMessageBox.warning(self.parent,  app.applicationName(),
@@ -81,7 +78,7 @@ class ProfileManager(QObject):
                                               '{} already exists')
                                 .format(name))
         else:
-            self.profiles.append(Profile(name,  path,  mask,  pattern))
+            self.profiles.append(Profile(name,  path,  pattern))
             self.do_add_action(name)
     
     def do_add_action(self,  name):
@@ -93,7 +90,7 @@ class ProfileManager(QObject):
             
     def add_from_dialog(self,  dialog):
         self.add_action(dialog.get_name(), dialog.get_path(),
-                        dialog.get_mask(), dialog.get_pattern())
+                        dialog.get_pattern())
 
     def get_profile(self,  name):
         for p in self.profiles:

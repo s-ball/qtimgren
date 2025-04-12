@@ -24,7 +24,7 @@ class ProfilesModel(QAbstractTableModel):
         return len(self.profiles)
     
     def columnCount(self,  _parent=QModelIndex):
-        return 4
+        return 3
         
     def data(self, index,  role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
@@ -35,15 +35,12 @@ class ProfilesModel(QAbstractTableModel):
             return p.name
         elif col == 1:
             return p.path
-        elif col == 2:
-            return p.mask
         else:
             return p.pattern
     
     def headerData(self,  section,  orientation,  role=Qt.DisplayRole):
         headers = [translate('profiles', 'Name'),
                    translate('profiles', 'Path'),
-                   translate('profiles', 'Mask'),
                    translate('profiles', 'Pattern')]
         if role != Qt.DisplayRole or orientation != Qt.Horizontal:
             return None
@@ -51,7 +48,7 @@ class ProfilesModel(QAbstractTableModel):
     
     def set_profile(self,  row,  profile):
         self.profiles[row] = profile
-        self.dataChanged.emit(self.createIndex(row,  0),  self.createIndex(row,  3))
+        self.dataChanged.emit(self.createIndex(row,  0),  self.createIndex(row,  2))
     
     def removeRows(self,  row,  count,  parent=QModelIndex()):
         self.beginRemoveRows(parent, row,  row + count - 1)
@@ -82,9 +79,10 @@ class ProfilesDialog(QDialog, Ui_profiles):
             self.restoreGeometry(geom)
         sz = settings.beginReadArray('col_size')
         for i in range(sz):
-            settings.setArrayIndex(i)
-            w = settings.value('col')
-            self.view.setColumnWidth(i, w)
+            if i < 2:
+                settings.setArrayIndex(i)
+                w = settings.value('col')
+                self.view.setColumnWidth(i, w)
         settings.endArray()
         settings.endGroup()
         self.view.horizontalHeader().setStretchLastSection(True)
@@ -139,7 +137,7 @@ class ProfilesDialog(QDialog, Ui_profiles):
         settings.beginGroup('ProfilesDialog')
         settings.setValue('geom', self.saveGeometry())
         settings.beginWriteArray('col_size')
-        for i in range(3):
+        for i in range(2):
             settings.setArrayIndex(i)
             settings.setValue('col', self.view.columnWidth(i))
         settings.endArray()

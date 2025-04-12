@@ -35,7 +35,6 @@ class ProfileDialog(QDialog, Ui_Dialog):
         self.names = [] if names is None else tuple(names)
         if profile is not None:
             self.name.setText(profile.name)
-            self.mask_edit.setText(profile.mask)
             self.path.setText(profile.path)
             self.pattern.setText(profile.pattern)
 
@@ -55,16 +54,13 @@ class ProfileDialog(QDialog, Ui_Dialog):
     def get_path(self):
         return self.path.text().strip()
 
-    def get_mask(self):
-        return self.mask_edit.text().strip()
-
     def get_pattern(self):
         return self.pattern.text().strip()
 
     @Slot()
-    def on_button_box_accepted(self):
+    def accept(self):
         if self.valid():
-            self.accept()
+            super().accept()
 
     def valid(self):
         """
@@ -83,12 +79,6 @@ class ProfileDialog(QDialog, Ui_Dialog):
             self.error(translate('profiles', '"{}" is not a valid folder')
                        .format(self.get_path()),
                        Id.translate('profile', 'Path'))
-            return False
-        if '*' not in self.get_mask() and '?' not in self.get_mask():
-            self.error(translate('profile',
-                                 '"{}" is not a valid image pattern')
-                       .format(self.get_mask()),
-                       Id.translate('profile', 'Mask'))
             return False
         now = datetime.datetime.now()
         try:
