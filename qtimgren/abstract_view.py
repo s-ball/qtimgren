@@ -3,7 +3,7 @@
 #  SPDX-License-Identifier: MIT
 
 from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
-    QStyleOptionViewItem, QHeaderView
+    QStyleOptionViewItem, QHeaderView, QMessageBox
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
     QTimer, QSettings, QCoreApplication
@@ -17,9 +17,12 @@ import datetime
 from fnmatch import fnmatch
 from functools import lru_cache
 
+from .sql_cache import SQLiteCache
+
 
 class Model(QAbstractTableModel):
     rx = re.compile(r'.*\.jpe?g*', re.I)
+    cache: SQLiteCache
 
     def __init__(self, profile: Profile, parent=None, renamer=None,
                  folder=None):
@@ -41,14 +44,15 @@ class Model(QAbstractTableModel):
         if renamer is None:
             self.renamer = Renamer(self.folder,
                                    self.profile.pattern, ext_mask='')
-            self.orig = self.renamer.load_names()
         else:
             self.renamer = renamer
+        self.orig = self.renamer.load_names()
         if self.folder is not None:
             if not os.path.isdir(self.folder):
                 self.folder = '.'
             self.files = [entry.name for entry in os.scandir(
                 self.folder) if self.rx.match(entry.name)]
+        self.cache = SQLiteCache(self.folder, lambda x: self.orig.get(x, x))
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.files)
@@ -161,7 +165,7 @@ class View(QTableView):
         self.cache_id += 1
         if self.cache_id >= 32768:
             self.cache_id = 0
-        return size()
+        return size
 
     def load(self, ini_check):
         settings = QSettings()
@@ -185,6 +189,7 @@ class View(QTableView):
             self.setColumnHidden(0, True)
         settings.endGroup()
         delegate = ImageDelegate(self)
+        delegate.cache = self.model().cache
         self.setItemDelegateForColumn(0, delegate)
         self.pre_load(delegate)
 
@@ -239,8 +244,7 @@ class View(QTableView):
                 if info.maxsize is not None and info.currsize >= info.maxsize:
                     cur = len(files)
             if cur < len(files) and width != 0:
-                delegate.do_get_image(os.path.join(model.folder,
-                                                   model.files[cur]), width)
+                delegate.do_get_image(model.files[cur], width)
                 cur += 1
             if cur >= len(files):
                 timer.setInterval(1000)
@@ -250,11 +254,11 @@ class View(QTableView):
         timer.timeout.connect(step)
         timer.start()
 
-
 class ImageDelegate(QStyledItemDelegate):
+    cache: SQLiteCache
+
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.cache = {}
 
     def sizeHint(self, option: QStyleOptionViewItem, index: QModelIndex) -> QSize:
         pixmap = self.get_pixmap(option, index)
@@ -276,14 +280,14 @@ class ImageDelegate(QStyledItemDelegate):
             return QImage()
         else:
             file = model.data(index)
-            file = os.path.join(model.folder, file)
-            if os.path.isdir(file):
+            self.cache = model.cache
+            if os.path.isdir(os.path.join(model.folder, file)):
                 return QImage()
             return self.do_get_image(file, w)
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=64)
     def do_get_image(self, file, w):
-        image = QImage(file)
+        image = self.cache.get_thumbnail(file)
         image = image.scaledToWidth(w)
         return image
 

@@ -27,6 +27,7 @@ class MergeDialog(QDialog, Ui_Dialog):
 
     @Slot(int)
     def done(self, cr):
+        self.view.model().cache.close()
         self.save()
         super().done(cr)
 

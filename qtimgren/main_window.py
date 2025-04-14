@@ -119,6 +119,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @Slot()
     def save(self):
+        self.tableView.model().cache.close()
         settings = QSettings()
         settings.beginGroup('MainWindow')
         geom = self.saveGeometry()
