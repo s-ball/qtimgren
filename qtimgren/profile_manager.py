@@ -75,7 +75,7 @@ class ProfileManager(QObject):
         for p in self.profiles:
             yield p.name
     
-    def add_action(self, name, path, pattern):
+    def add_action(self, name, path, pattern, use_disk_cache):
         if name in self.names():
             app = QApplication.instance()
             QMessageBox.warning(self.parent,  app.applicationName(),
@@ -83,9 +83,12 @@ class ProfileManager(QObject):
                                               '{} already exists')
                                 .format(name))
         else:
-            self.profiles.append(Profile(name,  path,  pattern))
+            profile = Profile(name,  path,  pattern, use_disk_cache)
+            self.profiles.append(profile)
             self.do_add_action(name)
-    
+            self.active_profile = profile
+            self.reset_profiles(self.profiles)
+
     def do_add_action(self,  name):
         action = QAction(name,  self.menu)
         self.menu.insertAction(self.sep,  action)
@@ -95,7 +98,7 @@ class ProfileManager(QObject):
             
     def add_from_dialog(self,  dialog):
         self.add_action(dialog.get_name(), dialog.get_path(),
-                        dialog.get_pattern())
+                        dialog.get_pattern(), dialog.get_use_disk_cache())
 
     def get_profile(self,  name):
         for p in self.profiles:
