@@ -2,7 +2,7 @@
 #  #
 #  SPDX-License-Identifier: MIT
 
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import Slot, QItemSelectionModel, QAbstractItemModel
 import re
 from functools import lru_cache
@@ -71,3 +71,21 @@ class View(AbstractView):
         size = super().set_cache_size()
         ImageDelegate.do_get_image = lru_cache(maxsize=size)(
             ImageDelegate.do_get_image.__wrapped__)
+
+    @Slot()
+    def cache_clean(self):
+        model: Model = self.model()
+        model.cache.clean(model.files)
+
+    @Slot()
+    def cache_reset(self):
+        self.model().cache.prune()
+
+    @Slot()
+    def cache_info(self):
+        model: Model = self.model()
+        nb_cached, nb_files, nb_tot = model.cache.get_status(
+            model.files)
+        QMessageBox(QMessageBox.Icon.NoIcon, 'Cache state',
+                    f'{nb_cached}/{nb_files} - extra: {nb_tot - nb_cached}'
+                    ).exec()

@@ -10,6 +10,7 @@ Module implementing MainWindow.
 from PySide6.QtCore import Slot,  Qt, QSettings
 from PySide6.QtWidgets import QMainWindow,  QApplication,  QWidget
 
+from .sql_cache import SQLiteCache
 from .ui_main_window import Ui_MainWindow
 from .about import About
 from .profile import ProfileDialog
@@ -43,8 +44,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         view = self.tableView
         model = Model(self.profile_manager.active_profile, view)
         view.initialize(model, self.images_display, )
-        self.profile_manager.profile_changed.connect(view.profile_changed)
+        self.profile_manager.profile_changed.connect(self.profile_changed)
+        self.menuDisk_cache.setEnabled(isinstance(model.cache, SQLiteCache))
         QApplication.instance().aboutToQuit.connect(self.save)
+
+    @Slot()
+    def profile_changed(self, profile):
+        self.tableView.profile_changed(profile)
+        model: Model = self.tableView.model()
+        self.menuDisk_cache.setEnabled(isinstance(model.cache, SQLiteCache))
 
     @Slot()
     def on_action_about_triggered(self):
