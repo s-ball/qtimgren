@@ -66,7 +66,6 @@ class TestProfiles(unittest.TestCase):
             sub.exec_.return_value = 1
             sub.get_name.return_value = 'foobar'
             sub.get_path.return_value = '.'
-            sub.get_mask.return_value = 'I*.JPEG'
             sub.get_pattern.return_value = profile_manager.defaultPattern
             edit.clicked.emit()
             sub.exec.assert_called_once_with()

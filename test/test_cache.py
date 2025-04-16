@@ -2,15 +2,13 @@
 #  #
 #  SPDX-License-Identifier: MIT
 import fnmatch
-import glob
 import os.path
 import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
 
-import PySide6.QtGui
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtWidgets import QApplication
 
 import qtimgren.abstract_view
 from qtimgren.profile_manager import Profile
@@ -19,16 +17,15 @@ from qtimgren.profile_manager import Profile
 class TestCache(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = QGuiApplication()
-
-    @classmethod
-    def tearDownClass(cls):
-        del cls.app
+        cls.app = QApplication.instance()
+        if not cls.app:
+            cls.app = QApplication()
 
     def setUp(self):
         self.folder = tempfile.TemporaryDirectory()
         data = os.path.join(os.path.dirname(__file__), 'data')
         shutil.copytree(data, self.folder.name, dirs_exist_ok=True)
+        os.remove(os.path.join(self.folder.name, 'qtimgren.sqlite'))
         self.profile = Profile('data', self.folder.name)
         self.model = qtimgren.abstract_view.Model(self.profile)
 
@@ -46,6 +43,7 @@ class TestCache(unittest.TestCase):
             if i.is_file() and fnmatch.fnmatch(i.name, '*.jpg') and n>0:
                 n -= 1
                 self.model.cache.get_thumbnail(i.name)
+        # noinspection PyUnresolvedReferences
         self.assertEqual(8, self.model.cache.con.cursor().execute(
             "SELECT COUNT(*) FROM thumbnails WHERE name like 'DSC%'"
         ).fetchone()[0])
@@ -61,6 +59,23 @@ class TestCache(unittest.TestCase):
             for file, data in thumbnails.items():
                 self.assertEqual(data, self.model.cache.get_thumbnail(file))
             scaled.assert_not_called()
+
+    def load_cache(self):
+        thumbnails = {}
+        for i in os.scandir(self.folder.name):
+            if i.is_file() and fnmatch.fnmatch(i.name, '*.jpg'):
+                thumbnails[i.name] = self.model.cache.get_thumbnail(i.name)
+
+    def test_clean(self):
+        self.load_cache()
+        files = [i.name for i in os.scandir(self.folder.name)
+                 if fnmatch.fnmatch(i.name, 'DSC*')]
+        self.assertEqual(8, self.model.cache.clean(files))
+
+    def test_prune(self):
+        self.load_cache()
+        self.assertEqual(16, self.model.cache.prune())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,7 +12,7 @@ class TestMainWindow(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.app = QApplication.instance()
-        if cls.app is None:
+        if not cls.app:
             cls.app = QApplication()
 
     def setUp(self) -> None:

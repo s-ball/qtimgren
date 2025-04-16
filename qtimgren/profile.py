@@ -37,6 +37,7 @@ class ProfileDialog(QDialog, Ui_Dialog):
             self.name.setText(profile.name)
             self.path.setText(profile.path)
             self.pattern.setText(profile.pattern)
+            self.use_disk_cache.setChecked(profile.use_disk_cache)
 
     @Slot()
     def on_change_clicked(self):
@@ -56,6 +57,9 @@ class ProfileDialog(QDialog, Ui_Dialog):
 
     def get_pattern(self):
         return self.pattern.text().strip()
+
+    def get_use_disk_cache(self):
+        return self.use_disk_cache.isChecked()
 
     @Slot()
     def accept(self):

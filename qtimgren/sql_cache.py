@@ -1,15 +1,34 @@
 #  SPDX-FileCopyrightText: 2025-present s-ball <s-ball@laposte.net>
 #  #
 #  SPDX-License-Identifier: MIT
+import abc
 import os.path
 import sqlite3
-from collections.abc import Callable
+from collections.abc import Callable, Collection
 
 from PySide6.QtCore import QBuffer, QIODevice
 from PySide6.QtGui import QImage
 
 
-class SQLiteCache:
+class AbstractCache(abc.ABC):
+    def close(self):
+        pass
+
+    @abc.abstractmethod
+    def get_thumbnail(self, file: str) -> QImage:
+        pass
+
+    def get_status(self, files: Collection[str]) -> tuple[int, int, int]:
+        return 0, len(files), 0
+
+    def clean(self, files: Collection[str]) -> int:
+        return 0
+
+    def prune(self) -> int:
+        return 0
+
+
+class SQLiteCache(AbstractCache):
     base = 'qtimgren.sqlite'
     sz = 256
     fmt = 'PNG'
@@ -59,3 +78,44 @@ class SQLiteCache:
         im = self.get_thumbnail(file)
         im = im.scaledToWidth(w)
         return im
+
+    def _cached(self) -> set[str]:
+        curs = self.con.cursor()
+        curs.execute("SELECT name FROM thumbnails")
+        cached = set(row[0] for row in curs.fetchall())
+        return cached
+
+    def get_status(self, files: Collection[str]) -> tuple[int, int, int]:
+        cached = self._cached()
+        files = set(self.get_name(f) for f in files)
+        nb_cached = len(cached.intersection(files))
+        nb_files = len(files)
+        nb_tot = len(cached)
+        return nb_cached, nb_files, nb_tot
+
+    def clean(self, files: Collection[str]) -> int:
+        cached = self._cached()
+        files = set(self.get_name(f) for f in files)
+        curs = self.con.cursor().executemany(
+            "DELETE FROM thumbnails WHERE name=?",
+            [(i,) for i in cached.difference(files)]
+        )
+        return curs.rowcount
+
+    def prune(self) -> int:
+        curs = self.con.cursor().execute("DELETE FROM thumbnails")
+        return curs.rowcount
+
+
+class NullCache(AbstractCache):
+    def __init__(self, folder: str, _get_name: Callable[[str], str]):
+        self.folder = folder
+
+    def get_thumbnail(self, file: str) -> QImage:
+        return QImage(os.path.join(self.folder, file))
+
+
+def get_cache(use_disk_cache, folder: str, get_name: Callable[[str], str]
+              ) -> AbstractCache:
+    cache_type = SQLiteCache if use_disk_cache else NullCache
+    return cache_type(folder, get_name)

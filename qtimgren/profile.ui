@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>232</height>
+    <width>395</width>
+    <height>199</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,102 +16,115 @@
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>&amp;Name</string>
-         </property>
-         <property name="buddy">
-          <cstring>name</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="name">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>&amp;Name</string>
+       </property>
+       <property name="buddy">
+        <cstring>name</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="name">
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the profile&lt;/p&gt;&lt;p&gt;Will be used in the &lt;span style=&quot; font-style:italic;&quot;&gt;Profiles&lt;/span&gt; menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&amp;Directory</string>
+       </property>
+       <property name="buddy">
+        <cstring>path</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="path">
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the profile&lt;/p&gt;&lt;p&gt;Will be used in the &lt;span style=&quot; font-style:italic;&quot;&gt;Profiles&lt;/span&gt; menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Path of the image (jpeg) files</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>24</height>
-          </size>
-         </property>
+       <item>
+        <widget class="QPushButton" name="change">
          <property name="text">
-          <string>&amp;Directory</string>
-         </property>
-         <property name="buddy">
-          <cstring>path</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLineEdit" name="path">
-           <property name="whatsThis">
-            <string>Path of the image (jpeg) files</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="change">
-           <property name="text">
-            <string>&amp;Select</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="recurseIntoSubFolderLabel">
-         <property name="text">
-          <string>New name &amp;pattern</string>
-         </property>
-         <property name="buddy">
-          <cstring>pattern</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="pattern">
-         <property name="text">
-          <string>%Y%m%d_%H%M%S.jpg</string>
+          <string>&amp;Select</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Vertical</enum>
+     <item row="2" column="0">
+      <widget class="QLabel" name="recurseIntoSubFolderLabel">
+       <property name="text">
+        <string>New name &amp;pattern</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
+       <property name="buddy">
+        <cstring>pattern</cstring>
        </property>
-      </spacer>
+      </widget>
      </item>
-     <item>
-      <widget class="QDialogButtonBox" name="button_box">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="pattern">
+       <property name="text">
+        <string>%Y%m%d_%H%M%S.jpg</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Use disk &amp;cache</string>
+       </property>
+       <property name="buddy">
+        <cstring>use_disk_cache</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="use_disk_cache">
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>38</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="button_box">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

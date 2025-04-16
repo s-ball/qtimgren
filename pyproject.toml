@@ -52,7 +52,7 @@ folders = ["qtimgren"]
 # ensure non comiled files are excluded from the wheel
 [tool.hatch.build.targets.wheel]
 packages = ["qtimgren"]
-exclude = ["*.ts", "*.pyproject", "*.qrc", "*.ui", "*.qm"]
+exclude = ["*p.ts", "*.pyproject", "*.qrc", "*.ui", "*.qm"]
 artifacts = ["rc_*.py"]
 
 [[tool.hatch.envs.hatch-test.matrix]]

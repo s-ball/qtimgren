@@ -2,27 +2,27 @@
 #  #
 #  SPDX-License-Identifier: MIT
 
-from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
-    QStyleOptionViewItem, QHeaderView, QMessageBox
+import datetime
+import os.path
+import re
+import typing
+from functools import lru_cache
+
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
     QTimer, QSettings, QCoreApplication
 from PySide6.QtGui import QImage, QPainter
+from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
+    QStyleOptionViewItem, QHeaderView
 from pyimgren.renamer import Renamer, exif_dat
-from .profile_manager import Profile
-import os.path
-import re
-import typing
-import datetime
-from fnmatch import fnmatch
-from functools import lru_cache
 
-from .sql_cache import SQLiteCache
+from .profile_manager import Profile
+from .sql_cache import get_cache, AbstractCache
 
 
 class Model(QAbstractTableModel):
     rx = re.compile(r'.*\.jpe?g*', re.I)
-    cache: SQLiteCache
+    cache: AbstractCache
 
     def __init__(self, profile: Profile, parent=None, renamer=None,
                  folder=None):
@@ -35,6 +35,8 @@ class Model(QAbstractTableModel):
         self.delta = 0
         if profile is not None:
             self.ini_files(renamer, folder)
+        else:
+            self.cache = get_cache(False, self.folder, lambda x: x)
 
     def ini_files(self, renamer, folder):
         if folder is None:
@@ -52,7 +54,8 @@ class Model(QAbstractTableModel):
                 self.folder = '.'
             self.files = [entry.name for entry in os.scandir(
                 self.folder) if self.rx.match(entry.name)]
-        self.cache = SQLiteCache(self.folder, lambda x: self.orig.get(x, x))
+        self.cache = get_cache(self.profile.use_disk_cache, self.folder,
+                               lambda x: self.orig.get(x, x))
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.files)
@@ -61,15 +64,15 @@ class Model(QAbstractTableModel):
         return 4
 
     def headerData(self, section: int, orientation: Qt.Orientation,
-                   role: int = Qt.DisplayRole) -> typing.Any:
+                   role: int = Qt.ItemDataRole.DisplayRole) -> typing.Any:
         header = [translate('view', 'Image'), translate('view', 'Name'),
                   translate('view', 'Original'), translate('view', 'New name')]
-        if orientation == Qt.Orientation.Horizontal and role == Qt.DisplayRole:
+        if orientation == Qt.Orientation.Horizontal and role == Qt.ItemDataRole.DisplayRole:
             return header[section]
 
-    def data(self, index: QModelIndex, role: int = Qt.DisplayRole) -> typing.Any:
+    def data(self, index: QModelIndex, role: int = Qt.ItemDataRole.DisplayRole) -> typing.Any:
         file = self.files[index.row()]
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole.DisplayRole:
             if index.column() <= 1:
                 return file
             if index.column() == 2:
@@ -83,7 +86,7 @@ class Model(QAbstractTableModel):
                 except OSError:
                     pass
         elif index.column() == 0:
-            if role == Qt.DecorationRole:
+            if role == Qt.ItemDataRole.DecorationRole:
                 return QImage()
         return None
 
@@ -106,12 +109,12 @@ class Model(QAbstractTableModel):
         if direct:
             for i, file in enumerate(self.files):
                 sel1.select(self.index(i, 0), self.index(i, 3))
-                sel.merge(sel1, QItemSelectionModel.SelectCurrent)
+                sel.merge(sel1, QItemSelectionModel.SelectionFlag.SelectCurrent)
         else:
             for i, file in enumerate(self.files):
                 if file in self.renamer.load_names():
                     sel1.select(self.index(i, 0), self.index(i, 3))
-                    sel.merge(sel1, QItemSelectionModel.SelectCurrent)
+                    sel.merge(sel1, QItemSelectionModel.SelectionFlag.SelectCurrent)
         return sel
 
     def reset(self):
@@ -142,14 +145,14 @@ class View(QTableView):
     def display_images(self, display):
         self.setColumnHidden(0, not display)
         if not display:
-            self.verticalHeader().resizeSections(QHeaderView.ResizeToContents)
+            self.verticalHeader().resizeSections(QHeaderView.ResizeMode.ResizeToContents)
 
     @Slot(QModelIndex)
     def on_double_click(self, index):
         print('index', index.row(), 'clicked')
         model = self.model()
         path = os.path.join(model.folder, model.data(model.index(
-            index.row(), 1), Qt.DisplayRole))
+            index.row(), 1), Qt.ItemDataRole.DisplayRole))
         if os.path.isdir(path):
             if hasattr(self.parent(), 'folder'):
                 self.parent().folder.setText(path)
@@ -179,8 +182,7 @@ class View(QTableView):
         settings.endArray()
         if ini_check:
             display = settings.value('display_images', type=bool)
-            self.images_display.setCheckState(Qt.Checked if display
-                                              else Qt.Unchecked)
+            self.images_display.setChecked(display)
             self.use_cache = settings.value('use_cache', True, type=bool)
             self.cache_size = settings.value('cache_size', 1000)
         else:
@@ -206,13 +208,13 @@ class View(QTableView):
         settings.endArray()
         if self.ini_check:
             settings.setValue('display_images',
-                              self.images_display.checkState() == Qt.Checked)
+                              self.images_display.isChecked())
             settings.setValue('use_cache', self.use_cache)
             settings.setValue('cache_size', self.cache_size)
         settings.endGroup()
 
     def selected_files(self):
-        return [self.model().data(ix, Qt.DisplayRole)
+        return [self.model().data(ix, Qt.ItemDataRole.DisplayRole)
                 for ix in self.selectionModel().selectedRows(1)]
 
     def pre_load(self, delegate):
@@ -255,7 +257,7 @@ class View(QTableView):
         timer.start()
 
 class ImageDelegate(QStyledItemDelegate):
-    cache: SQLiteCache
+    cache: AbstractCache
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -267,7 +269,7 @@ class ImageDelegate(QStyledItemDelegate):
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         pixmap = self.get_pixmap(option, index)
         if not pixmap.isNull():
-            view = option.styleObject
+            view = option.widget
             view.setRowHeight(index.row(), pixmap.height())
             painter.drawImage(option.rect, pixmap)
 

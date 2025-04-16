@@ -11,15 +11,17 @@ defaultPattern = '%Y%m%d_%H%M%S.jpg'
 
 
 class Profile:
-    def __init__(self,  name,  path,  pattern=defaultPattern):
+    def __init__(self,  name,  path,  pattern=defaultPattern,
+                 use_disk_cache: bool = True):
         self.name = name
         self.path = path
         self.pattern = pattern
+        self.use_disk_cache = use_disk_cache
         
     @staticmethod
     def from_dialog(dialog):
         return Profile(dialog.get_name(), dialog.get_path(),
-                       dialog.get_pattern())
+                       dialog.get_pattern(), dialog.get_use_disk_cache())
 
 
 class ProfileManager(QObject):
@@ -42,7 +44,9 @@ class ProfileManager(QObject):
         settings.beginGroup('profiles')
         groups = settings.childGroups()
         self.profiles = [Profile(p,  settings.value(f'{p}/path'),
-                                 settings.value(f'{p}/pattern'))
+                                 settings.value(f'{p}/pattern'),
+                                 settings.value(f'{p}/use_disk_cache',
+                                                True, type=bool))
                          for p in groups]
         settings.endGroup()
         self.actGroup = QActionGroup(self.parent)
@@ -62,6 +66,7 @@ class ProfileManager(QObject):
         for p in self.profiles:
             settings.setValue(f'{p.name}/path',  p.path)
             settings.setValue(f'{p.name}/pattern',  p.pattern)
+            settings.setValue(f'{p.name}/use_disk_cache',  p.use_disk_cache)
         settings.endGroup()
         if self.active_profile is not None:
             settings.setValue('active_profile',  self.active_profile.name)
