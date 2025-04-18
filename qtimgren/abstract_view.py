@@ -49,13 +49,13 @@ class Model(QAbstractTableModel):
         else:
             self.renamer = renamer
         self.orig = self.renamer.load_names()
-        if self.folder is not None:
-            if not os.path.isdir(self.folder):
-                self.folder = '.'
-            self.files = [entry.name for entry in os.scandir(
-                self.folder) if self.rx.match(entry.name)]
+        if self.folder is None or not os.path.isdir(self.folder):
+            self.folder = '.'
+        self.files = [entry.name for entry in os.scandir(
+            self.folder) if self.rx.match(entry.name)]
         self.cache = get_cache(self.profile.use_disk_cache, self.folder,
                                lambda x: self.orig.get(x, x))
+        self.cache.load(self.files)
 
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.files)

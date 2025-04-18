@@ -4,6 +4,7 @@
 import abc
 import os.path
 import sqlite3
+import threading
 from collections.abc import Callable, Collection
 
 from PySide6.QtCore import QBuffer, QIODevice
@@ -27,6 +28,9 @@ class AbstractCache(abc.ABC):
     def prune(self) -> int:
         return 0
 
+    def load(self, files: Collection[str]):
+        pass
+
 
 class SQLiteCache(AbstractCache):
     base = 'qtimgren.sqlite'
@@ -34,9 +38,14 @@ class SQLiteCache(AbstractCache):
     fmt = 'PNG'
 
     def __init__(self, folder: str, get_name: Callable[[str], str]):
+        self.main_lock = threading.Lock()
+        self.locks: dict[str, threading.Lock] = {}
+        self.load_thread: threading.Thread = None
+        self.load_files: list[str] = []
+        self.stop_thread = False
         self.folder = folder
         self.get_name = get_name
-        self.con = sqlite3.connect(os.path.join(folder, self.base))
+        self.con = sqlite3.connect(os.path.join(folder, self.base), check_same_thread=False)
         self._closed = False
         curs = self.con.cursor()
         curs.execute("""CREATE TABLE IF NOT EXISTS thumbnails("""
@@ -46,6 +55,9 @@ class SQLiteCache(AbstractCache):
 
     def close(self, commit=True):
         if not self._closed:
+            if self.load_thread:
+                self.stop_thread = True
+                self.load_thread.join()
             if commit:
                 self.con.commit()
             self.con.close()
@@ -57,6 +69,7 @@ class SQLiteCache(AbstractCache):
     def get_thumbnail(self, file: str) -> QImage:
         curs = self.con.cursor()
         name = self.get_name(file)
+        self._require(name)
         curs.execute("""SELECT thumbnail FROM thumbnails WHERE name=?""",
                      (name,))
         row = curs.fetchone()
@@ -72,7 +85,30 @@ class SQLiteCache(AbstractCache):
             curs.execute("INSERT INTO thumbnails VALUES(?,?)",
                          (name, buf.buffer().data()))
             buf.close()
+        self._release(name)
         return im
+
+    def _require(self, name):
+        self.main_lock.acquire()
+        wait: threading.Lock = None
+        while name in self.locks:
+            if wait:
+                wait.release()
+            wait = self.locks[name]
+            self.main_lock.release()
+            wait.acquire()
+            self.main_lock.acquire()
+        if wait:
+            wait.release()
+        self.locks[name] = threading.Lock()
+        self.locks[name].acquire()
+        self.main_lock.release()
+
+    def _release(self, name):
+        self.main_lock.acquire()
+        self.locks[name].release()
+        del self.locks[name]
+        self.main_lock.release()
 
     def get_pixmap(self, file: str, w: int) -> QImage:
         im = self.get_thumbnail(file)
@@ -105,6 +141,19 @@ class SQLiteCache(AbstractCache):
     def prune(self) -> int:
         curs = self.con.cursor().execute("DELETE FROM thumbnails")
         return curs.rowcount
+
+    def load(self, files: Collection[str]):
+        if self.load_thread is not None:
+            self.stop_thread = True
+            self.load_thread.join()
+        self.load_thread = threading.Thread(target=self._do_load,
+                                            args=(files,))
+        self.stop_thread = False
+        self.load_thread.start()
+
+    def _do_load(self, files: Collection[str]):
+        for file in files:
+            self.get_thumbnail(file)
 
 
 class NullCache(AbstractCache):
