@@ -7,8 +7,8 @@ Module implementing MainWindow.
 """
 
 
-from PySide6.QtCore import Slot,  Qt, QSettings
-from PySide6.QtWidgets import QMainWindow,  QApplication,  QWidget
+from PySide6.QtCore import Slot, Qt, QSettings, QTimer
+from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 
 from .sql_cache import SQLiteCache
 from .ui_main_window import Ui_MainWindow
@@ -36,6 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         settings = QSettings()
+        self.statusLabel: QLabel = None
         geom = settings.value('MainWindow/geom')
         if geom is not None:
             self.restoreGeometry(geom)
@@ -46,13 +47,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         view.initialize(model, self.images_display, )
         self.profile_manager.profile_changed.connect(self.profile_changed)
         self.menuDisk_cache.setEnabled(isinstance(model.cache, SQLiteCache))
+        self.display_cache_status()
         QApplication.instance().aboutToQuit.connect(self.save)
+        timer = QTimer(self)
+        timer.timeout.connect(self.display_cache_status)
+        timer.setInterval(5000)
+        timer.start()
 
     @Slot()
     def profile_changed(self, profile):
         self.tableView.profile_changed(profile)
         model: Model = self.tableView.model()
         self.menuDisk_cache.setEnabled(isinstance(model.cache, SQLiteCache))
+        self.display_cache_status()
 
     @Slot()
     def on_action_about_triggered(self):
@@ -135,3 +142,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings.setValue('lang', QApplication.instance().get_language())
         settings.setValue('merge', self.merge_folder)
         settings.endGroup()
+
+    @Slot()
+    def display_cache_status(self):
+        if self.statusLabel is not None:
+            self.statusLabel.close()
+        if (self.profile_manager.active_profile and
+                self.profile_manager.active_profile.use_disk_cache):
+            model: Model = self.tableView.model()
+            nb_cached, nb_files, nb_tot = model.cache.get_status(model.files)
+            msg = f'{nb_cached}/{nb_files}'
+            if nb_tot > nb_cached:
+                msg += f' - extra: {nb_tot - nb_cached}'
+            self.statusLabel = QLabel(msg)
+            self.statusBar.addPermanentWidget(self.statusLabel)
