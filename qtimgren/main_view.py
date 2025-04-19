@@ -79,7 +79,9 @@ class View(AbstractView):
 
     @Slot()
     def cache_reset(self):
-        self.model().cache.prune()
+        model: Model = self.model()
+        model.cache.prune()
+        model.cache.load(model.files)
 
     @Slot()
     def cache_info(self):
