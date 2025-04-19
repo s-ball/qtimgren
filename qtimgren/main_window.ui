@@ -238,15 +238,24 @@
    <property name="text">
     <string>&amp;Clean</string>
    </property>
+   <property name="statusTip">
+    <string>Remove unused entries from the cache</string>
+   </property>
   </action>
   <action name="action_Reset">
    <property name="text">
     <string>&amp;Reset</string>
    </property>
+   <property name="statusTip">
+    <string>Purge all entries from the cache</string>
+   </property>
   </action>
   <action name="action_Informations">
    <property name="text">
     <string>&amp;Informations</string>
+   </property>
+   <property name="statusTip">
+    <string>Cache informations</string>
    </property>
   </action>
  </widget>

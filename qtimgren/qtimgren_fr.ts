@@ -37,24 +37,29 @@
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="27"/>
+        <location filename="profile.ui" line="25"/>
         <source>&amp;Name</source>
         <translation>&amp;Nom</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="37"/>
+        <location filename="profile.ui" line="35"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the profile&lt;/p&gt;&lt;p&gt;Will be used in the &lt;span style=&quot; font-style:italic;&quot;&gt;Profiles&lt;/span&gt; menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nom du profil&lt;/p&gt;&lt;p&gt;Servira d&apos;entrée dans le menu &lt;span style=&quot; font-style:italic;&quot;&gt;Profils&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="62"/>
+        <location filename="profile.ui" line="60"/>
         <source>Path of the image (jpeg) files</source>
         <translation>Répertoire des fichiers image (jpeg)</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="69"/>
+        <location filename="profile.ui" line="67"/>
         <source>&amp;Select</source>
         <translation>&amp;Choisir</translation>
+    </message>
+    <message>
+        <location filename="profile.ui" line="93"/>
+        <source>Use disk &amp;cache</source>
+        <translation>Utilise un &amp;cache sur disque</translation>
     </message>
     <message>
         <source>Image &amp;mask</source>
@@ -65,17 +70,17 @@
         <translation type="vanished">Modèles des noms de fichiers image (par example IMG*.JPG ou DSCF*.JPG)</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="50"/>
+        <location filename="profile.ui" line="48"/>
         <source>&amp;Directory</source>
         <translation>&amp;Dossier</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="78"/>
+        <location filename="profile.ui" line="76"/>
         <source>New name &amp;pattern</source>
         <translation>M&amp;odèle de nouveau nom</translation>
     </message>
     <message>
-        <location filename="profile.ui" line="88"/>
+        <location filename="profile.ui" line="86"/>
         <source>%Y%m%d_%H%M%S.jpg</source>
         <translation></translation>
     </message>
@@ -118,39 +123,104 @@
         <translation>&amp;Profils</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="161"/>
+        <location filename="main_window.ui" line="160"/>
+        <source>Disk &amp;cache</source>
+        <translation>&amp;Cache disque</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="175"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="166"/>
+        <location filename="main_window.ui" line="178"/>
+        <source>Exit from the application</source>
+        <translation>Quitte l&apos;application</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="183"/>
         <source>&amp;About</source>
         <translation>&amp;A propos</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="171"/>
+        <location filename="main_window.ui" line="186"/>
+        <source>Version information for QtImgren</source>
+        <translation>Informations sur les versions de QtImgren</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="191"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="176"/>
+        <location filename="main_window.ui" line="194"/>
+        <source>Information about the underlying Qt framework</source>
+        <translation>Informations sur l&apos;environnement Qt sous jacent</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="199"/>
         <source>&amp;New profile</source>
         <translation>&amp;Nouveau profil</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="181"/>
+        <location filename="main_window.ui" line="202"/>
+        <source>Create a new profile</source>
+        <translation>Crée un nouveau profil</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="207"/>
         <source>&amp;Manage profiles</source>
         <translation>&amp;Gestion des profils</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="186"/>
+        <location filename="main_window.ui" line="210"/>
+        <source>Edit or remove existing profiles</source>
+        <translation>Edite ou supprime des profils existants</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="215"/>
         <source>Change &amp;Folder</source>
         <translation>Change de &amp;répertoire</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="194"/>
+        <location filename="main_window.ui" line="223"/>
         <source>&amp;Merge</source>
         <translation>Com&amp;bine</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="234"/>
+        <source>Configure the language and cache</source>
+        <translation>Configure la langue et le cache</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="239"/>
+        <source>&amp;Clean</source>
+        <translation>&amp;Nettoie</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="242"/>
+        <source>Remove unused entries from the cache</source>
+        <translation>Supprime les entrées inutiles du cache</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="247"/>
+        <source>&amp;Reset</source>
+        <translation>&amp;Réinitialise</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="250"/>
+        <source>Purge all entries from the cache</source>
+        <translation>Vide complètement le cache</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="255"/>
+        <source>&amp;Informations</source>
+        <translation>&amp;Informations</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="258"/>
+        <source>Cache informations</source>
+        <translation>Informations sur le cache</translation>
     </message>
     <message>
         <location filename="main_window.ui" line="29"/>
@@ -175,7 +245,7 @@
     <message>
         <location filename="main_window.ui" line="81"/>
         <source>&amp;Delta (minutes)</source>
-        <translation>Décalage (minutes)</translation>
+        <translation>&amp;Décalage (minutes)</translation>
     </message>
     <message>
         <location filename="main_window.ui" line="104"/>
@@ -188,7 +258,12 @@
         <translation>Noms d&apos;&amp;origine</translation>
     </message>
     <message>
-        <location filename="main_window.ui" line="199"/>
+        <location filename="main_window.ui" line="226"/>
+        <source>Merge pictures from another folder</source>
+        <translation>Fusionne des images depuis un autre dossier</translation>
+    </message>
+    <message>
+        <location filename="main_window.ui" line="231"/>
         <source>&amp;Settings</source>
         <translation>&amp;Configuration</translation>
     </message>
@@ -213,9 +288,22 @@
     </message>
 </context>
 <context>
+    <name>main</name>
+    <message>
+        <location filename="main_window.py" line="155"/>
+        <source>Cache filling: {nb_cached}/{nb_files}</source>
+        <translation>Remplissage du cache : {nb_cached}/{nb_files}</translation>
+    </message>
+    <message>
+        <location filename="main_window.py" line="158"/>
+        <source> - extra: {0}</source>
+        <translation> - extra : {0}</translation>
+    </message>
+</context>
+<context>
     <name>merge</name>
     <message>
-        <location filename="merge_dialog.py" line="36"/>
+        <location filename="merge_dialog.py" line="37"/>
         <source>New folder</source>
         <translation>Nouveau dossier</translation>
     </message>
@@ -223,12 +311,12 @@
 <context>
     <name>profile</name>
     <message>
-        <location filename="profile.py" line="71"/>
+        <location filename="profile.py" line="75"/>
         <source>&quot;{}&quot; is already used</source>
         <translation>&quot;{}&quot; est déjà utilisé</translation>
     </message>
     <message>
-        <location filename="profile.py" line="75"/>
+        <location filename="profile.py" line="79"/>
         <source>Name cannot be empty</source>
         <translation>Le nom ne peut pas être vide</translation>
     </message>
@@ -237,13 +325,13 @@
         <translation type="vanished">&quot;{}&quot; n&apos;est pas un modèle valide</translation>
     </message>
     <message>
-        <location filename="profile.py" line="72"/>
         <location filename="profile.py" line="76"/>
+        <location filename="profile.py" line="80"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="profile.py" line="81"/>
+        <location filename="profile.py" line="85"/>
         <source>Path</source>
         <translation>Répertoire</translation>
     </message>
@@ -252,12 +340,12 @@
         <translation type="vanished">Modèle</translation>
     </message>
     <message>
-        <location filename="profile.py" line="89"/>
+        <location filename="profile.py" line="93"/>
         <source>&quot;{}&quot; is not a valid date pattern</source>
         <translation>&quot;{}&quot; n&apos;est pas un modèle de date valide</translation>
     </message>
     <message>
-        <location filename="profile.py" line="90"/>
+        <location filename="profile.py" line="94"/>
         <source>Pattern</source>
         <translation>Modèle de date</translation>
     </message>
@@ -265,7 +353,7 @@
 <context>
     <name>profile_manager</name>
     <message>
-        <location filename="profile_manager.py" line="79"/>
+        <location filename="profile_manager.py" line="84"/>
         <source>{} already exists</source>
         <translation>{} existe déjà</translation>
     </message>
@@ -298,7 +386,7 @@
         <translation>&amp;Supprime</translation>
     </message>
     <message>
-        <location filename="profile.py" line="80"/>
+        <location filename="profile.py" line="84"/>
         <source>&quot;{}&quot; is not a valid folder</source>
         <translation>&quot;{}&quot; n&apos;est pas un dossier valide</translation>
     </message>
@@ -381,22 +469,22 @@
 <context>
     <name>view</name>
     <message>
-        <location filename="abstract_view.py" line="61"/>
+        <location filename="abstract_view.py" line="68"/>
         <source>Image</source>
         <translation>Image</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="61"/>
+        <location filename="abstract_view.py" line="68"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="62"/>
+        <location filename="abstract_view.py" line="69"/>
         <source>Original</source>
         <translation>Nom d&apos;origine</translation>
     </message>
     <message>
-        <location filename="abstract_view.py" line="63"/>
+        <location filename="abstract_view.py" line="70"/>
         <source>New name</source>
         <translation>Nouveau nom</translation>
     </message>

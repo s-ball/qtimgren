@@ -7,7 +7,7 @@ Module implementing MainWindow.
 """
 
 
-from PySide6.QtCore import Slot, Qt, QSettings, QTimer
+from PySide6.QtCore import Slot, Qt, QSettings, QTimer, QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 
 from .sql_cache import SQLiteCache
@@ -152,8 +152,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.profile_manager.active_profile.use_disk_cache):
             model: Model = self.tableView.model()
             nb_cached, nb_files, nb_tot = model.cache.get_status(model.files)
-            msg = f'{nb_cached}/{nb_files}'
+            msg = translate('main', 'Cache filling: {nb_cached}/{nb_files}').format(
+                nb_cached=nb_cached, nb_files=nb_files)
             if nb_tot > nb_cached:
-                msg += f' - extra: {nb_tot - nb_cached}'
+                msg += translate('main', ' - extra: {0}').format(nb_tot - nb_cached)
             self.statusLabel = QLabel(msg)
             self.statusBar.addPermanentWidget(self.statusLabel)
+
+
+translate = QCoreApplication.translate
