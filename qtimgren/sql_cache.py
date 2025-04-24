@@ -153,6 +153,8 @@ class SQLiteCache(AbstractCache):
 
     def _do_load(self, files: Collection[str]):
         for file in files:
+            if self.stop_thread:
+                break
             self.get_thumbnail(file)
 
 
