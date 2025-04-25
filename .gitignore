@@ -36,3 +36,4 @@ rc_qtimgren.py
 qtimgren.dist
 Output
 qtimgren.sqlite
+/nuitka.out/
