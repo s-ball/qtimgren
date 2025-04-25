@@ -1,4 +1,4 @@
-0.6.0: Use a disk cache for thumbnails
+0.5.2: Use a disk cache for thumbnails
 
 0.5.0: Major changes:
     - use hatchling as a build backend

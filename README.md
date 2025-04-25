@@ -29,7 +29,8 @@ main application window along with the current, future and original names. But
 as image computation and display are expensive tasks, the display can be
 turned off. Anyway, the computation is asynchronous, meaning that the
 application can be used as soon as the currently displayed images are 
-available.
+available. Starting with the 0.5.x series, thumbnails are statically cached
+in a local SQLite database.
 
 ## Installation
 
