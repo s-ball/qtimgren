@@ -59,7 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableView.profile_changed(profile)
         model: Model = self.tableView.model()
         self.menuDisk_cache.setEnabled(isinstance(model.cache, SQLiteCache))
-        model.cache.load()
+        model.cache.load(model.files)
         self.display_cache_status()
 
     @Slot()
