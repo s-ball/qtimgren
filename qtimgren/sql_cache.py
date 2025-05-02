@@ -6,12 +6,16 @@ import os.path
 import sqlite3
 import threading
 from collections.abc import Callable, Collection
+from typing import Optional
 
-from PySide6.QtCore import QBuffer, QIODevice
-from PySide6.QtGui import QImage
+from PySide6.QtCore import QBuffer, QIODevice, QSize
+from PySide6.QtGui import QImage, QImageReader
 
 
 class AbstractCache(abc.ABC):
+    sz = 256        # width of a thumbnail
+    folder: str
+
     def close(self):
         pass
 
@@ -34,13 +38,12 @@ class AbstractCache(abc.ABC):
 
 class SQLiteCache(AbstractCache):
     base = 'qtimgren.sqlite'
-    sz = 256
     fmt = 'PNG'
 
     def __init__(self, folder: str, get_name: Callable[[str], str]):
         self.main_lock = threading.Lock()
         self.locks: dict[str, threading.Lock] = {}
-        self.load_thread: threading.Thread = None
+        self.load_thread: Optional[threading.Thread] = None
         self.load_files: list[str] = []
         self.stop_thread = False
         self.folder = folder
@@ -77,8 +80,9 @@ class SQLiteCache(AbstractCache):
             im = QImage()
             im.loadFromData(row[0], self.fmt)
         else:
-            im = QImage(os.path.join(self.folder, file))
-            im = im.scaledToWidth(self.sz)
+            reader = QImageReader(os.path.join(self.folder, file))
+            reader.setScaledSize(QSize(self.sz, -1))
+            im = reader.read()
             buf = QBuffer()
             buf.open(QIODevice.OpenModeFlag.WriteOnly)
             im.save(buf, self.fmt)
@@ -90,7 +94,7 @@ class SQLiteCache(AbstractCache):
 
     def _require(self, name):
         self.main_lock.acquire()
-        wait: threading.Lock = None
+        wait: Optional[threading.Lock] = None
         while name in self.locks:
             if wait:
                 wait.release()
@@ -163,7 +167,9 @@ class NullCache(AbstractCache):
         self.folder = folder
 
     def get_thumbnail(self, file: str) -> QImage:
-        return QImage(os.path.join(self.folder, file))
+        reader = QImageReader(os.path.join(self.folder, file))
+        reader.setScaledSize(QSize(self.sz, -1))
+        return reader.read()
 
 
 def get_cache(use_disk_cache, folder: str, get_name: Callable[[str], str]

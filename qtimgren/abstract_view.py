@@ -11,7 +11,7 @@ from functools import lru_cache
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt, Slot, \
     QItemSelection, QItemSelectionModel, QAbstractItemModel, QSize, \
     QTimer, QSettings, QCoreApplication
-from PySide6.QtGui import QImage, QPainter
+from PySide6.QtGui import QImage, QPainter, QImageReader
 from PySide6.QtWidgets import QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem, QHeaderView
 from pyimgren.renamer import Renamer, exif_dat
@@ -261,10 +261,32 @@ class ImageDelegate(QStyledItemDelegate):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.view: QTableView = parent
+
+    def get_file(self, index: QModelIndex) -> typing.Optional[str]:
+        w = self.view.columnWidth(0)
+        if w == 0:
+            return None
+        else:
+            model = self.view.model()
+            file = model.data(index)
+            return file
+
 
     def sizeHint(self, option: QStyleOptionViewItem, index: QModelIndex) -> QSize:
-        pixmap = self.get_pixmap(option, index)
-        return QSize() if pixmap.isNull() else pixmap.size()
+        w = self.view.columnWidth(0)
+        if w <= 0:
+            return QSize()
+        file = self.get_file(index)
+        if file is None:
+            return QSize()
+        model: Model = self.view.model()
+        reader = QImageReader(os.path.join(model.folder, file))
+        size = reader.size()
+        if size.isValid() and size.width() > 0:
+            h = round(size.height() * w / size.width())
+            return QSize(w, h)
+        return QSize()
 
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex):
         pixmap = self.get_pixmap(option, index)
